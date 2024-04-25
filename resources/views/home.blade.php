@@ -16,7 +16,7 @@
 </head>
 <body>
     <div id="app">
-        <Admin></Admin>
+        <admin></admin>
     </div>
     @vite('resources/js/app.js')
 </body>

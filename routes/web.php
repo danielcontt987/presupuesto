@@ -27,6 +27,10 @@ Route::prefix('user')->group(function(){
     Route::post('/logout', [UserController::class, 'logout']);
 });
 
+Route::get('/admin', function () {
+    return view('home');
+})->middleware('auth.user');
+
 Route::get('/inicio', function () {
     return view('home');
 })->middleware('auth.user');
