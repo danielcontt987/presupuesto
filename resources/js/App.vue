@@ -1,9 +1,12 @@
 <template>
-<h1>Ja</h1>
+    <v-app>
+        <v-main>
+            <router-view></router-view>
+        </v-main>
+    </v-app>
 </template>
 
 <script setup>
-import Login from "./view/Login.vue";
 </script>
 
 <style>

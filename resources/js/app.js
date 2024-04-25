@@ -4,7 +4,7 @@ import './bootstrap';
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css';
 
-
+import { createApp } from 'vue';
 import { createVuetify} from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
@@ -122,14 +122,24 @@ const customLightTheme = {
 
 
 import App from './App.vue';
+import Admin from './Admin.vue';
+import Alert from './components/global/alert/AlertNormal.vue';
 
 const app = createApp({});
 const pinia = createPinia();
 
 app.use(pinia);
 app.use(router);
+app.use(vuetify,{
+  lang: {
+    locales: { es },
+    current: 'es-mx',
+  },
+});
 
-app.components('App', App);
+app.component('App', App);
+app.component('Admin', Admin);
+app.component('Alert', Alert);
 
 app.mount('#app');
 

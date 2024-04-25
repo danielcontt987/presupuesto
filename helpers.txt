@@ -1,0 +1,94 @@
+ <card-base
+    outlined
+    title="Determinación de fuente del voto"
+    subtitle="Asigna porcentajes para cada una de tus fuentes de votos"
+    :loading="isLoading"
+  >
+    <template v-slot:text v-if="active_vote_sources.length == 0">
+      <v-card-text>
+        <v-list>
+          <v-divider></v-divider>
+          <template v-for="(item, index) in catalogue">
+            <v-list-item class="rounded-lg" :key="index">
+              <v-list-item-action>
+                <v-checkbox v-model="item.active"></v-checkbox>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title class="font-weight-bold">{{
+                  item.name
+                }}</v-list-item-title>
+                <v-list-item-subtitle class="font-weight-bold mt-2">
+                  {{ getVotes(item.value) | number }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <number-input
+                  :disabled="!item.active"
+                  :quantity="item.value + ''"
+                  :update-quantity="(value) => updateQuantity(index, value)"
+                ></number-input>
+              </v-list-item-action>
+            </v-list-item>
+            <v-divider :key="index + 'a'"></v-divider>
+          </template>
+          <v-list-item class="rounded-lg">
+            <v-list-item-content class="text-right">
+              <v-list-item-subtitle>Porcentaje Total</v-list-item-subtitle>
+              <v-list-item-title> {{ calculateTotals }}% </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="rounded-lg" v-if="!isValid">
+            <v-list-item-content class="text-right">
+              <v-list-item-subtitle class="error--text font-weight-bold">
+                Tu estrategía debe de alcanzar el 100% de los votos de la meta
+                con las fuentes de votos activas.
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+    </template>
+    <template v-slot:text v-else>
+      <v-card-text>
+        <v-list>
+          <v-divider></v-divider>
+          <template v-for="(item, index) in showActiveVoteSources">
+            <v-list-item class="rounded-lg" :key="index">
+              <v-list-item-action>
+                <v-checkbox v-model="item.active" disabled></v-checkbox>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title class="font-weight-bold">
+                  {{ item.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle class="font-weight-bold mt-2">
+                  {{ getVotes(item.value) | number }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider :key="index + 'a'"></v-divider>
+          </template>
+        </v-list>
+      </v-card-text>
+    </template>
+    <template v-slot:actions>
+      <v-card-actions>
+        <v-row justify="end" class="pb-2 pr-2">
+          <slot></slot>
+          <v-col cols="12" md="6" lg="4" v-if="active_vote_sources.length == 0">
+            <v-btn
+              class="rounded-lg"
+              color="primary"
+              large
+              block
+              :loading="isLoading"
+              :disabled="!isValid || isLoading"
+              @click="saveVoteOrigin"
+            >
+              Guardar fuentes de voto
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+    </template>
+  </card-base>
