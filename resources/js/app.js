@@ -14,10 +14,11 @@ import { createPinia } from 'pinia';
 
 const customLightTheme = {
   colors: {
-    primary: '#1661CE',
+    primary: "#001F4A",
+    // secondary: "#001F4A",
     blueSky: '#ecf2ff',
-    // background: '#92969e',
-    backgroundColor: '#ecf2ff',
+    background: "#EFF3F8",
+    backgroundColor: '#eff3f8',
     white: '#FFFFFF',
     background_drawer: "#FFF",
     background_nav: "#ffffff",
@@ -116,7 +117,7 @@ const vuetify = createVuetify({
 
 import App from './App.vue';
 import Admin from './Admin.vue';
-import Alert from './components/global/alert/AlertNormal.vue'
+import Alert from './components/global/alert/AlertNormal.vue';
 
 const app = createApp({});
 //Pinia

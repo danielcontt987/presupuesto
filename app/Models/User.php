@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,12 +20,35 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'lastname',
-        'email',
-        'password',
+            'work_number',
+            'name',
+            'lastname',
+            'phone',
+            'img',
+            'email',
+            'password',
+            'street',
+            'ext',
+            'int',
+            'colony_id',
+            'curp',
+            'birthdate',
+            'birth_place',
+            'gender',
+            'rfc',
+            'nss',
+            'can_edit',
     ];
 
+    public function getBusiness()
+    {
+        $areaUser = AreaUser::where('user_id', $this->id)->with('area')->first();
+        if ($areaUser) {
+            return $areaUser->area->business_id;
+        }
+
+        return 0;
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

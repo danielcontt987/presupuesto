@@ -1,14 +1,13 @@
 <template>
     <v-container
         fluid
-        class="bg-blueSky fill-height overflow-hidden"
+        class="d-flex flex-column bg-background" style="height: 100vh; overflow: hidden;"
         :class="mdAndUp ? 'pa-0' : ''"
     >
         <v-row align="center" justify="center">
             <v-col cols="12" md="5">
                 <v-card
-                    class="elevation-0 pa-3 mt-5 mx-auto rounded-lg"
-                    color="background"
+                    class="elevation-0 pa-3  mx-auto rounded-lg"
                     max-width="500px"
                 >
                     <h2
@@ -28,6 +27,7 @@
                                         color="primary"
                                         label="Correo electrónico"
                                         variant="outlined"
+                                        class="rounded-lg"
                                         v-model="email"
                                         :rules="emailRules"
                                         autocomplete="email"
@@ -56,6 +56,7 @@
                                         flat
                                         size="large"
                                         block
+                                        :loading="loading"
                                         :disabled="!isValid"
                                         @click="login"
                                     >
@@ -67,12 +68,12 @@
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="7" v-if="mdAndUp == true">
+            <v-col cols="12" md="7" v-if="mdAndUp == true" class="overflow-hidden">
                 <v-img
-                    src="../img/bg2.jpg"
+                    src="../img/4.jpg"
                     height="100vh"
-                    width="100%"
-                    class="elevation-12"
+                    width="1000px"
+                    class="elevation-10"
                     cover
                 />
             </v-col>
@@ -89,7 +90,6 @@ import { useAlertNormalStore } from "../pinia/alert.js";
 import { useUserStore } from "../pinia/user.js";
 
 const { mdAndUp } = useDisplay();
-const router = useRouter();
 const userStore = useUserStore();
 const alertNormal = useAlertNormalStore();
 //Data
@@ -98,6 +98,8 @@ const isValid = ref(false);
 const email = ref("");
 const password = ref("");
 const openDialogLogout = ref(false);
+const loading = ref(false);
+
 const emailRules = [
     (value) => {
         if (value) return true;
@@ -121,21 +123,35 @@ const passwordRules = [
 ];
 
 const login = () => {
+    loading.value = true;
     let params = {
-      email: email.value,
-      password: password.value
+        email: email.value,
+        password: password.value,
     };
-    userStore.login(params).then((res) => {
-      window.location.href = "/inicio";
-    }).catch((err) => {
-       console.log(err);
-       alertNormal.show = true;
-       alertNormal.color = 'fail',
-       alertNormal.msg = 'Las credenciales no son las correctas favor de verificar el email y la contraseña',
-       alertNormal.type = 0,
-       alertNormal.icon = 'mdi-close-circle-outline'
-    })
+    userStore
+        .login(params)
+        .then((res) => {
+            loading.value = false;
+            window.location.href = "/inicio";
+        })
+        .catch((err) => {
+            console.log(err);
+            alertNormal.show = true;
+            (alertNormal.color = "fail"),
+                (alertNormal.msg =
+                    "Las credenciales no son las correctas favor de verificar el email y la contraseña"),
+                (alertNormal.type = 0),
+                (alertNormal.icon = "mdi-close-circle-outline");
+        }).finally(() =>{
+            loading.value = false;
+        });
 };
 </script>
 
-<style></style>
+<style>
+.image-fullscreen {
+    width: 100%;
+    height: 90vh;
+    object-fit: cover;
+}
+</style>

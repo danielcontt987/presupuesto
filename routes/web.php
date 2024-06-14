@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,15 +23,25 @@ Route::get('/login', function () {
     return view('welcome');
 });
 
+
+Route::get('/admin', function () {
+    return view('home');
+})->middleware('auth.user');
+    
+Route::get('/inicio', function () {
+    return view('home');
+})->middleware('auth.user');
+    
+Route::get('/configuracion', function () {
+    return view('home');
+})->middleware('auth.user');
+
 Route::prefix('user')->group(function(){
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
 });
 
-Route::get('/admin', function () {
-    return view('home');
-})->middleware('auth.user');
-
-Route::get('/inicio', function () {
-    return view('home');
-})->middleware('auth.user');
+Route::prefix('setting')->group(function(){
+    Route::post('/get', [SettingController::class, 'get']);
+    Route::post('/update-part-1', [SettingController::class, 'updateInfo']);
+});

@@ -3,6 +3,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Login from '../view/Login.vue'
 import Admin from '../view/Admin.vue'
 import Inicio from '../view/Inicio.vue'
+import Ajustes from '../view/Setting.vue'
 
 const routes = [
     {
@@ -23,6 +24,11 @@ const routes = [
         path: '/inicio',
         name: 'Inicio',
         component: Inicio,
+    },
+    {
+        path: '/configuracion',
+        name: 'Ajustes',
+        component: Ajustes,
     },
 ];
 

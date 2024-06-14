@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="white">
+    <v-app-bar color="primary">
         <template v-slot:prepend>
             <v-btn icon>
                 <v-icon variant="text" class="text-grey"> mdi-menu </v-icon>
