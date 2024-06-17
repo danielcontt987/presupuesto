@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('fiscal_street')->nullable();
             $table->string('fiscal_ext')->nullable();
             $table->string('fiscal_int')->nullable();
+            $table->string('email')->nullable();
             $table->unsignedBigInteger('fiscal_colony_id');
             $table->foreign('fiscal_colony_id')->references('id')->on('colonies');
             $table->string('timezone')->nullable();

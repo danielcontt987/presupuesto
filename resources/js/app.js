@@ -7,6 +7,7 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import router from './router/index.js';
 import { es } from "vuetify/locale";
+import moment from 'moment';
 
 //Pinia
 import { createPinia } from 'pinia';
@@ -135,6 +136,12 @@ app.use(vuetify,{
   },
 });
 
+app.config.globalProperties.$formatDatetime = (value) => {
+  return moment(value)
+    .format("DD/MMM/YYYY h:mm A")
+    .toUpperCase()
+    .replace(".", "");
+};
 
 
 app.mount('#app');

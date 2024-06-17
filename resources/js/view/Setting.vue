@@ -35,7 +35,7 @@
                                     class="text-primary rounded-lg pa-6 font-weight-bold"
                                     label
                                 >
-                                    Información de la empresa
+                                    Información contacto
                                 </v-chip>
                             </v-col>
                         </v-row>

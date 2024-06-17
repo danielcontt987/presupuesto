@@ -8,7 +8,7 @@ export const useSettingStore = defineStore("setting", {
         isLoading: false,
     }),
     actions: {
-         getSetting() {
+        getSetting() {
             this.isLoading = true; // Empieza la carga
             return new Promise((resolve, reject) => {
                 axios.post('setting/get')

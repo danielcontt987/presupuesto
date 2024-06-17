@@ -16,4 +16,9 @@ class Area extends Model
         'business_id',
         'folio',
     ];
+
+    public function areaUsers()
+    {
+        return $this->hasMany(AreaUser::class, 'area_id');
+    }
 }

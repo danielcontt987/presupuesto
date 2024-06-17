@@ -93,14 +93,26 @@ const  permissions_arr = [
             visibility: false,
         },
         {
+            name: "Áreas",
+            route: "/areas",
+            icon: "mdi-package",
+            visibility: false,
+        },
+        {
             name: "Cotizaciones",
             route: "/cotizaciones",
             icon: "mdi-file-outline",
             visibility: false,
         },
         {
-            name: "Estadísticas de cotizaciones",
+            name: "Estadísticas",
             route: "/cotizaciones",
+            icon: "mdi-chart-areaspline",
+            visibility: false,
+        },
+        {
+            name: "Registrar modulos",
+            route: "/crear-modulos",
             icon: "mdi-chart-areaspline",
             visibility: false,
         },

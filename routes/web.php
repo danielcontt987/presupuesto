@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,18 @@ Route::get('/configuracion', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/areas', function () {
+    return view('home');
+})->middleware('auth.user');
+
+Route::get('/detalle-del-area', function () {
+    return view('home');
+})->middleware('auth.user');
+
+Route::get('/crear-modulos', function () {
+    return view('home');
+})->middleware('auth.user');
+
 Route::prefix('user')->group(function(){
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
@@ -44,4 +57,8 @@ Route::prefix('user')->group(function(){
 Route::prefix('setting')->group(function(){
     Route::post('/get', [SettingController::class, 'get']);
     Route::post('/update-part-1', [SettingController::class, 'updateInfo']);
+});
+
+Route::prefix('area')->group(function(){
+    Route::post('/get', [AreaController::class, 'get']);
 });

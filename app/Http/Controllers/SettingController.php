@@ -21,7 +21,10 @@ class SettingController extends Controller
     public function updateInfo(Request $request)
     {
         $business = Business::where('id', Auth::user()->getBusiness())->update([
-            'name' => $request->input('name')
+            'name' => $request->input('name'),
+            'telephone1' => $request->input('cellphone1'),
+            'telephone2' => $request->input('cellphone2'),
+            'whatsapp' => $request->input('whatsapp'),
         ]);
 
         return response()->json(['business' => $business], 200);
