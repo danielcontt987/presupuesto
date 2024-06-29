@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -61,4 +62,14 @@ Route::prefix('setting')->group(function(){
 
 Route::prefix('area')->group(function(){
     Route::post('/get', [AreaController::class, 'get']);
+    Route::post('/consult-info', [AreaController::class, 'consultAreadetails']);
+
+});
+
+Route::prefix('module')->group(function(){
+    Route::post('/list', [ModuleController::class, 'list']);
+});
+
+Route::prefix('module')->group(function(){
+    Route::post('/store', [ModuleController::class, 'store']);
 });

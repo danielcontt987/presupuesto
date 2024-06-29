@@ -23,6 +23,7 @@
                         <v-col cols="12">
                             <v-text-field
                                 label="Nombre del módulo"
+                                v-model="name"
                                 variant="outlined"
                                 color="primary"
                             />
@@ -50,6 +51,7 @@
                             block
                             class="rounded-lg bg-primary"
                             depressed
+                            @click="store()"
                         >
                             Guardar datos
                         </v-btn>
@@ -58,16 +60,44 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+    <Alert />
 </template>
 
 <script setup>
 import { ref } from "vue";
 
 import { useModuleStore } from "../../pinia/module.js";
+import { useAlertNormalStore } from "../../pinia/alert.js";
+
 
 const moduleStore = useModuleStore();
+const alertNormal = useAlertNormalStore();
+const name = ref(null);
+
+const store = () =>{
+    let params = {
+        name: name.value
+    }
+    moduleStore.storeModule(params).then(() =>{
+        closeModal()
+        alertNormal.show = true;
+        (alertNormal.color = "success"),
+        (alertNormal.msg = "Se ha creado un nuevo modulo correctamente"),
+        (alertNormal.type = 0),
+        (alertNormal.icon = "mdi-check-circle-outline");
+        moduleStore.listModule();
+    }).catch((error) => {
+        console.log(error);
+        alertNormal.show = true;
+        (alertNormal.color = "error"),
+        (alertNormal.msg = "Ha ocurrido un error, intentelo más tarde"),
+        (alertNormal.type = 0),
+        (alertNormal.icon = "mdi-close-circle-outline");
+    })
+};
 
 const closeModal = () => {
     moduleStore.closeModal(false);
+    name.value = false;
 };
 </script>

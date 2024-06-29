@@ -49,6 +49,21 @@ class User extends Authenticatable
 
         return 0;
     }
+
+    public function getPermission()
+    {
+        $areauser = AreaUser::where('user_id', $this->id)
+            ->with([
+                'area.permissions' => function ($query) {
+                    $query->leftjoin("modules as md", "md.id", "=", 'module_id')
+                        ->select('md.id', 'area_id', 'module_id', 'name');
+                }
+            ])->first();
+        if ($areauser) {
+            return $areauser->area->permissions;
+        }
+        return 0;
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

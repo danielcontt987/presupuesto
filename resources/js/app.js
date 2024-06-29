@@ -8,6 +8,7 @@ import * as directives from 'vuetify/directives';
 import router from './router/index.js';
 import { es } from "vuetify/locale";
 import moment from 'moment';
+import { VNumberInput } from 'vuetify/labs/VNumberInput'
 
 //Pinia
 import { createPinia } from 'pinia';
@@ -16,7 +17,7 @@ import { createPinia } from 'pinia';
 const customLightTheme = {
   colors: {
     primary: "#001F4A",
-    // secondary: "#001F4A",
+    secondary: "#3E47A3",
     blueSky: '#ecf2ff',
     background: "#EFF3F8",
     backgroundColor: '#eff3f8',

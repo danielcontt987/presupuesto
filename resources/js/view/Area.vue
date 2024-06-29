@@ -4,9 +4,6 @@
             <v-col cols="12" md="10">
                 <vc-back-button @backAction="navigateToHome"></vc-back-button>
             </v-col>
-            <v-col cols="12" md="2" sm="12" class="text-end">
-                <slot></slot>
-            </v-col>
         </v-row>
         <v-row v-if="areaStore.isLoading">
             <v-col cols="12">

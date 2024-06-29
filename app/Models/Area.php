@@ -21,4 +21,8 @@ class Area extends Model
     {
         return $this->hasMany(AreaUser::class, 'area_id');
     }
+
+    public function permissions(){
+        return $this->hasMany(Permission::class);
+    }
 }

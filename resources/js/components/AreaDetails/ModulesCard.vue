@@ -5,7 +5,7 @@
                 <v-col cols="12" md="9" style="padding-left: 0">
                     <v-chip
                         color="background"
-                        class="text-primary rounded-lg pa-5 font-weight-bold"
+                        class="text-primary rounded-lg pa-5 font-weight-bold text-uppercase"
                         label
                     >
                         Detalles del area
@@ -23,41 +23,35 @@
                 </v-col>
             </v-row>
         </v-card-title>
-        <v-card-text v-if="edit">
-            <v-col cols="12">
-                <v-text-field
-                    v-model="name"
-                    label="Nombre del área"
-                    variant="outlined"
-                />
-                <v-text-field
-                    v-model="folio"
-                    label="Folio"
-                    variant="outlined"
-                />
-            </v-col>
-        </v-card-text>
-        <v-card-text v-else="edit">
-            <v-col cols="12">
-                <h4 class="font-weight-light mb-0">Nombre del area</h4>
-                <h3 class="font-weight-bold mb-0">
-                    {{ "Construcciones" }}
-                </h3>
-            </v-col>
-            <v-col cols="12">
-                <h4 class="font-weight-light mb-0">
-                    Cantidad de usuarios en el área
-                </h4>
-                <h3 class="font-weight-bold mb-0">
-                    {{ "1 usuario" }}
-                </h3>
-            </v-col>
-            <v-col cols="12">
-                <h4 class="font-weight-light mb-0">Folio del área</h4>
-                <h3 class="font-weight-bold mb-0">
-                    {{ "HY090" }}
-                </h3>
-            </v-col>
+        <v-card-text class="pt-5">
+            <v-row>
+                <v-col class="pb-0" cols="12" xl="6">
+                    <v-card class="my-0 bg-secondary rounded-lg" flat>
+                        <v-card-text class="py-0">
+                            <v-row
+                                class="d-flex align-center justify-space-between"
+                            >
+                                <v-col
+                                    class="d-flex align-center"
+                                    :class="edit ? '' : 'mb-3 mt-3'"
+                                >
+                                    <h5 class="my-0">Área</h5>
+                                </v-col>
+                                <v-col class="d-flex justify-end" v-if="edit">
+                                    <v-switch
+                                        color="white"
+                                        class="mb-0"
+                                        inset
+                                        :false-value="0"
+                                        :true-value="1"
+                                        hide-details
+                                    ></v-switch>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
         </v-card-text>
         <v-card-actions v-if="edit">
             <v-row>
@@ -70,16 +64,11 @@
                         block
                         color="error"
                     >
-                        Eliminar área
+                        Cancelar
                     </v-btn>
                 </v-col>
                 <v-col cols="12" md="6" order="1" order-md="2">
-                    <v-btn
-                        class="rounded-lg bg-primary"
-                        large
-                        depressed
-                        block
-                    >
+                    <v-btn class="rounded-lg bg-primary" large depressed block>
                         Guadar cambios
                     </v-btn>
                 </v-col>
@@ -87,7 +76,6 @@
         </v-card-actions>
     </v-card>
 </template>
-
 <script setup>
 import { ref } from "vue";
 
