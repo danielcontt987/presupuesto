@@ -78,7 +78,8 @@
                 />
             </v-col>
         </v-row>
-        <Alert />
+        <!-- <Alert /> -->
+        <AlertError />
     </v-container>
 </template>
 

@@ -10,7 +10,6 @@
             <v-skeleton-loader type="article"></v-skeleton-loader>
             <v-skeleton-loader type="article"></v-skeleton-loader>
         </v-card-text>
-        <VMModule />
     </v-card>
     <v-card
         elevation="0"
@@ -25,6 +24,7 @@
                         color="background"
                         class="text-primary rounded-lg pa-5 font-weight-bold"
                         label
+                        width="100%"
                     >
                         Crear módulo
                     </v-chip>

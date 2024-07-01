@@ -8,7 +8,6 @@ import * as directives from 'vuetify/directives';
 import router from './router/index.js';
 import { es } from "vuetify/locale";
 import moment from 'moment';
-import { VNumberInput } from 'vuetify/labs/VNumberInput'
 
 //Pinia
 import { createPinia } from 'pinia';
@@ -120,6 +119,7 @@ const vuetify = createVuetify({
 import App from './App.vue';
 import Admin from './Admin.vue';
 import Alert from './components/global/alert/AlertNormal.vue';
+import AlertError from './components/global/alert/AlertError.vue';
 
 const app = createApp({});
 //Pinia
@@ -129,6 +129,7 @@ app.use(pinia);
 app.component('App', App);
 app.component('Admin', Admin);
 app.component('Alert', Alert);
+app.component('AlertError', AlertError);
 app.use(router);
 app.use(vuetify,{
   lang: {

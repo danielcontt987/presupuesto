@@ -98,6 +98,6 @@ const store = () =>{
 
 const closeModal = () => {
     moduleStore.closeModal(false);
-    name.value = false;
+    name.value = null;
 };
 </script>

@@ -5,7 +5,7 @@
                 <v-card-title class="text-center">
                     <v-row>
                         <v-col cols="12" class="text-center mb-2 mt-4">
-                            <Check/> 
+                            <Close/> 
                         </v-col>
                     </v-row>
                 </v-card-title>
@@ -48,7 +48,7 @@
 
 <script setup>
 import { useAlertNormalStore } from "../../../pinia/alert.js";
-import Check from "../../icons/Check.vue";
+import Close from "../../icons/Close.vue";
 const alertNormal = useAlertNormalStore();
 
 const closeModal = () => {
