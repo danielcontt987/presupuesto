@@ -6,6 +6,8 @@ export const useModuleStore = defineStore("module", {
         show: false,
         modules: [],
         isLoading: false,
+        showEdit: false,
+        moduleEdit: null,
     }),
     actions: {
         listModule() {
@@ -36,11 +38,32 @@ export const useModuleStore = defineStore("module", {
                     });
             });
         },
+        updateModule(payload) {
+            return new Promise((resolve, reject) => {
+                axios.post('module/update', payload)
+                    .then((response) => {
+                        resolve(response);
+                        this.listModule();
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        },
         showModal(payload) {
             this.show = payload;
         },
         closeModal() {
             this.show = false;
+        },
+        showModalEdit(payload){
+            this.showEdit = payload
+        },
+        closeModalEdit(payload) {
+            this.showEdit = payload;
+        },
+        editModule(payload) {
+            this.moduleEdit = payload;
         },
     },
 });

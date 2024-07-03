@@ -72,4 +72,5 @@ Route::prefix('module')->group(function(){
 
 Route::prefix('module')->group(function(){
     Route::post('/store', [ModuleController::class, 'store']);
+    Route::post('/update', [ModuleController::class, 'update']);
 });

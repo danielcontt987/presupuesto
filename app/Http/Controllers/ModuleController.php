@@ -22,4 +22,12 @@ class ModuleController extends Controller
             200
         );
     }
+
+    public function update (Request $request)
+    {
+        return response()->json(
+            ModuleMS::update($request),
+            200
+        );
+    }
 }

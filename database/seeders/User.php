@@ -18,14 +18,6 @@ class User extends Seeder
      */
     public function run(): void
     {
-        // ModelsUser::create([
-        //     'name' => 'Daniel',
-        //     'lastname' => 'Contreras',
-        //     'phone' => '3112312312',
-        //     'email' => 'correo@correo.com',
-        //     'password' => Hash::make('12345678')
-        // ]);
-
         $colony = Colony::create([
             'zipcode' => 63175,
             'settlement' => "Pera",
@@ -73,7 +65,7 @@ class User extends Seeder
         $areaId = $area->id;
 
         $user = ModelsUser::create([
-            'work_number' => 25555425,
+            'work_number' => '25555425',
             'name' => "José Daniel",
             'lastname' => "Contreras Pérez",
             'phone' => 311256252,

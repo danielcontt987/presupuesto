@@ -17,4 +17,12 @@ class Module extends Microservice
             'name' => $name
         ]);
     }
+
+    public static function update($request)
+    {
+        $module = ModuleModel::find($request->id);
+        $module->name =  $request->name;
+        $module->save();
+        return $module;
+    }
 }

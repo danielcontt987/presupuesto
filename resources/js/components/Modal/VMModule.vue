@@ -31,7 +31,7 @@
                     </v-row>
                 </v-form>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions class="mx-3">
                 <v-row>
                     <v-col cols="12" md="6">
                         <v-btn
@@ -87,7 +87,6 @@ const store = () =>{
         (alertNormal.icon = "mdi-check-circle-outline");
         moduleStore.listModule();
     }).catch((error) => {
-        console.log(error);
         alertNormal.show = true;
         (alertNormal.color = "error"),
         (alertNormal.msg = "Ha ocurrido un error, intentelo más tarde"),

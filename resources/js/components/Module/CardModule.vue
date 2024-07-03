@@ -53,7 +53,7 @@
                         flat
                         size="small"
                         color="primary"
-                        @click="goToDetail(item.id)"
+                        @click="updateModule(item)"
                     ></v-btn>
                     <v-btn
                         icon="mdi-delete"
@@ -67,12 +67,14 @@
             </v-data-table>
         </v-card-text>
         <VMModule />
+        <VMUpdate />
     </v-card>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import VMModule from "../Modal/VMModule.vue";
+import VMUpdate from "../Modal/VMUpdate.vue";
 import { useModuleStore } from "../../pinia/module.js";
 
 const moduleStore = useModuleStore();
@@ -100,6 +102,12 @@ const headers = [
 const openModal = () => {
     moduleStore.showModal(true);
 };
+
+
+const updateModule = (item) => {
+    moduleStore.showModalEdit(true);
+    moduleStore.editModule(item);
+}
 
 onMounted(() => {
     moduleStore.listModule();
