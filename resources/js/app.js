@@ -117,11 +117,14 @@ const vuetify = createVuetify({
 
 
 import App from './App.vue';
+import { registerSW } from 'virtual:pwa-register';
 import Admin from './Admin.vue';
 import Alert from './components/global/alert/AlertNormal.vue';
 import AlertError from './components/global/alert/AlertError.vue';
 
 const app = createApp({});
+
+registerSW();
 //Pinia
 const pinia = createPinia();
 app.use(pinia);
