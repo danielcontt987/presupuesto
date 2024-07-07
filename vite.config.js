@@ -4,9 +4,10 @@ import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-    server: {
-        host: '192.168.36.207',
-    },
+    scripts: { "dev": "vite", "build": "vite build" },
+    // server: {
+    //     host: '192.168.36.207',
+    // },
     define: {
         '__VUE_OPTIONS_API__': true,
         '__VUE_PROD_DEVTOOLS__': false,
