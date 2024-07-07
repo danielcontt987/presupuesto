@@ -5,9 +5,6 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
     scripts: { "dev": "vite", "build": "vite build" },
-    // server: {
-    //     host: '192.168.36.207',
-    // },
     define: {
         '__VUE_OPTIONS_API__': true,
         '__VUE_PROD_DEVTOOLS__': false,
