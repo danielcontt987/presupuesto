@@ -7,7 +7,7 @@
     {{-- PWA links and meta --}}
     <meta name="theme-color" content="#6777ef" />
     {{-- <link rel="apple-touch-icon" href="{{ asset('/img/logo.png') }}"> --}}
-    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+    {{-- <link rel="manifest" href="{{ asset('/manifest.json') }}"> --}}
     <title>Presupueto</title>
 
     {{-- <!-- Fonts -->
@@ -26,7 +26,7 @@
     </div>
     @vite('resources/js/app.js')
 </body>
-<script src="{{ asset('/sw.js') }}"></script>
+{{-- <script src="{{ asset('/sw.js') }}"></script>
 <script>
     if ('serviceWorker' in navigator) {
         // Register a service worker hosted at the root of the
@@ -44,5 +44,5 @@
     } else {
         console.error("Service workers are not supported.");
     }
-</script>
+</script> --}}
 </html>

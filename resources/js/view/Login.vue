@@ -1,8 +1,9 @@
 <template>
     <v-container
         fluid
-        class="d-flex flex-column bg-background" style="height: 100vh; overflow: hidden;"
+        class="d-flex flex-column bg-background fill height" style="height: 100vh; overflow: hidden;"
         :class="mdAndUp ? 'pa-0' : ''"
+
     >
         <v-row align="center" justify="center">
             <v-col cols="12" md="5">
@@ -52,7 +53,7 @@
                                 </v-col>
                                 <v-col cols="12" class="pt-5">
                                     <v-btn
-                                        color="primary"
+                                        color="secondary"
                                         flat
                                         size="large"
                                         block
@@ -63,17 +64,45 @@
                                         Iniciar sesión
                                     </v-btn>
                                 </v-col>
+                                <v-col cols="12" class="pt-5">
+                                    <v-btn
+                                        color="secondary"
+                                        flat
+                                        size="large"
+                                        block
+                                        variant="outlined"
+                                        :loading="loading"
+                                        :disabled="!isValid"
+                                        @click="login"
+                                    >
+                                        Olvide mi contraseña
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" class="pt-5">
+                                    <v-btn
+                                        color="black"
+                                        flat
+                                        size="large"
+                                        block
+                                        variant="text"
+                                        :loading="loading"
+                                        :disabled="!isValid"
+                                        @click="login"
+                                    >
+                                        Ingresar al checador
+                                    </v-btn>
+                                </v-col>
                             </v-row>
                         </v-form>
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="7" v-if="mdAndUp == true" class="overflow-hidden">
+            <v-col cols="12" md="7" v-if="mdAndUp == true" class="overflow-hidden bg-lightprimary">
                 <v-img
-                    src="../img/4.jpg"
+                    src="../img/fondo.png"
                     height="100vh"
-                    width="1000px"
-                    class="elevation-10"
+                    class="elevation-6 bg-lightprimary"
+                    style="width: 100%;"
                     cover
                 />
             </v-col>

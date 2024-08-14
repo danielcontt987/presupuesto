@@ -50,6 +50,10 @@ Route::get('/crear-modulos', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/cotizaciones', function () {
+    return view('home');
+})->middleware('auth.user');
+
 Route::prefix('user')->group(function(){
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
@@ -74,3 +78,5 @@ Route::prefix('module')->group(function(){
     Route::post('/store', [ModuleController::class, 'store']);
     Route::post('/update', [ModuleController::class, 'update']);
 });
+
+Route::get('/print-ticket', [ModuleController::class, 'print'])->name('print.ticket');

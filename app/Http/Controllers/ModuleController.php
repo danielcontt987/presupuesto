@@ -30,4 +30,15 @@ class ModuleController extends Controller
             200
         );
     }
+
+    public function print()
+    {
+        // Aquí generas el contenido del ticket, por ejemplo, usando una vista
+        $data = [
+            'item' => 'Ejemplo',
+            'price' => '10.00'
+        ];
+
+        return view('printers.ticket', $data);
+    }
 }

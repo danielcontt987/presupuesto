@@ -7,6 +7,8 @@ import Ajustes from '../view/Setting.vue';
 import Area from '../view/Area.vue';
 import AreaDetails from '../view/Areas/AreaDetails.vue';
 import CreateModule from '../view/Module/CreateModule.vue';
+import Cotizacion from '../view/Quotation/Quotation.vue';
+
 
 
 const routes = [
@@ -48,6 +50,11 @@ const routes = [
         path: '/crear-modulos',
         name: 'Registrar modulos',
         component: CreateModule,
+    },
+    {
+        path: '/cotizaciones',
+        name: 'Cotizaciones',
+        component: Cotizacion,
     },
 ];
 

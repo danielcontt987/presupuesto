@@ -6,18 +6,22 @@
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 52 52"
             >
-                <circle
-                    class="checkmark-circle"
-                    cx="26"
-                    cy="26"
-                    r="25"
-                    fill="none"
-                />
-                <path
-                    class="checkmark-check"
-                    fill="none"
-                    d="M14.1 27.2l7.1 7.2 16.7-16.8"
-                />
+            <circle
+                class="checkmark-circle"
+                cx="26"
+                cy="26"
+                r="24"
+                fill="none"
+                stroke="black"
+                stroke-width="4"
+            />
+            <path
+                class="checkmark-check"
+                fill="none"
+                stroke="black"
+                stroke-width="4"
+                d="M14.1 27.2l7.1 7.2 16.7-16.8"
+            />
             </svg>
         </div>
     </v-avatar>
@@ -35,7 +39,7 @@
 .checkmark-circle {
     stroke-dasharray: 166;
     stroke-dashoffset: 166;
-    stroke-width: 2;
+    stroke-width: 4;
     stroke: #a5dc86;
     fill: none;
     animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards, fill 0.4s ease-in-out 0.4s forwards;
@@ -45,7 +49,7 @@
     transform-origin: 50% 50%;
     stroke-dasharray: 48;
     stroke-dashoffset: 48;
-    stroke-width: 2;
+    stroke-width: 4;
     stroke: #a5dc86;
     animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
 }
