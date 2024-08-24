@@ -7,9 +7,8 @@ import Ajustes from '../view/Setting.vue';
 import Area from '../view/Area.vue';
 import AreaDetails from '../view/Areas/AreaDetails.vue';
 import CreateModule from '../view/Module/CreateModule.vue';
-import Cotizacion from '../view/Quotation/Quotation.vue';
-
-
+import PointOfSale from '../view/PointOfSale/PointOfSale.vue';
+import Client from '../view/Client/Client.vue';
 
 const routes = [
     {
@@ -52,9 +51,14 @@ const routes = [
         component: CreateModule,
     },
     {
-        path: '/cotizaciones',
-        name: 'Cotizaciones',
-        component: Cotizacion,
+        path: '/punto-de-venta',
+        name: 'Punto de venta',
+        component: PointOfSale,
+    },
+    {
+        path: '/clientes',
+        name: 'Clientes',
+        component: Client,
     },
 ];
 

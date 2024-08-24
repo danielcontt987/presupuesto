@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('folio_personality')->nullable();
             $table->string('name');
             $table->string('barcode');
-            $table->string('descrition');
+            $table->string('description');
             $table->boolean('is_service')->default(0);
             $table->decimal('price_shop')->default(0);
             $table->decimal('price_s_shop')->default(0);
@@ -28,7 +28,10 @@ return new class extends Migration
             $table->foreign('business_id')->references('id')->on('business');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

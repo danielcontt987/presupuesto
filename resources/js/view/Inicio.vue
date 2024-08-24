@@ -99,8 +99,8 @@ const  permissions_arr = [
             visibility: false,
         },
         {
-            name: "Cotizaciones",
-            route: "/cotizaciones",
+            name: "Punto de venta",
+            route: "/punto-de-venta",
             icon: "mdi-file-outline",
             visibility: false,
         },

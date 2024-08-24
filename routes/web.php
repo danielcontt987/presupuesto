@@ -50,9 +50,15 @@ Route::get('/crear-modulos', function () {
     return view('home');
 })->middleware('auth.user');
 
-Route::get('/cotizaciones', function () {
+Route::get('/punto-de-venta', function () {
     return view('home');
 })->middleware('auth.user');
+
+Route::get('/clientes', function () {
+    return view('home');
+})->middleware('auth.user');
+
+//Rutas
 
 Route::prefix('user')->group(function(){
     Route::post('/login', [UserController::class, 'login']);

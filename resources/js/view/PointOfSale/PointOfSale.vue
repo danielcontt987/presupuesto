@@ -11,18 +11,6 @@
                <p class="text-primary"><b>Cotización en espera:</b></p>
                <p class="text-primary"><b>Monto cotizado:</b></p>
             </v-col>
-            <v-col cols="6">
-                <v-select
-                 variant="outlined"
-                 label="Almacén"
-                />
-            </v-col>
-            <v-col cols="6">
-                <v-select
-                 variant="outlined"
-                 label="Almacén"
-                />
-            </v-col>
             <v-col cols="4">
                 <v-select
                  variant="outlined"
@@ -102,9 +90,8 @@ import { ref } from 'vue';
 
 const headers = ref(
     [
-        { title: 'Servicio', align: 'center'},
+        { title: 'Producto', align: 'center'},
         { title: 'Cantidad', align: 'center' },
-        { title: 'Almacén', align: 'center' },
         { title: 'Área', align: 'center', },
         { title: 'Precio unitario', align: 'center' },
         { title: 'Subtotal', align: 'center' },
