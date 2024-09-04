@@ -9,6 +9,7 @@ import AreaDetails from '../view/Areas/AreaDetails.vue';
 import CreateModule from '../view/Module/CreateModule.vue';
 import PointOfSale from '../view/PointOfSale/PointOfSale.vue';
 import Client from '../view/Client/Client.vue';
+import CreateClient from '../view/Client/CreateClient.vue';
 
 const routes = [
     {
@@ -59,6 +60,11 @@ const routes = [
         path: '/clientes',
         name: 'Clientes',
         component: Client,
+    },
+    {
+        path: '/crear-cliente',
+        name: 'Crear cliente',
+        component: CreateClient,
     },
 ];
 

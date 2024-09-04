@@ -19,7 +19,7 @@
                         Opciones
                         <v-menu activator="parent">
                             <v-list>
-                                <v-list-item>
+                                <v-list-item @click="createClient()">
                                     <v-list-item-title>Agregar clientes</v-list-item-title>
                                 </v-list-item>
                             </v-list>
@@ -64,6 +64,7 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 
 defineProps({
@@ -71,6 +72,8 @@ defineProps({
         type: Array,
     }
 });
+
+const router = useRouter();
 
 const display = useDisplay();
 
@@ -91,6 +94,10 @@ const editClient = item => {
 
 const deleteClient = item => {
     console.log(item);
+}
+
+const createClient = () => {
+    router.push('/crear-cliente')
 }
 
 </script>

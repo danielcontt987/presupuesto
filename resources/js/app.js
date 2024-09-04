@@ -37,7 +37,8 @@ const customLightTheme = {
     lighterror: "#fdede8",
     lightsuccess: "#e6fffa",
     titleCard: "#14006E",
-    chipCard: "#ecf2ff"
+    chipCard: "#ecf2ff",
+    warning: "#FBC02D",
 
     
     /*
