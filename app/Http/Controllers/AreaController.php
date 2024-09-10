@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Microservices\Area as AreaMS;
 use App\Models\Area;
 use App\Models\AreaUser;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,42 +20,76 @@ class AreaController extends Controller
         ], 200);
     }
 
-    public function consultAreadetails(Request $request){
-        try{
+    public function consultAreadetails(Request $request) {
+        try {
             $area_id = $request->input('area_id');
-            $area = Area::where('id', $area_id)->first();
-
-            $area = DB::select("SELECT a.name,a.folio,COUNT(DISTINCT(au.user_id)) as users
-                      FROM areas a 
-                      LEFT JOIN area_users au on a.id=au.area_id
-                      WHERE a.id='$area_id'
-                      GROUP BY a.id
-                      ORDER BY a.name 
-                      LIMIT 1
-                     ");    
-            $users = DB::select("SELECT au.id as areauser_id, u.id as id, CONCAT(u.name, ' ', u.lastname) as name, u.img as img, au.isincharge as encargado
-                        FROM areas a 
-                        INNER JOIN area_users au ON a.id = au.area_id
-                        INNER JOIN users u ON u.id = au.user_id
-                        WHERE a.id = '$area_id' AND a.deleted_at IS NULL AND u.deleted_at IS NULL
-                        GROUP BY u.id
-                        ORDER BY u.name
-                     ");          
-            $permissions = DB::select("SELECT m.id as module_id,m.name,
-                          IF((SELECT COUNT(*) FROM permissions where permissions.module_id=m.id and permissions.area_id='$area_id' and permissions.deleted_at is null) > 0,1,0) as granted
-                      FROM modules m WHERE m.deleted_at is null
-                      GROUP BY m.id
-                      ORDER BY m.name 
-                     ");
-            foreach ($users as $key => $u) {
-              $u->encargado = intval($u->encargado);
-            }            
-            foreach ($permissions as $key => $p) {
-              $p->granted = intval($p->granted);
+            
+            // Consultar el área
+            $area = DB::table('areas')
+                ->select('name', 'folio', DB::raw('COUNT(DISTINCT(au.user_id)) as users'))
+                ->leftJoin('area_users as au', 'areas.id', '=', 'au.area_id')
+                ->where('areas.id', $area_id)
+                ->groupBy('areas.id', 'name', 'folio')
+                ->orderBy('areas.name')
+                ->first();
+            
+            // Consultar los usuarios
+            $users = DB::table('areas')
+                ->select('au.id as areauser_id', 'u.id', DB::raw("CONCAT(u.name, ' ', u.lastname) as name"), 'u.img', DB::raw('MAX(au.isincharge) as encargado'))
+                ->join('area_users as au', 'areas.id', '=', 'au.area_id')
+                ->join('users as u', 'u.id', '=', 'au.user_id')
+                ->where('areas.id', $area_id)
+                ->whereNull('areas.deleted_at')
+                ->whereNull('u.deleted_at')
+                ->groupBy('au.id', 'u.id', 'u.name', 'u.lastname', 'u.img')
+                ->orderBy('u.name')
+                ->get();
+            
+            // Consultar permisos
+            $permissions = DB::table('modules as m')
+                ->select('m.id as module_id', 'm.name', DB::raw('IF((SELECT COUNT(*) FROM permissions WHERE permissions.module_id = m.id AND permissions.area_id = ' . $area_id . ' AND permissions.deleted_at IS NULL) > 0, 1, 0) as granted'))
+                ->whereNull('m.deleted_at')
+                ->groupBy('m.id', 'm.name')
+                ->orderBy('m.name')
+                ->get();
+            
+            // Convertir campos a enteros
+            foreach ($users as $user) {
+                $user->encargado = intval($user->encargado);
             }
-        }catch(\Exception $e){
-            return response()->json(['status'=>"500",'data'=>$e->getMessage()]);
+            foreach ($permissions as $permission) {
+                $permission->granted = intval($permission->granted);
+            }
+            
+        } catch (\Exception $e) {
+            return response()->json(['status' => "500", 'data' => $e->getMessage()]);
         }
-        return response()->json(["status" => "200","area"=>$area[0],"users"=>$users,"permissions"=>$permissions, 'commission' => $commission]);
-    } 
+        
+        return response()->json(["status" => "200", "area" => $area, "users" => $users, "permissions" => $permissions]);
+    }       
+    public function storePermission(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            $area_id = $request->area_id;
+            foreach ($ids as $value) {
+            Permission::create([
+                'module_id' => $value,
+                'area_id' => $area_id,
+            ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(["status" => "500", "error" => $e->getMessage()]);
+        }
+        return response()->json(["status" => "200"]);
+    }
+    public function listPermission(Request $request)
+    {
+        try {
+            $list = Permission::get();
+        } catch (\Exception $e) {
+            return response()->json(["status" => "500", "error" => $e->getMessage()]);
+        }
+        return response()->json(["status" => "200", "permission" => $list]);
+    }
 }

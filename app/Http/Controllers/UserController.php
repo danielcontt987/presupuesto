@@ -27,4 +27,8 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         return response()->json(['status' => 200]);
     } 
+
+    public function consultUser(){
+        return response()->json(["status" => 200, "permissions" => Auth::user()->getPermission()], 200);
+    }
 }

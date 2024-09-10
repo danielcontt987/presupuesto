@@ -78,6 +78,10 @@ const pageCount = computed(() => {
 });
 
 const goToDetail = (id) => {
+    let params = {
+        "area_id": id
+    }
+    areasStore.consulInfo(params);
     areasStore.setAreaId(id);
     router.push('/detalle-del-area');
 };

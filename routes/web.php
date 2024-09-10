@@ -66,6 +66,7 @@ Route::get('/crear-cliente', function () {
 
 Route::prefix('user')->group(function(){
     Route::post('/login', [UserController::class, 'login']);
+    Route::post('/consult-user', [UserController::class, 'consultUser']);
     Route::post('/logout', [UserController::class, 'logout']);
 });
 
@@ -77,6 +78,7 @@ Route::prefix('setting')->group(function(){
 Route::prefix('area')->group(function(){
     Route::post('/get', [AreaController::class, 'get']);
     Route::post('/consult-info', [AreaController::class, 'consultAreadetails']);
+    Route::post('/store-permission', [AreaController::class, 'storePermission']);
 
 });
 

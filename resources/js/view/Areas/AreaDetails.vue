@@ -30,17 +30,9 @@ onMounted(() => {
     if (areaStore.area_id == 0) {
         router.push("/areas");
     }
-
-    areaStore.consulInfo()
-
-
 });
 
 const goToBack = () =>{
     router.push("/areas");
-}
-
-const consultInfo = () => {
-    
 }
 </script>

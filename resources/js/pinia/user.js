@@ -27,5 +27,15 @@ export const useUserStore = defineStore("user", {
             })
         },
 
+        consultUser(){
+            return new Promise((resolve, reject) => {
+                axios.post("user/consult-user").then((response) =>{
+                    resolve(response)
+                }).catch((error) => {
+                    reject(error)
+                })
+            })
+        }
+
     }
 });

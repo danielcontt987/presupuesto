@@ -72,10 +72,15 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { useModuleStore } from '../pinia/module';
-
+import { useUserStore } from '../pinia/user';
 const router = useRouter();
-const module = useModuleStore();
+const userStore = useUserStore();
+
+onMounted(() => {
+    userStore.consultUser().then((response)=> {
+        permissions.value = response.data.permissions
+    })
+})
 
 const search = ref('');
 const permissions_arr = ref([
@@ -144,15 +149,6 @@ const dataFiltered = computed(() => {
 const goTo = (route) => {
     router.push(route);
 };
-
-onMounted(() => {
-    module.listModule().then((response) => {
-        permissions.value = response.data;
-        updateVisibility();
-    }).catch(error => {
-        console.error('Error fetching permissions:', error);
-    });
-});
 
 const updateVisibility = () => {
     if (!Array.isArray(permissions.value)) {
