@@ -62,6 +62,9 @@ Route::get('/crear-cliente', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/productos', function () {
+    return view('home');
+})->middleware('auth.user');
 //Rutas
 
 Route::prefix('user')->group(function(){

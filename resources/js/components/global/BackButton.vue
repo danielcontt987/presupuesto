@@ -2,7 +2,7 @@
     <v-row>
       <v-col cols="12" md="10">
         <v-btn
-          class="rounded-lg" color="error" flat size="large"
+          class="rounded-lg" color="warning" flat size="large"
           @click="emitRoute">
           <v-icon left>mdi-arrow-left-circle-outline</v-icon>
           Regresar

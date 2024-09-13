@@ -73,10 +73,13 @@ class AreaController extends Controller
             $ids = $request->ids;
             $area_id = $request->area_id;
             foreach ($ids as $value) {
-            Permission::create([
-                'module_id' => $value,
-                'area_id' => $area_id,
-            ]);
+                $permission = Permission::find($value);
+                if ($permission == null) {
+                        Permission::create([
+                            'module_id' => $value,
+                            'area_id' => $area_id,
+                        ]);
+                }
             }
         } catch (\Exception $e) {
             return response()->json(["status" => "500", "error" => $e->getMessage()]);

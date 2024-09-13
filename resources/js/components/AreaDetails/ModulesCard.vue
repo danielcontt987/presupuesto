@@ -26,8 +26,7 @@
                                 </v-col>
                                 <v-col class="d-flex justify-end" v-if="edit">
                                     <v-switch color="white" class="mb-0" inset :false-value="0" :true-value="1"
-                                        hide-details :v-model="permission.granted"
-                                        :input-value="permission.granted"
+                                        hide-details :v-model="permission.granted" :input-value="permission.granted"
                                         @change="(value) => changeState(permission.granted, permission)"></v-switch>
                                 </v-col>
                             </v-row>
@@ -49,6 +48,8 @@
                     </v-btn>
                 </v-col>
             </v-row>
+        </v-card-actions>
+        <v-card-actions v-else>
         </v-card-actions>
     </v-card>
     <Alert />
@@ -89,7 +90,10 @@ const storePermission = () => {
         (alertNormal.msg = "Se han creado nuevos permisos"),
         (alertNormal.type = 0),
         (alertNormal.icon = "mdi-check-circle-outline");
-        areaStore.consulInfo();
+        let params = {
+            area_id: areaStore.area_id
+        }
+        areaStore.consulInfo(params);
     }).catch((error) => {
         alertNormal.show = true;
         (alertNormal.color = "error"),

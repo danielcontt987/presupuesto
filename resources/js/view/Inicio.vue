@@ -126,6 +126,12 @@ const permissions_arr = ref([
         icon: 'mdi-chart-areaspline',
         visibility: false,
     },
+    {
+        name: 'Productos',
+        route: '/productos',
+        icon: 'mdi-chart-areaspline',
+        visibility: false,
+    },
 ]);
 
 const permissions = ref([]);
