@@ -7,9 +7,26 @@
                     <v-card-title>
                         <v-row class="mx-3">
                             <v-col cols="12" md="9" style="padding-left: 0">
-                                <v-chip color="background" class="text-primary rounded-lg pa-5 font-weight-bold" label>
+                                <v-chip color="background" class="text-primary rounded-lg pa-5 font-weight-bold" label :style="size ? 'width: 100%; text-align: center; margin-left: 10px; margin-right: 25px;' : ''"
+                                :class="size ? 'd-flex justify-center' : ''">
                                     Productos
                                 </v-chip>
+                            </v-col>
+                            <v-col cols="12" md="3" class="text-right">
+                                <v-btn class="elevation-0 rounded-lg font-weight-bold mx-0"
+                                    color="primary" variant="outlined" :block="size ? true : false">
+                                    Opciones
+                                    <v-menu activator="parent">
+                                        <v-list>
+                                            <v-list-item @click="createProduct()">
+                                                <v-list-item-title>Agregar producto</v-list-item-title>
+                                            </v-list-item>
+                                            <v-list-item @click="openModalCategories()">
+                                                <v-list-item-title>Categorías</v-list-item-title>
+                                            </v-list-item>
+                                        </v-list>
+                                    </v-menu>
+                                </v-btn>
                             </v-col>
                         </v-row>
                         <v-tabs v-model="selectedtab" class="mt-5 mx-3" centered background-color="background" grow>
@@ -88,11 +105,20 @@
             </v-col>
         </v-row>
     </v-container>
+    <product-dialog/>
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
+import { useDisplay } from 'vuetify';
+import { useProductStore } from '../../pinia/product';
 import BackButton from '../../components/global/BackButton.vue';
-import { ref } from 'vue';
+const productStore = useProductStore();
+
+
+const display = useDisplay();
+
+import { computed, onMounted, ref } from 'vue';
+import ProductDialog from '../../components/Product/Dialog/ProductDialog.vue';
 const router = useRouter();
 
 const selectedtab = ref(null);
@@ -101,4 +127,17 @@ const search = ref("");
 const goToBack = () => {
     router.push('/inicio')
 }
+
+const createProduct = () =>{
+    router.push('/crear-producto')
+}
+
+const openModalCategories = () =>{
+    productStore.openDialogCategory(true);
+}
+const size = computed(() => !display.mdAndUp.value);
+
+onMounted( () =>{
+  productStore.listProducts();
+})
 </script>

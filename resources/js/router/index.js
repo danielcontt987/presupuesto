@@ -11,6 +11,7 @@ import PointOfSale from '../view/PointOfSale/PointOfSale.vue';
 import Client from '../view/Client/Client.vue';
 import CreateClient from '../view/Client/CreateClient.vue';
 import Product from '../view/Product/Product.vue';
+import CreateProduct from '../view/Product/CreateProduct.vue';
 
 const routes = [
     {
@@ -63,9 +64,19 @@ const routes = [
         component: Client,
     },
     {
+        path: '/crear-cliente',
+        name: 'Crear cliente',
+        component: CreateClient,
+    },
+    {
         path: '/productos',
         name: 'Productos',
         component: Product,
+    },
+    {
+        path: '/crear-producto',
+        name: 'Crear producto',
+        component: CreateProduct,
     },
 ];
 

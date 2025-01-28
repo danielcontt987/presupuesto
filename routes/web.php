@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +67,11 @@ Route::get('/crear-cliente', function () {
 Route::get('/productos', function () {
     return view('home');
 })->middleware('auth.user');
+
+Route::get('/crear-producto', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Rutas
 
 Route::prefix('user')->group(function(){
@@ -92,6 +99,16 @@ Route::prefix('module')->group(function(){
 Route::prefix('module')->group(function(){
     Route::post('/store', [ModuleController::class, 'store']);
     Route::post('/update', [ModuleController::class, 'update']);
+});
+
+Route::prefix('category')->group(function(){
+    Route::post('/store', [CategoryController::class, 'store']);
+    Route::post('/list', [CategoryController::class, 'list']);
+});
+
+Route::prefix('product')->group(function(){
+    Route::post('/store', [ProductController::class, 'store']);
+    Route::post('/list', [ProductController::class, 'list']);
 });
 
 Route::get('/print-ticket', [ModuleController::class, 'print'])->name('print.ticket');

@@ -23,5 +23,13 @@ class Product extends Model
         'iva',
         'business_id',
         'user_id',
+        'weight',
+        'type',
+        'category_id',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

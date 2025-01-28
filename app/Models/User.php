@@ -50,6 +50,16 @@ class User extends Authenticatable
         return 0;
     }
 
+    public function getArea()
+    {
+        $areaUser = AreaUser::where('user_id', $this->id)->with('area')->first();
+        if ($areaUser) {
+            return $areaUser->area->id;
+        }
+
+        return 0;
+    }
+
     public function getPermission()
     {
         $areauser = AreaUser::where('user_id', $this->id)

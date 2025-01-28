@@ -92,3 +92,9 @@
       </v-card-actions>
     </template>
   </card-base>
+
+
+
+  sacar precio
+
+  ((peso * precio) * cantidad)

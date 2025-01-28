@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col cols="12">
+        <!-- <v-col cols="12">
             <v-card class="rounded-lg" flat>
                 <v-card-title>
                     <v-row>
@@ -37,15 +37,14 @@
                             />
                         </v-col>
                         <v-col cols="12" md="2">
-                            <v-btn size="x-large" block color="primary">
+                            <v-btn size="x-large" class="rounded-lg" flat block color="primary" @click="consultArea()">
                                 Filtrar
                             </v-btn>
                         </v-col>
-                        <v-col cols="12"> </v-col>
                     </v-row>
                 </v-card-text>
             </v-card>
-        </v-col>
+        </v-col> -->
         <v-col cols="12">
             <v-card class="rounded-lg" flat>
                 <v-card-title>
@@ -56,7 +55,7 @@
                                 class="text-primary rounded-lg pa-5 font-weight-bold text-uppercase"
                                 label
                             >
-                                Áreas de la empresa registrada
+                                Áreas registradas
                             </v-chip>
                         </v-col>
                     </v-row>
@@ -144,6 +143,14 @@ const dateType = ref('start');
 const startDate = ref(null);
 const endDate = ref(null);
 const tempDate = ref(null);
+
+const consultArea = () => {
+    let params = {
+        startDate: startDate,
+        endDate: endDate,
+    };
+    areaStore.getArea(params);
+};
 
 const acceptDate = () => {
     if (dateType.value === 'start') {

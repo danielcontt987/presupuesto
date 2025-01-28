@@ -23,7 +23,6 @@
                 </small>
             </div>
         </v-toolbar-title>
-
         <v-btn color="white" icon>
             <v-icon>mdi-account</v-icon>
             <v-menu activator="parent">
