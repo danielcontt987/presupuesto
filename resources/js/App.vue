@@ -10,5 +10,7 @@
 </script>
 
 <style>
-
+    .text-transform {
+        text-transform: uppercase;
+    }
 </style>

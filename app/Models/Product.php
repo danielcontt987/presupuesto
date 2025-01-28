@@ -32,4 +32,9 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function inventoryDetail()
+    {
+        return $this->hasOne(InventoryDetail::class, 'product_id', 'id');
+    }
 }

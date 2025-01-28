@@ -73,7 +73,7 @@ class Product extends Microservice
 
     public static function list($businessId)
     {
-        $products = ModelsProduct::with('category')->where('business_id', $businessId)->get();
+        $products = ModelsProduct::with('category')->with('inventoryDetail')->where('business_id', $businessId)->get();
         return $products;
     }
 }

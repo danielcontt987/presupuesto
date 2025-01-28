@@ -38,43 +38,43 @@
                     <v-card-text class="my-2">
                         <v-text-field v-model="search" label="Buscar" variant="outlined" class="mx-3" />
                         <v-row class="mx-0">
-                            <v-col cols="12" md="4">
+                            <v-col cols="12" md="4" v-for="product in products" :key="product.id">
                                 <v-card elevation="0" variant="outlined" color="primary">
                                     <v-card-text>
                                         <v-row>
                                             <v-col cols="12" md="6">
                                                 <v-chip color="fail" variant="tonal" class="rounded-lg">Folio:
-                                                    2569</v-chip>
+                                                    {{product.folio}}</v-chip>
                                             </v-col>
                                             <v-spacer></v-spacer>
                                             <v-col cols="12" md="6">
-                                                <h5 class="text-primary text-right">CREADO: 11/05/2020</h5>
+                                                <h5 class="text-primary text-right">CREADO:  {{ $formatDate(product.created_at) }}</h5>
                                             </v-col>
                                         </v-row>
                                         <v-row>
                                             <v-col cols="12" md="6">
                                                 <p>ARTÍCULO</p>
-                                                <h4 class="text-primary">PERA VERDE</h4>
+                                                <h4 class="text-primary text-transform">{{product.name}}</h4>
                                             </v-col>
                                             <v-col cols="12" md="6" class="text-right">
                                                 <p>EXISTENCIAS</p>
-                                                <p class="text-fail">0</p>
+                                                <p class="text-fail">{{ product.inventory_detail.stock }}</p>
                                             </v-col>
                                             <v-col cols="12">
                                                 <p>PRECIO</p>
-                                                <h4 class="text-primary">$15.09 MXN</h4>
+                                                <h4 class="text-success">{{currency(product.price_sale) }}</h4>
                                             </v-col>
                                             <v-col cols="12">
-                                                <p>MARCA / MODELO</p>
-                                                <h4 class="text-primary">$15.09 MXN</h4>
+                                                <p>CATEGORÍAS</p>
+                                                <h4 class="text-primary text-transform">{{product.category.name}}</h4>
                                             </v-col>
                                             <v-col cols="12">
                                                 <p>DESCRICIÓN DEL PRODUCTO</p>
-                                                <h4 class="text-primary">PERA VERDE DE TEMPORADA</h4>
+                                                <h4 class="text-primary text-transform">{{product.description}}</h4>
                                             </v-col>
                                             <v-col cols="12" md="6">
-                                                <p>PRECIO CON IVA</p>
-                                                <h4 class="text-primary">$17.50 MXN</h4>
+                                                <p>CODIGO DE BARRAS</p>
+                                                <h4 class="text-fail">{{product.barcode}}</h4>
                                             </v-col>
                                             <v-col cols="12" md="6" class="text-right">
                                                 <p>ALMACÉN</p>
@@ -111,7 +111,9 @@
 import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useProductStore } from '../../pinia/product';
+import accounting from 'accounting';
 import BackButton from '../../components/global/BackButton.vue';
+
 const productStore = useProductStore();
 
 
@@ -128,6 +130,16 @@ const goToBack = () => {
     router.push('/inicio')
 }
 
+// const formatCurrency = (value) => {
+//     return accounting.formatMoney(value);
+// }
+
+const currency = (value) => {
+    if (value >= 0) return accounting.formatMoney(value);
+    else if (!!value) return accounting.formatMoney(Math.abs(value));
+    else return accounting.formatMoney(0, "- $ ");
+}
+
 const createProduct = () =>{
     router.push('/crear-producto')
 }
@@ -139,5 +151,13 @@ const size = computed(() => !display.mdAndUp.value);
 
 onMounted( () =>{
   productStore.listProducts();
-})
+  console.log("Productos", productStore.products);
+});
+
+const products = computed(() => {
+    // const startIndex = (page.value - 1) * itemsPerPage.value;
+    // const endIndex = startIndex + itemsPerPage.value;
+    // return areasStore.areas.slice(startIndex, endIndex);
+    return productStore.products;
+});
 </script>

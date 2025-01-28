@@ -8,6 +8,8 @@ import * as directives from 'vuetify/directives';
 import router from './router/index.js';
 import { es } from "vuetify/locale";
 import moment from 'moment';
+import accounting from 'accounting';
+
 
 //Pinia
 import { createPinia } from 'pinia';
@@ -143,9 +145,16 @@ app.use(vuetify,{
   },
 });
 
+app.config.globalProperties.$formatDate = (value) => {
+  return moment(value)
+    .format("DD/MM/YYYY")
+    .toUpperCase()
+    .replace(".", "");
+};
+
 app.config.globalProperties.$formatDatetime = (value) => {
   return moment(value)
-    .format("DD/MMM/YYYY h:mm A")
+    .format("DD/MM/YYYY h:mm A")
     .toUpperCase()
     .replace(".", "");
 };

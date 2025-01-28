@@ -2,9 +2,10 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 
-export const useProductStore = defineStore('area', {
+export const useProductStore = defineStore('product', {
     state: () => ({
-        openModal: false
+        openModal: false,
+        products: [],
     }),
     actions: {
         storeProduct(payload){
@@ -19,7 +20,8 @@ export const useProductStore = defineStore('area', {
 
         listProducts(){
             return new Promise((resolve, reject) => {
-                axios.post("product/list").then((response) => {
+                axios.post("product/list").then((response) => {                    
+                    this.products = response.data.products;
                     resolve(response);
                 }).catch((error) => {
                     reject(error)

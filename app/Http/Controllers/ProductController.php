@@ -28,13 +28,13 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $business_id = Auth::user()->getBusiness();
-            return Product::list($business_id);
+            $products = Product::list($business_id);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['status' => 500, "error" => $e->getMessage()], 500);
         }
 
         DB::commit();
-        return response()->json(["status" => "201"]);
+        return response()->json(["status" => "201", "products" => $products]);
     }
 }
