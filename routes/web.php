@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\CashCutController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleBoxController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -109,6 +111,16 @@ Route::prefix('category')->group(function(){
 Route::prefix('product')->group(function(){
     Route::post('/store', [ProductController::class, 'store']);
     Route::post('/list', [ProductController::class, 'list']);
+});
+
+Route::prefix('salebox')->group(function(){
+    Route::post('/list', [SaleBoxController::class, 'list']);
+    Route::post('/store', [SaleBoxController::class, 'store']);
+});
+
+Route::prefix('cashcut')->group(function(){
+    Route::post('/get', [CashCutController::class, 'get']);
+    Route::post('/store', [CashCutController::class, 'store']);
 });
 
 Route::get('/print-ticket', [ModuleController::class, 'print'])->name('print.ticket');

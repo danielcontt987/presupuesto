@@ -7,9 +7,7 @@ export const usePointsaleStore = defineStore('pointsale', {
         products: [],
     }),
     actions: {
-        addProducts(payload){
-            console.log(payload);
-            
+        addProducts(payload){            
             this.products.push(payload);
         },
 

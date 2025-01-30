@@ -18,16 +18,21 @@ export const useProductStore = defineStore('product', {
             })
         },
 
-        listProducts(){
+        listProducts() {
             return new Promise((resolve, reject) => {
-                axios.post("product/list").then((response) => {                    
-                    this.products = response.data.products;
-                    resolve(response);
-                }).catch((error) => {
-                    reject(error)
-                })
-            })
-        },
+                axios.post("product/list")
+                    .then((response) => {
+                        this.products = response.data.products.map(product => ({
+                            ...product,
+                            quantity: 1
+                        }));
+                        resolve(response);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        },        
 
         listCategory(){
             return new Promise((resolve, reject) => {

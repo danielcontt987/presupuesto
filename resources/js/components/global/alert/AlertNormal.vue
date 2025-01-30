@@ -3,9 +3,14 @@
         <v-dialog persistent max-width="550" v-model="alertNormal.show">
             <v-card class="rounded-lg ma-0" rounded="7">
                 <v-card-title class="text-center">
-                    <v-row>
+                    <v-row v-if="alertNormal.type == 0">
                         <v-col cols="12" class="text-center mb-2 mt-4">
                             <Check/> 
+                        </v-col>
+                    </v-row>
+                    <v-row v-if="alertNormal.type == 1">
+                        <v-col cols="12" class="text-center mb-2 mt-4">
+                            <Close/> 
                         </v-col>
                     </v-row>
                 </v-card-title>
@@ -26,7 +31,7 @@
                 >
                     <span v-html="alertNormal.msg"></span>
                 </v-card-text>
-                <v-card-actions class="mb-3" v-if="alertNormal.type == 0">
+                <v-card-actions class="mb-3">
                     <v-row class="mx-0">
                         <v-col class="text-center">
                             <v-btn
@@ -49,6 +54,7 @@
 <script setup>
 import { useAlertNormalStore } from "../../../pinia/alert.js";
 import Check from "../../icons/Check.vue";
+import Close from "../../icons/Close.vue";
 const alertNormal = useAlertNormalStore();
 
 const closeModal = () => {

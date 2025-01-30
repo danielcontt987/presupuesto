@@ -105,7 +105,7 @@ const permissions_arr = ref([
     {
         name: 'Punto de venta',
         route: '/punto-de-venta',
-        icon: 'mdi-file-outline',
+        icon: 'mdi-point-of-sale',
         visibility: false,
     },
     {

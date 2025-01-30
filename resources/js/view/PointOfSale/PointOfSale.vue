@@ -1,9 +1,9 @@
 <template>
     <v-container fluid>
-        <v-row>
+        <v-row v-if="infoCashCut != null">
             <v-col cols="6">
-               <p class="text-primary"><b>Nombre:</b></p>
-               <p class="text-primary"><b>Caja:</b></p>
+               <p><b class="text-primary">Nombre: </b>{{infoCashCut.user.name + " " + infoCashCut.user.lastname}}</p>
+               <p><b class="text-primary">Caja:</b> {{infoCashCut.salebox.name}} </p>
             </v-col>
             <v-col cols="6" class="text-right">
                <p class="text-primary"><b>Última cotización:</b></p>
@@ -55,16 +55,17 @@
                         />
                     </template>
                     <template v-slot:item.subtotal="{ item }">
-                        {{ parseFloat(item.quantity) * parseFloat(item.price_sale) }}
+                        {{ currency(parseFloat(item.quantity) * parseFloat(item.price_sale)) }}
                     </template>
                     <template v-slot:item.total="{ item }">
-                        {{ parseFloat(item.quantity) * parseFloat(item.price_sale)}}
+                        {{  currency(parseFloat(item.quantity) * parseFloat(item.price_sale))}}
                     </template>
                     <template v-slot:item.actions="{ item }">
                         <v-btn
                             icon
                             class="rounded-lg"
                             color="error"
+                            flat
                             @click="pointsaleStore.removeProducts(item)"
                             
                         >
@@ -75,87 +76,68 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="12" md="8">
+            <v-col cols="12" md="7" lg="8">
                 <v-row>
-                    <v-col cols="6">
-                        <v-card color="grey_dark" class="my-0 rounded-lg">
-                            <v-card-text class="white--text d-flex justify-center align-center flex-column">
-                                    <v-icon size="50" color="white">
-                                        {{ "mdi-percent" }}
-                                    </v-icon>
-                                    <h4 class="mt-3 text-uppercase colorText">
-                                        {{ "Aplicar descuento" }}
-                                    </h4>
-                            </v-card-text>
-                        </v-card>
+                    <v-col cols="6" class="pb-0">
+                        <card-grid color="grey" icon="mdi mdi-percent" text="Aplicar descuento" />
+                    </v-col>
+                    <v-col cols="6" class="pb-0">
+                        <card-grid color="fail" icon="mdi-close" text="Cancelar venta" @click="cancelDialog()" />
                     </v-col>
                     <v-col cols="6">
-                        <v-card color="fail" class="my-0 rounded-lg">
-                            <v-card-text class="white--text d-flex justify-center align-center flex-column">
-                                    <v-icon size="50" color="white">
-                                        {{ "mdi-close" }}
-                                    </v-icon>
-                                    <h4 class="mt-3 text-uppercase colorText">
-                                        {{ "Cancelar cotización" }}
-                                    </h4>
-                            </v-card-text>
-                        </v-card>
+                        <card-grid color="greenLight" icon="mdi-more" text="Más opciones" />
                     </v-col>
                     <v-col cols="6">
-                        <v-card color="greenLight" class="my-0 rounded-lg">
-                            <v-card-text class="white--text d-flex justify-center align-center flex-column">
-                                    <v-icon size="50" color="white">
-                                        {{ "mdi-more" }}
-                                    </v-icon>
-                                    <h4 class="mt-3 text-uppercase text-white">
-                                        {{ "Más opciones" }}
-                                    </h4>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
-                    <v-col cols="6">
-                        <v-card color="success" class="my-0 rounded-lg">
-                            <v-card-text class="white--text d-flex justify-center align-center flex-column">
-                                    <v-icon size="50" color="white">
-                                        {{ "mdi-cash-register" }}
-                                    </v-icon>
-                                    <h4 class="mt-3 text-uppercase colorText">
-                                        {{ "Cotizar precios" }}
-                                    </h4>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
-                </v-row>    
-            </v-col>
-            <v-col cols="12" md="4">
-                <v-row height="100%" width="100%">
-                    <v-col cols="12">
-                        <v-card color="primary" class="my-0 rounded-lg">
-                            <v-card-text class="white--text">
-                                
-                            </v-card-text>
-                        </v-card>
+                        <card-grid color="success" icon="mdi mdi-cash-register" text="Cobrar venta"
+                             />
                     </v-col>
                 </v-row>
+            </v-col>
+            <v-col cols="12" md="5" lg="4">
+                <card-info-sale :products-count="totalProducts" :subtotal="subtotal" :iva="iva" :total="total" />
+            </v-col>
+            <v-col cols="12" style="overflow-y: hidden; !important">
+                <dialog-open-box :saleboxes="saleboxStore.saleboxes" v-if="dialogData"/>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 import {useProductStore} from '../../pinia/product';
 import {usePointsaleStore} from '../../pinia/pointsale';
+import { useSaleboxStore } from '../../pinia/salebox';
+import { useCashCutStore } from '../../pinia/cashcut';
+import CardGrid from '../../components/PointSale/Cards/CardGrid.vue';
+import CardInfoSale from '../../components/PointSale/Cards/CardInfoSale.vue';
+import DialogOpenBox from '../../components/PointSale/dialogs/DialogOpenBox.vue';
+import accounting from 'accounting';
+
 const productStore = useProductStore();
 const pointsaleStore = usePointsaleStore();
+const saleboxStore = useSaleboxStore();
+const cashCutStore = useCashCutStore();
 
 onMounted(() => {
     productStore.listProducts();
+    saleboxStore.listSaleboxes();
+    cashCutStore.listCashcuts().then((res) => {
+        if (res.data.cashcuts == null) {
+            dialogData.value = true;
+        } else {
+            infoCashCut.value = res.data.cashcuts;
+            dialogData.value = false;
+
+        }
+    });
 });
 
 
 const product = ref(null);
+const dialogData = ref(false);
+const infoCashCut = ref(null);
 
 
 const headers = ref(
@@ -178,4 +160,22 @@ const currency = (value) => {
     else if (!!value) return accounting.formatMoney(Math.abs(value));
     else return accounting.formatMoney(0, "- $ ");
 }
+
+const totalProducts = computed(() => {
+    return pointsaleStore.products.length;
+});
+
+const total = computed(() => {
+    return pointsaleStore.products.reduce((acc, item) => {
+        return acc + (parseFloat(item.quantity) * parseFloat(item.price_sale));
+    }, 0);
+});
+
+const iva = computed(() => {
+    return total.value * 0.16;
+});
+
+const subtotal = computed(() => {
+    return total.value - iva.value;
+});
 </script>
