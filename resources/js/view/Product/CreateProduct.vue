@@ -138,6 +138,7 @@ const createProduct = () => {
         alertStore.show = true;
         alertStore.color = "success";
         alertStore.msg = "Se ha creado un nuevo producto correctamente";
+        navigateToHome();
     }).catch((error) => {
         alertStore.show = true;
         alertStore.color = "error";

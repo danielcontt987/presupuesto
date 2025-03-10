@@ -151,7 +151,6 @@ const size = computed(() => !display.mdAndUp.value);
 
 onMounted( () =>{
   productStore.listProducts();
-  console.log("Productos", productStore.products);
 });
 
 const products = computed(() => {

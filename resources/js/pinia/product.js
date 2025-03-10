@@ -32,7 +32,26 @@ export const useProductStore = defineStore('product', {
                         reject(error);
                     });
             });
-        },        
+        },     
+        
+        consultProducts(payload) {
+
+            return new Promise((resolve, reject) => {
+                axios.post("product/search", payload)
+                    .then((response) => {
+                        if(response.data.products.length > 0){
+                            this.products = response.data.products.map(product => ({
+                                ...product,
+                                quantity: 1
+                            }));
+                            resolve(response);
+                        }
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        },     
 
         listCategory(){
             return new Promise((resolve, reject) => {

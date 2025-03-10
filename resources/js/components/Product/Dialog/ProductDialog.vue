@@ -56,7 +56,6 @@ const createCategory = () => {
     }
     productStore.storeCategory(params).then((response) => {
         productStore.listCategory();
-        console.log(response);
         alertStore.show = true;
         (alertStore.color = "success"),
         (alertStore.msg = "Se han creado una nueva categoría"),

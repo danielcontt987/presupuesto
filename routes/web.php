@@ -4,6 +4,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CashCutController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\PointSaleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleBoxController;
 use App\Http\Controllers\SettingController;
@@ -80,47 +81,52 @@ Route::prefix('user')->group(function(){
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/consult-user', [UserController::class, 'consultUser']);
     Route::post('/logout', [UserController::class, 'logout']);
-});
+})->middleware('auth.user');
 
 Route::prefix('setting')->group(function(){
     Route::post('/get', [SettingController::class, 'get']);
     Route::post('/update-part-1', [SettingController::class, 'updateInfo']);
-});
+})->middleware('auth.user');
 
 Route::prefix('area')->group(function(){
     Route::post('/get', [AreaController::class, 'get']);
     Route::post('/consult-info', [AreaController::class, 'consultAreadetails']);
     Route::post('/store-permission', [AreaController::class, 'storePermission']);
 
-});
+})->middleware('auth.user');
 
 Route::prefix('module')->group(function(){
     Route::post('/list', [ModuleController::class, 'list']);
-});
+})->middleware('auth.user');
 
 Route::prefix('module')->group(function(){
     Route::post('/store', [ModuleController::class, 'store']);
     Route::post('/update', [ModuleController::class, 'update']);
-});
+})->middleware('auth.user');
 
 Route::prefix('category')->group(function(){
     Route::post('/store', [CategoryController::class, 'store']);
     Route::post('/list', [CategoryController::class, 'list']);
-});
+})->middleware('auth.user');
 
 Route::prefix('product')->group(function(){
     Route::post('/store', [ProductController::class, 'store']);
     Route::post('/list', [ProductController::class, 'list']);
-});
+    Route::post('/search', [ProductController::class, 'search']);
+})->middleware('auth.user');
 
 Route::prefix('salebox')->group(function(){
     Route::post('/list', [SaleBoxController::class, 'list']);
     Route::post('/store', [SaleBoxController::class, 'store']);
-});
+})->middleware('auth.user');
 
 Route::prefix('cashcut')->group(function(){
     Route::post('/get', [CashCutController::class, 'get']);
     Route::post('/store', [CashCutController::class, 'store']);
-});
+})->middleware('auth.user');
 
-Route::get('/print-ticket', [ModuleController::class, 'print'])->name('print.ticket');
+Route::prefix('sale')->group(function(){
+    Route::post('/store', [PointSaleController::class, 'store']);
+})->middleware('auth');
+
+Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print'])->name('print.ticket')->middleware('auth');;

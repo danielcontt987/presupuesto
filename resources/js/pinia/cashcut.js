@@ -12,7 +12,7 @@ export const useCashCutStore = defineStore('cashcut', {
             return new Promise((resolve, reject) => {
                 axios.post("cashcut/get", payload).then((response) => {
                     this.cashcuts = response.data.cashcuts;
-                    if (this.cashcuts.length > 0) {
+                    if (!!this.cashcuts) {
                         this.openDialogCashCut = false;
                     }else{
                         this.openDialogCashCut = true;

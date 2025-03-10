@@ -13,14 +13,14 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            return Product::store($request);
+            $products = Product::store($request);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['status' => 500, "error" => $e->getMessage()], 500);
         }
 
         DB::commit();
-        return response()->json(["status" => "201"]);
+        return response()->json(["status" => "201", "products" => $products]);
     }
 
     public function list() 
@@ -29,6 +29,22 @@ class ProductController extends Controller
         try {
             $business_id = Auth::user()->getBusiness();
             $products = Product::list($business_id);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 500, "error" => $e->getMessage()], 500);
+        }
+
+        DB::commit();
+        return response()->json(["status" => "201", "products" => $products]);
+    }
+
+    public function search(Request $request) 
+    {
+        $search = $request->input('search');
+        DB::beginTransaction();
+        try {
+            $business_id = Auth::user()->getBusiness();
+            $products = Product::search($business_id, $search);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['status' => 500, "error" => $e->getMessage()], 500);

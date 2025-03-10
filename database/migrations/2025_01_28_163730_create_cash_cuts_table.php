@@ -21,10 +21,10 @@ return new class extends Migration
             $table->decimal('little_box', 10, 2);
             $table->text('observations')->nullable();
             $table->dateTime('date_opening');
-            $table->dateTime('date_cute');
+            $table->dateTime('date_cute')->nullable();
             $table->string('folio');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

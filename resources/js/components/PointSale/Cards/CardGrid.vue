@@ -1,5 +1,5 @@
 <template>
-    <v-card :color="color" :class="padding" flat @click="$emit('click')" class="my-0 rounded-lg">
+    <v-card :color="color" :class="padding" flat @click="handleClick" class="my-0 rounded-lg">
         <v-card-text class="white--text d-flex justify-center align-center flex-column">
             <v-icon size="50" color="white">
                 {{ icon }}
@@ -34,6 +34,12 @@ export default {
     computed: {
         padding() {
             if (this.isBigger) return "py-8";
+        },
+    },
+
+    methods: {
+        handleClick() {
+            this.$emit("click");
         },
     },
 }

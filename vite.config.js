@@ -5,7 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
     server: {
-      host: '192.168.1.3'
+      host: '192.168.1.12'
     },
     scripts: { "dev": "vite", "build": "vite build" },
     define: {

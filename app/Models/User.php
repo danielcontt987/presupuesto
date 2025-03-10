@@ -74,6 +74,11 @@ class User extends Authenticatable
         }
         return 0;
     }
+
+    public function fullName()
+    {
+        return $this->name . ' ' . $this->lastname;
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
