@@ -122,6 +122,18 @@ const ProductTypes = ref([
     {
         text: "Caja",
         value: "box"
+    },
+    {
+        text: "Mixto",
+        value: "mixto"
+    },
+    {
+        text: "Kit",
+        value: "kit"
+    },
+    {
+        text: "Litro",
+        value: "liter"
     }
 ])
 

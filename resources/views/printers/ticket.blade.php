@@ -103,6 +103,11 @@
             margin-bottom: 20px;
             
         }
+
+        /* Asegurar que el contenido de la 2da página tenga margen correcto */
+        .page-break {
+            page-break-before: always;
+        }
     </style>
 </head>
 <header class="text">
@@ -112,7 +117,6 @@
 <body>
     <section class="title" style="margin-bottom: 50px;">
         <span class="h1">Presupuesto</span>
-        <p class="h1-not-bold">Cliente: <span class="p"><b>Jose Daniel Contreras Perez</b></span></p>
         <p class="h1-not-bold">Fecha: <span class="p"><b>{{ $date }}</b></span></p>
         <p class="h1-not-bold">Usuario: <span class="p"><b>{{ $user }}</b></span></p>
         <p class="h1-not-bold">Folio: <span class="p"><b>{{ $folio }}</b></span></p>
@@ -128,23 +132,54 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($saleDetails as $item)
-                    <tr>
-                        <td>{{ $item->product->name }}</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>${{ number_format($item->total, 2) }}</td>
-                        <td>${{ number_format($item->total * $item->quantity, 2) }}</td>
-                    </tr>
+                @php
+                    $chunks = $saleDetails->chunk(15); // Divide en grupos de 15 filas
+                    $totalChunks = $chunks->count(); // Cuenta cuántas páginas habrá
+                    $currentChunk = 1; // Para rastrear en qué "página" estamos
+                @endphp
+    
+                @foreach ($chunks as $saleChunk)
+                    @foreach ($saleChunk as $item)
+                        <tr>
+                            <td>{{ $item->product->name }}</td>
+                            <td>
+                                {{ $item->quantity }} 
+                                @switch($item->product->type)
+                                    @case('piece') {{ $item->quantity > 1 ? 'Piezas' : 'Pieza' }} @break
+                                    @case('meter') {{ $item->quantity > 1 ? 'Metros' : 'Metro' }} @break
+                                    @case('kilogram') {{ $item->quantity > 1 ? 'Kilogramos' : 'Kilogramo' }} @break
+                                    @case('liter') {{ $item->quantity > 1 ? 'Litros' : 'Litro' }} @break
+                                    @case('cube') {{ $item->quantity > 1 ? 'Cubetas' : 'Cubeta' }} @break
+                                    @case('kit') {{ $item->quantity > 1 ? 'Kits' : 'Kit' }} @break
+                                    @default Mixto
+                                @endswitch
+                            </td>
+                            <td>${{ number_format($item->total, 2) }}</td>
+                            <td>${{ number_format($item->total * $item->quantity, 2) }}</td>
+                        </tr>
+                    @endforeach
+    
+                    {{-- Si es la última página, coloca el total aquí en vez de en otra hoja --}}
+                    @if ($currentChunk == $totalChunks)
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td><strong>$ {{ number_format($sale->total, 2) }}</strong></td>
+                        </tr>
+                    @endif
+    
+                    {{-- Agrega el salto de página solo si NO es la última página --}}
+                    @if ($currentChunk < $totalChunks)
+                        <tr class="page-break"></tr>
+                    @endif
+    
+                    @php $currentChunk++; @endphp
                 @endforeach
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td>Total</td>
-                    <td>$ {{number_format($sale->total, 2)}}</td>
-                </tr>
             </tbody>
         </table>
     </section>
+        
     <footer style="position: fixed; bottom: 0; width: 100%; text-align: center;">
         <p class="text">Gracias por su preferencia</p>
     </footer>

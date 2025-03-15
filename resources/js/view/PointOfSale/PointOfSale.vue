@@ -46,7 +46,7 @@
                     <v-data-table
                         class="rounded-lg"
                         :headers="headers"
-                        :items="pointsaleStore.products">
+                        :items="pagedProducts">
                         <template v-slot:item.quantity="{ item }">
                             <v-text-field
                                 v-model="item.quantity"
@@ -86,6 +86,9 @@
                             </v-btn>
                         </template>
                     </v-data-table>
+                    <div class="text-center pt-2">
+                        <v-pagination v-model="page" :length="pageCount" size="small" color="primary"></v-pagination>
+                    </div>
                 </div>
             </v-col>
         </v-row>
@@ -166,6 +169,8 @@ const dialogData = ref(false);
 const infoCashCut = ref(null);
 const search = ref(null);
 const isProcessing = ref(false);
+const page = ref(1);
+const itemsPerPage = ref(5);
 
 
 const headers = ref(
@@ -250,4 +255,14 @@ const iva = computed(() => {
 const subtotal = computed(() => {
     return total.value - iva.value;
 });
+
+const pagedProducts = computed(() => {
+    const startIndex = (page.value - 1) * itemsPerPage.value;
+    const endIndex = startIndex + itemsPerPage.value;
+    return pointsaleStore.products.slice(startIndex, endIndex);
+});
+
+// **Cálculo del total de páginas**
+const pageCount = computed(() => Math.ceil(pointsaleStore.products.length / itemsPerPage.value));
+
 </script>
