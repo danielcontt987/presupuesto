@@ -20,12 +20,12 @@
             <v-card-actions class="mx-3">
                 <v-row>
                     <v-col cols="12" md="6">
-                        <v-btn size="large" class="rounded-lg" large text depressed block color="error" @click="closeModal()">
+                        <v-btn :loading="productStore.loading" size="large" class="rounded-lg" large text depressed block color="error" @click="closeModal()">
                             Cerrar
                         </v-btn>
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-btn large size="large" block class="rounded-lg bg-primary" depressed @click="createCategory()">
+                        <v-btn :loading="productStore.loading" large size="large" block class="rounded-lg bg-primary" depressed @click="createCategory()">
                             Guardar
                         </v-btn>
                     </v-col>
@@ -51,6 +51,7 @@ const closeModal = () => {
 }
 
 const createCategory = () => {
+    productStore.loading = true;
     let params = {
         name: category.value
     }
@@ -62,8 +63,9 @@ const createCategory = () => {
         (alertStore.type = 0),
         closeModal();
     }).catch((error) => {
-        console.log(error);
         
+    }).finally(() => {
+        productStore.loading = false;
     })
 }
 

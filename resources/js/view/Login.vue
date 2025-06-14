@@ -6,7 +6,7 @@
 
     >
         <v-row align="center" justify="center">
-            <v-col cols="12" md="5">
+            <v-col cols="12" md="6">
                 <v-card
                     class="elevation-0 pa-3  mx-auto rounded-lg"
                     max-width="500px"
@@ -53,7 +53,7 @@
                                 </v-col>
                                 <v-col cols="12" class="pt-5">
                                     <v-btn
-                                        color="secondary"
+                                        color="primary"
                                         flat
                                         size="large"
                                         block
@@ -66,7 +66,7 @@
                                 </v-col>
                                 <v-col cols="12" class="pt-5">
                                     <v-btn
-                                        color="secondary"
+                                        color="primary"
                                         flat
                                         size="large"
                                         block
@@ -97,9 +97,9 @@
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="7" v-if="mdAndUp == true" class="overflow-hidden bg-lightprimary">
+            <v-col cols="12" md="6" v-if="mdAndUp == true" class="overflow-hidden bg-lightprimary">
                 <v-img
-                    src="../img/fondo.png"
+                    src="https://software.tidingo.com/images/login_picture.jpg"
                     height="100vh"
                     class="elevation-6 bg-lightprimary"
                     style="width: 100%;"
@@ -114,7 +114,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 import { useAlertNormalStore } from "../pinia/alert.js";
 import { useUserStore } from "../pinia/user.js";
@@ -165,7 +164,6 @@ const login = () => {
             window.location.href = "/inicio";
         })
         .catch((err) => {
-            console.log(err);
             alertNormal.show = true;
             (alertNormal.color = "fail"),
                 (alertNormal.msg =

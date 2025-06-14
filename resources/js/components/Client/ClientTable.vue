@@ -89,11 +89,9 @@ const headers = [
 ];
 
 const editClient = item => {
-    console.log(item.name);
 }
 
 const deleteClient = item => {
-    console.log(item);
 }
 
 const createClient = () => {

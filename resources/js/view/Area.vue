@@ -26,7 +26,7 @@
 
 <script setup>
 import VcBackButton from "../components/global/BackButton.vue";
-import CardArea from "../components/area/CardArea.vue";
+import CardArea from "../components/Areas/CardArea.vue";
 import { onMounted } from "vue";
 import { useAreaStore } from "../pinia/area.js";
 import { useRouter } from "vue-router";

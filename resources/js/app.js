@@ -18,7 +18,8 @@ import { createPinia } from 'pinia';
 const customLightTheme = {
   colors: {
     // primary: "#001F4A",
-    primary: "#1b40a8",
+    // primary: "#1b40a8",
+    primary: "#192a67",
     secondary: "#3E47A3",
     blueSky: '#ecf2ff',
     background: "#EFF3F8",

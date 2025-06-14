@@ -162,7 +162,6 @@ const acceptDate = () => {
 };
 
 const show = (type) => {
-    console.log(type);
     dateType.value = type;
     if (dateType.value == "start") {
         startDate.value
