@@ -1,6 +1,6 @@
 <template>
-    <v-dialog v-model="moduleStore.showEdit" width="500" persistent>
-        <v-card class="my-0 pb-2 rounded-lg" style="overflow: hidden: !important;">
+    <v-dialog v-model="moduleStore.showEdit" width="500" persistent v-if="moduleStore.moduleEdit != null">
+        <v-card class="my-0 pb-2 rounded-lg overflow-hidden">
             <v-card-title>
                 <v-row class="mx-0">
                     <v-col cols="12" style="padding-left: 0">
@@ -59,11 +59,18 @@
 import { useAlertNormalStore } from '../../pinia/alert.js';
 import { useErrorNormalStore } from '../../pinia/error.js';
 import { useModuleStore } from '../../pinia/module.js';
+import { ref } from "vue";
+defineProps({
+    item:{
+        type: Object,
+    }
+});
+// console.log(this.item)
+
 const alertNormal = useAlertNormalStore();
 const alertError = useErrorNormalStore();
-import { ref } from "vue";
 const moduleStore = useModuleStore();
-const name = ref(null);
+
 const editModule = ref({
     name: moduleStore.moduleEdit != null ? moduleStore.moduleEdit.name : null
 })
@@ -92,6 +99,7 @@ const udpateModule = () => {
 
 const closeModal = () =>{
     moduleStore.closeModalEdit(false)
+    moduleStore.clearModuleEdit()
 }
 </script>
 <style scoped>

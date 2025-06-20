@@ -44,7 +44,7 @@
             <v-col cols="12">
                 <div class="table-responsive">
                     <v-data-table
-                        class="rounded-lg"
+                        class="rounded-lg bg-cardColor"
                         :headers="headers"
                         :items="pagedProducts">
                         <template v-slot:item.quantity="{ item }">

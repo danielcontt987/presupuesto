@@ -7,9 +7,19 @@ export const useUserStore = defineStore("user", {
         password: '',
     }),
     actions: {
-         login(payload){
+        login(payload){
             return new Promise ((resolve, reject) => {
                 axios.post('user/login', payload).then((response) =>{
+                    resolve(response)
+                }).catch((error) => {
+                    reject(error)
+                })
+            })
+        },
+
+        loginQr(payload){
+            return new Promise ((resolve, reject) => {
+                axios.post('user/login-qr', payload).then((response) =>{
                     resolve(response)
                 }).catch((error) => {
                     reject(error)

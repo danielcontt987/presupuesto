@@ -86,10 +86,9 @@
                                         block
                                         variant="text"
                                         :loading="loading"
-                                        :disabled="!isValid"
-                                        @click="login"
+                                        @click="openDialogQr"
                                     >
-                                        Ingresar al checador
+                                        Ingresar con qr
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -107,16 +106,64 @@
                 />
             </v-col>
         </v-row>
-        <!-- <Alert /> -->
+        <v-dialog v-model="dialogQr" width="450" persistent>
+           <card-base-modal outlined>
+                <template v-slot:text>
+                    <v-card-text class="mt-3 py-2">
+                        <v-row class="mx-0">
+                            <v-col cols="12" style="padding-left: 0">
+                                <v-chip color="background" class="text-primary rounded-lg pa-6 font-weight-bold" label>
+                                    Escanner QR
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <div id="qr-reader" style="width: 100%;"></div>
+                                <div v-if="loadingQr" class="text-center my-4">
+                                <v-progress-circular indeterminate color="primary" size="50" />
+                                <div>Procesando QR...</div>
+                                </div>
+
+                                <p v-if="qrContent">✅ Resultado: <strong>{{ qrContent }}</strong></p>
+                                <p v-if="error" class="text-red">❌ Error: {{ error }}</p>
+                            </v-col>
+                        </v-row>
+                        <v-row class="my-0 py-0">
+                            <v-col cols="12">
+                                <v-btn class="rounded-lg" flat size="large" block color="primary" @click="iniciarScanner">Iniciar</v-btn>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-btn class="rounded-lg" flat size="large" block color="error" @click="detenerScanner">Detener</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </template>
+                <template v-slot:actions>
+                    <v-card-actions class="mt-3 py-2">
+                        <v-row>
+                            <v-col cols="12">
+                                <v-btn class="rounded-lg"  text depressed  flat size="large" block color="error"
+                                    @click="closeDialogQr">
+                                    Cerrar
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-card-actions>
+                </template>
+            </card-base-modal>
+        </v-dialog>
         <AlertError />
     </v-container>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import { useDisplay } from "vuetify";
 import { useAlertNormalStore } from "../pinia/alert.js";
 import { useUserStore } from "../pinia/user.js";
+import { Html5Qrcode } from 'html5-qrcode'
+import CardBaseModal from "../components/global/CardBaseModal.vue";
 
 const { mdAndUp } = useDisplay();
 const userStore = useUserStore();
@@ -128,6 +175,14 @@ const email = ref("");
 const password = ref("");
 const openDialogLogout = ref(false);
 const loading = ref(false);
+const loadingQr = ref(false);
+const dialogQr = ref(false);
+const qrContent = ref('')
+const qr = ref('')
+const error = ref('')
+let qrScanner = null
+let escaneado = false
+
 
 const emailRules = [
     (value) => {
@@ -174,6 +229,103 @@ const login = () => {
             loading.value = false;
         });
 };
+
+const loginQrAuth = (qrContent) => {
+    loading.value = true;
+    let params = {
+        qr: qrContent,
+    };
+    userStore
+        .loginQr(params)
+        .then((res) => {
+            loading.value = false;
+            window.location.href = "/inicio";
+        })
+        .catch((err) => {
+            alertNormal.show = true;
+            (alertNormal.color = "fail"),
+                (alertNormal.msg =
+                    "Las credenciales no son las correctas favor de verificar el email y la contraseña"),
+                (alertNormal.type = 0),
+                (alertNormal.icon = "mdi-close-circle-outline");
+        }).finally(() =>{
+            loading.value = false;
+        });
+};
+
+const openDialogQr = () => {
+    dialogQr.value = true;
+};
+
+const closeDialogQr = () => {
+    dialogQr.value = false;
+    qrContent.value = '',
+    error.value = ''
+    escaneado = false
+};
+
+const iniciarScanner = async () => {
+  if (qrScanner || escaneado) return
+
+  qrContent.value = ''
+  error.value = ''
+  escaneado = false
+
+  qrScanner = new Html5Qrcode("qr-reader")
+
+  try {
+    await qrScanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      async (decodedText) => {
+        if (!escaneado) {
+          escaneado = true
+          loading.value = true
+
+          try {
+            // ✅ Aquí haces tu petición con axios
+            const res = await axios.post('/user/login-qr', {
+              qr: decodedText
+            })
+
+            qrContent.value = res.data.mensaje || 'Código verificado con éxito'
+
+            loading.value = false;
+            window.location.href = "/inicio";
+
+            closeDialogQr();
+
+          } catch (e) {
+            error.value = e.response?.data?.message || 'Error al procesar el QR.'
+          } finally {
+            loading.value = false
+            detenerScanner()
+          }
+        }
+      },
+      (scanError) => {
+        console.log("Error de escaneo (ignorado):", scanError)
+      }
+    )
+  } catch (err) {
+    error.value = 'No se pudo iniciar el escáner.'
+    console.error(err)
+  }
+}
+
+
+const detenerScanner = () => {
+  if (qrScanner) {
+    qrScanner.stop().then(() => {
+      qrScanner.clear()
+      qrScanner = null
+    }).catch(err => console.error("Error al detener escáner:", err))
+  }
+}
+
+onBeforeUnmount(() => {
+  detenerScanner()
+})
 </script>
 
 <style>

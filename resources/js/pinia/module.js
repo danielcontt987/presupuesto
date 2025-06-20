@@ -65,5 +65,8 @@ export const useModuleStore = defineStore("module", {
         editModule(payload) {
             this.moduleEdit = payload;
         },
+        clearModuleEdit(){
+            this.moduleEdit = null;
+        }
     },
 });

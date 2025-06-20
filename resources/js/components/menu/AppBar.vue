@@ -23,11 +23,14 @@
                 </small>
             </div>
         </v-toolbar-title>
+         <v-btn color="white" icon @click="toggleTheme()">
+            <v-icon color="white">{{ themeName === 'customDarkTheme' ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
+        </v-btn>
         <v-btn color="white" icon>
             <v-icon>mdi-account</v-icon>
             <v-menu activator="parent">
                 <v-list>
-                    <v-list-item>
+                    <v-list-item @click="goToPerfil()">
                         <v-list-item-title>Mi perfil</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="logout()">
@@ -41,11 +44,21 @@
 
 <script setup>
 import axios from "axios";
-import { computed } from "vue";
-import { useRoute } from "vue-router";
+import { computed, onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useCustomTheme } from "@/composable/useCustomMode";
+const { toggleTheme, themeName } = useCustomTheme()
+
+const router = useRouter();
 const route = useRoute();
 const currentRouteName = computed(() => {
     return route.name;
+});
+
+onMounted(() => {
+    if (localStorage.getItem("darkMode")) {
+        darkMode.value = JSON.parse(localStorage.getItem("darkMode"));
+    }
 });
 
 const logout = () => {
@@ -53,6 +66,12 @@ const logout = () => {
         window.location.href = "/login";
     });
 };
+
+const goToPerfil = () => {
+    router.push("/mi-perfil");
+};
+
+
 </script>
 
 <style></style>

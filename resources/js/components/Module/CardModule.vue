@@ -67,7 +67,7 @@
             </v-data-table>
         </v-card-text>
         <VMModule />
-        <VMUpdate />
+        <VMUpdate v-if="moduleStore.moduleEdit != null"/>
     </v-card>
 </template>
 
@@ -105,6 +105,7 @@ const openModal = () => {
 
 
 const updateModule = (item) => {
+    
     moduleStore.showModalEdit(true);
     moduleStore.editModule(item);
 }

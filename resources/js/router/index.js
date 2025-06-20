@@ -5,7 +5,7 @@ import Admin from '../view/Admin.vue';
 import Inicio from '../view/Inicio.vue';
 import Ajustes from '../view/Setting.vue';
 import Area from '../view/Area.vue';
-import AreaDetails from '../view/Areas/AreaDetails.vue';
+import AreaDetails from '../view/AreaDetail/AreaDetails.vue';
 import CreateModule from '../view/Module/CreateModule.vue';
 import PointOfSale from '../view/PointOfSale/PointOfSale.vue';
 import Client from '../view/Client/Client.vue';
@@ -78,6 +78,17 @@ const routes = [
         name: 'Crear producto',
         component: CreateProduct,
     },
+    // {
+    //     path: '/:pathMatch(.*)*',
+    //     name: '404',
+    //     component: () => import('../view/404.vue'),
+    // }
+
+    {
+        path: '/mi-perfil',
+        name: 'Mi perfil',
+        component: () => import('../view/Profile/Profile.vue'),
+    }
 ];
 
 const router = createRouter({

@@ -25,6 +25,7 @@ class SettingController extends Controller
             'telephone1' => $request->input('cellphone1'),
             'telephone2' => $request->input('cellphone2'),
             'whatsapp' => $request->input('whatsapp'),
+            'email_company' => $request->input('email_company'),
         ]);
 
         return response()->json(['business' => $business], 200);

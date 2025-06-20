@@ -17,9 +17,13 @@ import { createPinia } from 'pinia';
 
 const customLightTheme = {
   colors: {
-    // primary: "#001F4A",
-    // primary: "#1b40a8",
+    cardColor: "#FFFFFF",
     primary: "#192a67",
+    primaryBg: "#192a67",
+    colorChip: "#192a67",
+    colorText: "#192a67",
+
+
     secondary: "#3E47A3",
     blueSky: '#ecf2ff',
     background: "#EFF3F8",
@@ -43,7 +47,7 @@ const customLightTheme = {
     titleCard: "#14006E",
     chipCard: "#ecf2ff",
     warning: "#FBC02D",
-
+    greyDark: "#afafaf"
     
     /*
     primary_dark: '#051942',
@@ -78,10 +82,19 @@ const customLightTheme = {
   },
 };
 const customDarkTheme = {
-  dark: false,
+  dark: true,
   colors: {
+    primary: "#0e1726",
+    primaryBg: "#4361EE",
+    chipCard: "#4361EE",
+    cardColor: "#0E1726",
+    fail: '#F50057',
+    colorText: "#FFFFFF",
+
+
+
     white: "#fff",
-    background_nav: "#2e3248",
+    background: "#060818",
     background_color: "#25293c",
     background_drawer: "#2e3248",
     purple_primary:"#9c5df9",

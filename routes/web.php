@@ -75,10 +75,15 @@ Route::get('/crear-producto', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/mi-perfil', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Rutas
 
 Route::prefix('user')->group(function(){
     Route::post('/login', [UserController::class, 'login']);
+    Route::post('/login-qr', [UserController::class, 'loginToQr']);
     Route::post('/consult-user', [UserController::class, 'consultUser']);
     Route::post('/logout', [UserController::class, 'logout']);
 })->middleware('auth.user');
@@ -127,6 +132,10 @@ Route::prefix('cashcut')->group(function(){
 
 Route::prefix('sale')->group(function(){
     Route::post('/store', [PointSaleController::class, 'store']);
+})->middleware('auth');
+
+Route::prefix('qr')->group(function(){
+    Route::get('/generate', [UserController::class, 'qrGenerate']);
 })->middleware('auth');
 
 Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print'])->name('print.ticket')->middleware('auth');;

@@ -34,5 +34,7 @@ class Business extends Model
         'fiscal_int',
         'fiscal_colony_id',
         'timezone',
+        'email',
+        'email_company',
     ];
 }

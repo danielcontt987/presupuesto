@@ -11,7 +11,17 @@
                     clearable
                 />
             </v-col>
+            <v-col cols="6"
+                sm="4"
+                md="4"
+                lg="3" v-if="isLoading">
+                <v-card elevation="0">
+                    <v-skeleton-loader type="card" />
+                </v-card>
+            </v-col>
+           
             <v-col
+                v-else
                 cols="6"
                 sm="4"
                 md="4"
@@ -73,12 +83,18 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../pinia/user';
+const isLoading = ref(false);
 const router = useRouter();
 const userStore = useUserStore();
 
 onMounted(() => {
+    isLoading.value = true;
     userStore.consultUser().then((response)=> {
         permissions.value = response.data.permissions
+    }).catch((error) => {
+        console.log(error);
+    }).finally(() => {        
+        isLoading.value = false;
     })
 })
 

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Microservices\User;
+use App\Models\User as ModelsUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class UserController extends Controller
 {
@@ -21,6 +24,22 @@ class UserController extends Controller
         return response()->json(['status' => 401], 401);
     }
 
+    public function loginToQr(Request $request) 
+    {
+
+        $qr = $request->input('qr');
+        $user = ModelsUser::where('number_work', $qr)->first();
+
+        if (!$user) {
+            return response()->json(['status' => 404, 'message' => 'Usuario no encontrado'], 404);
+        }
+
+        Auth::login($user);
+
+        Redirect::to('/admin');
+        return response()->json(['status' => 200]);    
+    }
+
     public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
@@ -30,5 +49,30 @@ class UserController extends Controller
 
     public function consultUser(){
         return response()->json(["status" => 200, "permissions" => Auth::user()->getPermission()], 200);
+    }
+
+    public function qrGenerate(){
+        $numero = "000001";
+
+        $qr = \QrCode::format('svg')->size(300)->generate($numero);
+        $success = Storage::disk('google')->put("qrcodes/{$numero}.svg", $qr);
+
+        if ($success) {
+            return '✅ Archivo subido correctamente a Google Drive.';
+        } else {
+            return '❌ Falló la subida del archivo.';
+        }
+    }
+
+    public function guardarQR($numero)
+    {
+        $qr = QrCode::format('png')->size(300)->generate($numero);
+
+        Storage::disk('public')->put("qrcodes/{$numero}.png", $qr);
+
+        return response()->download(storage_path("app/public/qrcodes/{$numero}.png"));
+
+
+        // php artisan storage:link
     }
 }
