@@ -30,17 +30,18 @@
                 :key="key"
             >
                 <div
-                    class="rounded-card d-flex justify-center align-center flex-column py-5"
+                    class="d-flex justify-center align-center flex-column py-5"
+                    :class="themeName === 'customDarkTheme' ? 'rounded-card-darkTheme' : 'rounded-card'"
                     @click="goTo(item.route)"
                 >
                     <i
-                        class="mb-2 icon-text mdi"
+                        class="mb-2 mdi"
                         style="font-size: 4rem"
-                        :class="item.icon"
+                        :class="['mdi', item.icon, themeName === 'customDarkTheme' ? 'icon-text-darkTheme' : 'icon-text']"
                     ></i>
-                    <h4 class="icon-text px-4 text-center d-inline-block text-truncate">
+                    <p class="px-4 text-center d-inline-block text-truncate" :class="themeName === 'customDarkTheme' ? 'icon-text-darkTheme' : 'icon-text'">
                         {{ item.name }}
-                    </h4>
+                    </p>
                 </div>
             </v-col>
         </v-row>
@@ -50,6 +51,10 @@
 <style scoped>
 .icon-text {
     color: #192a67 !important;
+}
+
+.icon-text-darkTheme{
+    color: #fff !important;
 }
 
 .loader-container {
@@ -68,8 +73,21 @@
     box-shadow: inset 0px 0px 0px 2px #192a67;
 }
 
+.rounded-card-darkTheme{
+    border-radius: 1rem !important;
+    background-color: transparent;
+    transition: 100ms;
+    box-shadow: inset 0px 0px 0px 2px #0e1726;
+}
+
 .rounded-card:hover {
     background-color: #192a67;
+    cursor: pointer;
+    transition: 400ms;
+}
+
+.rounded-card-darkTheme:hover {
+    background-color: #4361EE;
     cursor: pointer;
     transition: 400ms;
 }
@@ -83,6 +101,8 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../pinia/user';
+import { useCustomTheme } from '../composable/useCustomMode';
+const { themeName } = useCustomTheme()
 const isLoading = ref(false);
 const router = useRouter();
 const userStore = useUserStore();

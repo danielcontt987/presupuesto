@@ -29,7 +29,7 @@
         <v-btn color="white" icon>
             <v-icon>mdi-account</v-icon>
             <v-menu activator="parent">
-                <v-list>
+                <v-list class="bg-cardColor">
                     <v-list-item @click="goToPerfil()">
                         <v-list-item-title>Mi perfil</v-list-item-title>
                     </v-list-item>

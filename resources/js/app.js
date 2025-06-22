@@ -84,17 +84,19 @@ const customLightTheme = {
 const customDarkTheme = {
   dark: true,
   colors: {
-    primary: "#0e1726",
+    primary: "#090717",
+    // primary: "#1A2537",
     primaryBg: "#4361EE",
     chipCard: "#4361EE",
-    cardColor: "#0E1726",
+    cardColor: "#151126",
     fail: '#F50057',
     colorText: "#FFFFFF",
 
 
 
     white: "#fff",
-    background: "#060818",
+    background: "#090717",
+    // background: "#1F2A3D",
     background_color: "#25293c",
     background_drawer: "#2e3248",
     purple_primary:"#9c5df9",
@@ -135,14 +137,12 @@ const vuetify = createVuetify({
 
 
 import App from './App.vue';
-import { registerSW } from 'virtual:pwa-register';
 import Admin from './Admin.vue';
 import Alert from './components/global/alert/AlertNormal.vue';
 import AlertError from './components/global/alert/AlertError.vue';
 
 const app = createApp({});
 
-registerSW();
 //Pinia
 const pinia = createPinia();
 app.use(pinia);

@@ -43,6 +43,16 @@
                             </v-col>
                         </v-row>
                     </v-card-text>
+                    <v-card-actions>
+                         <v-row class="mt-3 mb-3">
+                            <v-col cols="12">
+                                <v-btn large block class="rounded-lg" variant="outlined" depressed color="primaryBg"
+                                    @click="updateInfo()">
+                                    Actualizar datos
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
