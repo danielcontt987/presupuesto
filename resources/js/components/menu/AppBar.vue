@@ -1,33 +1,24 @@
 <template>
-    <v-app-bar color="primary">
+    <v-app-bar color="appBarColor" class="ml-9 rounded-lg mt-3 mb-3" flat style="width: 77%; box-shadow: 9px 5px 12px 3px rgba(0,0,0,0.11);">
         <!--  -->
         <v-toolbar-title>
             <div class="d-flex align-center">
-                <router-link
-                    to="/inicio"
-                    class="d-flex align-center justify-center"
-                >
-                    <v-img src="../img/logo.png" width="50" height="50" />
+                <router-link to="/inicio" class="d-flex align-center justify-center">
                 </router-link>
-                <div
-                    class="ml-2 white--text hidden-xs-only"
-                    v-if="currentRouteName != 'Inicio'"
-                >
+                <div class="ml-2 white--text hidden-xs-only" v-if="currentRouteName != 'Inicio'">
                     |
                 </div>
-                <small
-                    class="ml-2 white--text hidden-xs-only font-weight-bold"
-                    v-if="currentRouteName != 'Inicio'"
-                >
+                <small class="ml-2 white--text hidden-xs-only font-weight-bold" v-if="currentRouteName != 'Inicio'">
                     {{ currentRouteName }}
                 </small>
             </div>
         </v-toolbar-title>
-         <v-btn color="white" icon @click="toggleTheme()">
-            <v-icon color="white">{{ themeName === 'customDarkTheme' ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
+        <v-btn color="white" icon @click="toggleTheme()" class="mr-3">
+            <v-icon color="#444050">{{ themeName === 'customDarkTheme' ? 'mdi-weather-sunny' : 'mdi-weather-night'
+            }}</v-icon>
         </v-btn>
-        <v-btn color="white" icon>
-            <v-icon>mdi-account</v-icon>
+        <v-btn icon>
+            <v-avatar image="https://randomuser.me/api/portraits/women/10.jpg"></v-avatar>
             <v-menu activator="parent">
                 <v-list class="bg-cardColor">
                     <v-list-item @click="goToPerfil()">

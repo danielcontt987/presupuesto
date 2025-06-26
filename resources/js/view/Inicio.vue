@@ -1,49 +1,7 @@
 <template>
-    <v-container fluid>
+    <v-container>
         <v-row>
-            <v-col cols="12">
-                <v-text-field
-                    v-model="search"
-                    variant="outlined"
-                    label="Buscar"
-                    prepend-inner-icon="mdi-magnify"
-                    class="mt-2 mb-2"
-                    clearable
-                />
-            </v-col>
-            <v-col cols="6"
-                sm="4"
-                md="4"
-                lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
-                </v-card>
-            </v-col>
-           
-            <v-col
-                v-else
-                cols="6"
-                sm="4"
-                md="4"
-                lg="3"
-                v-for="(item, key) in dataFiltered"
-                :key="key"
-            >
-                <div
-                    class="d-flex justify-center align-center flex-column py-5"
-                    :class="themeName === 'customDarkTheme' ? 'rounded-card-darkTheme' : 'rounded-card'"
-                    @click="goTo(item.route)"
-                >
-                    <i
-                        class="mb-2 mdi"
-                        style="font-size: 4rem"
-                        :class="['mdi', item.icon, themeName === 'customDarkTheme' ? 'icon-text-darkTheme' : 'icon-text']"
-                    ></i>
-                    <p class="px-4 text-center d-inline-block text-truncate" :class="themeName === 'customDarkTheme' ? 'icon-text-darkTheme' : 'icon-text'">
-                        {{ item.name }}
-                    </p>
-                </div>
-            </v-col>
+            <h1>Hola</h1>
         </v-row>
     </v-container>
 </template>

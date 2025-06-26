@@ -17,6 +17,13 @@ import { createPinia } from 'pinia';
 
 const customLightTheme = {
   colors: {
+    appBarColor: "#fff",
+    iconColor: "#444050",
+    drawerColor: "#fff",
+    backgroundColor: '##EFF3F8',
+
+
+
     cardColor: "#FFFFFF",
     primary: "#192a67",
     primaryBg: "#192a67",
@@ -26,8 +33,7 @@ const customLightTheme = {
 
     secondary: "#3E47A3",
     blueSky: '#ecf2ff',
-    background: "#EFF3F8",
-    backgroundColor: '#eff3f8',
+    background: "#000",
     white: '#FFFFFF',
     background_drawer: "#FFF",
     background_nav: "#ffffff",
@@ -84,6 +90,16 @@ const customLightTheme = {
 const customDarkTheme = {
   dark: true,
   colors: {
+    
+    appBarColor: "#2F3349",
+    iconColor: "#444050",
+    drawerColor: "#2F3349",
+    backgroundColor: '#25293C',
+
+
+
+
+
     primary: "#090717",
     // primary: "#1A2537",
     primaryBg: "#4361EE",
@@ -95,7 +111,7 @@ const customDarkTheme = {
 
 
     white: "#fff",
-    background: "#090717",
+    background: "#25293C",
     // background: "#1F2A3D",
     background_color: "#25293c",
     background_drawer: "#2e3248",
@@ -140,6 +156,7 @@ import App from './App.vue';
 import Admin from './Admin.vue';
 import Alert from './components/global/alert/AlertNormal.vue';
 import AlertError from './components/global/alert/AlertError.vue';
+import NavegationDrawer from './components/Navagation/NavegationDrawer.vue';
 
 const app = createApp({});
 
