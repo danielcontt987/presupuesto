@@ -4,6 +4,15 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./Dockerfile
-    buildCommand: ""
-    startCommand: "php artisan serve --host=0.0.0.0 --port=10000"
     autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        value: base64:/hF1bu7E0FH49BMJOHqb8mkZfr3vJ5qc8dGZqPnLfpU=
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /tmp/database.sqlite
