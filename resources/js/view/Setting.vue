@@ -1,6 +1,6 @@
-<template>
-    <v-container fluid>
-        <v-row>
+<!-- <template>
+    <div>
+        <v-row class="mb-5 ml-1">
             <v-col cols="12" md="10">
                 <vc-back-button @backAction="navigateToHome"></vc-back-button>
             </v-col>
@@ -18,36 +18,171 @@
         </v-row>
         <v-row v-else>
             <v-col cols="12" md="4">
-               <v-row class="mx-0">
-                   <v-col cols="12">
-                       <card-info />
-                   </v-col>
+                <v-col cols="12">
+                    <card-info />
+                </v-col>
+                <v-col cols="12">
+                    <operation-psw />
+                </v-col>
+            </v-col>
+        </v-row>
+    </div>
+</template> -->
+<template>
+    <v-container grid-list-xl fluid class="grey lighten-4 px-4">
+        <v-row class="mt-3">
+            <v-col cols="12" md="10">
+                <vc-back-button @backAction="navigateToHome"></vc-back-button>
+            </v-col>
+            <v-col cols="12" md="2" sm="12" class="text-end">
+                <slot></slot>
+            </v-col>
+        </v-row>
+
+        <v-row v-if="settingStore.isLoading">
+            <v-col cols="12" md="5">
+                <v-card elevation="0" style="margin-bottom: 0px !important" class="rounded-lg">
+                    <v-skeleton-loader type="article" />
+                    <v-skeleton-loader type="article" />
+                    <v-skeleton-loader type="article" />
+                </v-card>
+            </v-col>
+        </v-row>
+
+        <v-row v-else>
+            <v-col cols="12" md="4">
+                <v-row no-gutters>
                     <v-col cols="12">
-                       <operation-psw />
-                   </v-col>
-               </v-row>
+                        <card-info />
+                    </v-col>
+                    <v-col cols="12" class="mx-0">
+                        <operation-psw />
+                    </v-col>
+                    <v-col cols="12" class="mx-0">
+                        <info-password />
+                    </v-col>
+                </v-row>
             </v-col>
             <v-col cols="12" md="4">
-               <v-row class="mx-0">
-                   <v-col cols="12">
-                       <card-info />
-                   </v-col>
+                <v-row no-gutters>
                     <v-col cols="12">
-                        <operation-psw />
-                   </v-col>
-               </v-row>
+                        <card-fiscal />
+                    </v-col>
+                    <v-col cols="12" class="mx-0">
+                        <card-ubication />
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-row no-gutters>
+                    <v-col cols="12">
+                        <card-fiscal />
+                    </v-col>
+                    <v-col cols="12" class="mx-0">
+                        <card-ubication />
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
+<!-- <template>
+    <v-row class="grey lighten-4 px-4">
+        <v-container grid-list-xl fluid>
+            <vc-back-button @backAction="$router.push('/')"></vc-back-button>
+            <v-row v-if="isLoading">
+                <v-col cols="12" lg="4">
+                    <v-card elevation="0">
+                        <v-skeleton-loader type="article, article" />
+                        <v-skeleton-loader type="article, article" />
+                    </v-card>
+                </v-col>
+                <v-col cols="12" lg="4">
+                    <v-card elevation="0">
+                        <v-skeleton-loader
+                            type="article, article,article, article, actions"
+                        />
+                    </v-card>
+                </v-col>
+                <v-col cols="12" lg="4">
+                    <v-card elevation="0">
+                        <v-skeleton-loader type="article, article, actions" />
+                    </v-card>
+                </v-col>
+            </v-row>
+            <v-row v-else>
+                <v-col cols="12" md="4">
+                    <v-row>
+                        <v-col cols="12">
+                            <vc-info-business :businessInfo="business" />
+                        </v-col>
+                        <v-col cols="12" class="mx-0">
+                            <vc-info-passwords
+                                :businessInfo="business"
+                                title="operaciones"
+                                icon="mdi-lock-alert-outline"
+                            />
+                        </v-col>
+                        <v-col cols="12" class="mx-0">
+                            <vc-info-passwords
+                                :businessInfo="business"
+                                title="WI-FI"
+                                icon="mdi-wifi"
+                            />
+                        </v-col>
+                        <v-col cols="12" class="mx-0">
+                            <vc-legend-invoice
+                                :businessInfo="business"
+                                title="Leyenda en factura"
+                                icon="mdi-receipt-text-edit"
+                            />
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col cols="12" md="4">
+                    <v-row>
+                        <v-col cols="12">
+                            <vc-info-physical />
+                        </v-col>
+                        <v-col cols="12">
+                            <vc-info-ubication :businessInfo="business" />
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col cols="12" md="4">
+                    <v-row>
+                        <v-col cols="12" style="padding-bottom: 0;">
+                            <vc-info-aditional :businessInfo="business" />
+                        </v-col>
+                        <v-col cols="12" style="padding-top: 0;">
+                            <vc-info-membership :business="business" :membershipData="membershipData"/>
+                        </v-col>
+                    </v-row>
+                </v-col>
+                    <vc-members-table :historyMembership="historyMemberships" :isLoadingConf="isLoading" />
+                    <vc-offer-table/>
+                    <vc-configuration-folio-table :isLoadingConf="isLoading" :dataFolio="dataFolio"/>
+                    <vc-legal />
+
+            </v-row>
+        </v-container>
+    </v-row>
+</template> -->
+
 <script setup>
-import VcBackButton from '../components/global/BackButton.vue';
 import { onMounted, ref } from "vue";
 import { useSettingStore } from "../pinia/setting.js";
 import { useRouter } from 'vue-router';
+
+import VcBackButton from '../components/global/BackButton.vue';
 import CardInfo from '../components/Settings/CardInfo.vue';
 import OperationPsw from '../components/Settings/OperationPsw.vue';
+import CardFiscal from "../components/Settings/CardFiscal.vue";
+import CardUbication from "../components/Settings/CardUbication.vue";
+import InfoPassword from "../components/Settings/InfoPassword.vue";
+
+
 const settingStore = useSettingStore();
 
 const router = useRouter();

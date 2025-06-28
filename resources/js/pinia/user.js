@@ -45,6 +45,16 @@ export const useUserStore = defineStore("user", {
                     reject(error)
                 })
             })
+        },
+
+        loginFace(payload){            
+            return new Promise ((resolve, reject) => {
+                axios.post("user/login-face", payload).then((response) => {
+                    resolve(response)
+                }).catch((error) => {
+                    reject(error)
+                })
+            })
         }
 
     }

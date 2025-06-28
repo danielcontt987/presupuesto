@@ -30,4 +30,14 @@ class SettingController extends Controller
 
         return response()->json(['business' => $business], 200);
     }
+
+    public function updateUbication(Request $request) 
+    {
+        $business = Business::where('id', Auth::user()->getBusiness())->update([
+            'lat' => $request->input('lat'),
+            'log' => $request->input('long'),
+        ]);
+
+        return response()->json(['business' => $business], 200);
+    }
 }

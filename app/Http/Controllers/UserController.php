@@ -75,4 +75,49 @@ class UserController extends Controller
 
         // php artisan storage:link
     }
+
+    public function registerFace(Request $request)
+    {
+        // $request->validate([
+        //     'email' => 'required|email',
+        //     'descriptor' => 'required|array|size:128',
+        // ]);
+
+
+
+        $user = ModelsUser::where('email', $request->email)->firstOrFail();
+        $user->face_descriptor = json_encode($request->descriptor);
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => 'Rostro guardado.']);
+    }
+
+     public function loginFace(Request $request)
+    {
+        $request->validate([
+            'descriptor' => 'required|array|size:128',
+        ]);
+
+        $inputDescriptor = $request->descriptor;
+
+        $users = ModelsUser::whereNotNull('face_descriptor')->get();
+
+        foreach ($users as $user) {
+            $stored = json_decode($user->face_descriptor, true);
+            $distance = $this->euclideanDistance($inputDescriptor, $stored);
+            if ($distance < 0.6) {
+                Auth::login($user);
+                Redirect::to('/admin');
+                return response()->json(['status' => 200]);    
+            }
+        }
+
+        return response()->json(['success' => false, 'message' => 'Rostro no reconocido'], 401);
+    }
+
+    private function euclideanDistance($a, $b)
+    {
+        return sqrt(array_sum(array_map(fn($i, $j) => pow($i - $j, 2), $a, $b)));
+    }
+
 }

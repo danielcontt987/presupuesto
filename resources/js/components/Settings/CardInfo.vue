@@ -5,7 +5,7 @@
                 <v-row class="mx-0">
                     <v-col cols="12" style="padding-left: 0">
                         <v-chip color="background" class="text-primary rounded-lg pa-6 font-weight-bold" label>
-                            Información contacto de la empresa
+                            Información de la empresa
                         </v-chip>
                     </v-col>
                 </v-row>
@@ -57,7 +57,7 @@
             </v-card-actions>
         </template>
     </CardBaseModal>
-    <v-dialog v-model="openModal" width="500" persistent class="rounded-lg">
+    <v-dialog v-if="openModal" v-model="openModal" width="500" persistent class="rounded-lg">
         <card-base-modal outlined :loading="isLoading">
             <template v-slot:text>
                 <v-card-text class="mt-3 py-2">

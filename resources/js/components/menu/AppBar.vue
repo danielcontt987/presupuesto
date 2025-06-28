@@ -1,6 +1,5 @@
 <template>
     <v-app-bar color="primary">
-        <!--  -->
         <v-toolbar-title>
             <div class="d-flex align-center">
                 <router-link

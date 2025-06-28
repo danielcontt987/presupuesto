@@ -79,6 +79,10 @@ Route::get('/mi-perfil', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/proyectos', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Rutas
 
 Route::prefix('user')->group(function(){
@@ -86,11 +90,14 @@ Route::prefix('user')->group(function(){
     Route::post('/login-qr', [UserController::class, 'loginToQr']);
     Route::post('/consult-user', [UserController::class, 'consultUser']);
     Route::post('/logout', [UserController::class, 'logout']);
+    Route::post('/update-face', [UserController::class, 'registerFace']);
+    Route::post('/login-face', [UserController::class, 'loginFace']);
 })->middleware('auth.user');
 
 Route::prefix('setting')->group(function(){
     Route::post('/get', [SettingController::class, 'get']);
     Route::post('/update-part-1', [SettingController::class, 'updateInfo']);
+    Route::post('/update-ubication', [SettingController::class, 'updateUbication']);
 })->middleware('auth.user');
 
 Route::prefix('area')->group(function(){

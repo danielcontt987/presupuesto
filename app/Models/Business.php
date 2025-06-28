@@ -36,5 +36,14 @@ class Business extends Model
         'timezone',
         'email',
         'email_company',
+        'password',
+        'internet',
+        'cer',
+        'key',
+        'tax_regime',
+        'cfdi',
+        'folio_business',
+        'long',
+        'type_doc',
     ];
 }

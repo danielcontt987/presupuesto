@@ -38,6 +38,18 @@ export const useSettingStore = defineStore("setting", {
                         reject(error);
                     });
             });
+        },       
+        updateUbication(payload) {
+            return new Promise((resolve, reject) => {
+                axios.post("setting/update-ubication", payload)
+                    .then((response) => {
+                        resolve(response);
+                        this.getSetting();
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
         }        
     },
 });
