@@ -5,7 +5,7 @@
                 <v-row class="mx-0">
                     <v-col cols="12" style="padding-left: 0">
                         <v-chip color="background" class="text-primary rounded-lg pa-6 font-weight-bold" label>
-                            Datos fiscales de la empresa
+                            Internet
                         </v-chip>
                     </v-col>
                 </v-row>
@@ -13,8 +13,8 @@
                     <v-col cols="12" class="d-flex justify-center">
                         <v-icon disabled size="120" style="color: #192a672b !important">mdi-wifi</v-icon>
                     </v-col>
-                    <v-col cols="12">
-                        <h3 class="text-primary">{{ 1232323 }}</h3>
+                    <v-col cols="12" v-if="settingStore.business.internet">
+                        <h3 class="text-primary">{{ settingStore.business.internet }}</h3>
                     </v-col>
                     <v-col cols="12" class="d-flex text-justify">
                         <p>

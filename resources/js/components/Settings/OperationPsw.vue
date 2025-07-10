@@ -5,7 +5,7 @@
                 <v-row class="mx-0">
                     <v-col cols="12" style="padding-left: 0">
                         <v-chip color="background" class="text-primary rounded-lg pa-6 font-weight-bold" label>
-                            Información contacto de la empresa
+                            Contraseña de operación
                         </v-chip>
                     </v-col>
                 </v-row>
@@ -13,9 +13,9 @@
                     <v-col cols="12">
                         <h4 class="font-weight-bold mb-0">Contraseña de operación actual</h4>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" v-if="settingStore.business.pin">
                         <h3 class="font-weight-bold mb-0 text-primary">
-                            {{ settingStore.business.telephone1 }}
+                            {{ settingStore.business.pin }}
                         </h3>
                     </v-col>
                     <v-col cols="12" class="text-left">

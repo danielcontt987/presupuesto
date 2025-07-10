@@ -76,99 +76,13 @@
             <v-col cols="12" md="4">
                 <v-row no-gutters>
                     <v-col cols="12">
-                        <card-fiscal />
-                    </v-col>
-                    <v-col cols="12" class="mx-0">
-                        <card-ubication />
+                        <card-more-info />
                     </v-col>
                 </v-row>
             </v-col>
         </v-row>
     </v-container>
 </template>
-
-<!-- <template>
-    <v-row class="grey lighten-4 px-4">
-        <v-container grid-list-xl fluid>
-            <vc-back-button @backAction="$router.push('/')"></vc-back-button>
-            <v-row v-if="isLoading">
-                <v-col cols="12" lg="4">
-                    <v-card elevation="0">
-                        <v-skeleton-loader type="article, article" />
-                        <v-skeleton-loader type="article, article" />
-                    </v-card>
-                </v-col>
-                <v-col cols="12" lg="4">
-                    <v-card elevation="0">
-                        <v-skeleton-loader
-                            type="article, article,article, article, actions"
-                        />
-                    </v-card>
-                </v-col>
-                <v-col cols="12" lg="4">
-                    <v-card elevation="0">
-                        <v-skeleton-loader type="article, article, actions" />
-                    </v-card>
-                </v-col>
-            </v-row>
-            <v-row v-else>
-                <v-col cols="12" md="4">
-                    <v-row>
-                        <v-col cols="12">
-                            <vc-info-business :businessInfo="business" />
-                        </v-col>
-                        <v-col cols="12" class="mx-0">
-                            <vc-info-passwords
-                                :businessInfo="business"
-                                title="operaciones"
-                                icon="mdi-lock-alert-outline"
-                            />
-                        </v-col>
-                        <v-col cols="12" class="mx-0">
-                            <vc-info-passwords
-                                :businessInfo="business"
-                                title="WI-FI"
-                                icon="mdi-wifi"
-                            />
-                        </v-col>
-                        <v-col cols="12" class="mx-0">
-                            <vc-legend-invoice
-                                :businessInfo="business"
-                                title="Leyenda en factura"
-                                icon="mdi-receipt-text-edit"
-                            />
-                        </v-col>
-                    </v-row>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-row>
-                        <v-col cols="12">
-                            <vc-info-physical />
-                        </v-col>
-                        <v-col cols="12">
-                            <vc-info-ubication :businessInfo="business" />
-                        </v-col>
-                    </v-row>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-row>
-                        <v-col cols="12" style="padding-bottom: 0;">
-                            <vc-info-aditional :businessInfo="business" />
-                        </v-col>
-                        <v-col cols="12" style="padding-top: 0;">
-                            <vc-info-membership :business="business" :membershipData="membershipData"/>
-                        </v-col>
-                    </v-row>
-                </v-col>
-                    <vc-members-table :historyMembership="historyMemberships" :isLoadingConf="isLoading" />
-                    <vc-offer-table/>
-                    <vc-configuration-folio-table :isLoadingConf="isLoading" :dataFolio="dataFolio"/>
-                    <vc-legal />
-
-            </v-row>
-        </v-container>
-    </v-row>
-</template> -->
 
 <script setup>
 import { onMounted, ref } from "vue";
@@ -181,6 +95,7 @@ import OperationPsw from '../components/Settings/OperationPsw.vue';
 import CardFiscal from "../components/Settings/CardFiscal.vue";
 import CardUbication from "../components/Settings/CardUbication.vue";
 import InfoPassword from "../components/Settings/InfoPassword.vue";
+import CardMoreInfo from "../components/Settings/CardMoreInfo.vue";
 
 
 const settingStore = useSettingStore();

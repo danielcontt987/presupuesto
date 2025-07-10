@@ -16,3 +16,11 @@ p,
 span {
   word-break: break-word !important;
 }
+
+/* styles/colors.css */
+.bg-green-gradient {
+    background: linear-gradient(to right, #ecfdf5, #3bcd82);
+    border-color: #00ff88;
+}
+
+

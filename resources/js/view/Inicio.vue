@@ -145,6 +145,12 @@ const permissions_arr = ref([
         visibility: false,
     },
     {
+        name: 'Restaurante',
+        route: '/restaurante',
+        icon: 'mdi-food',
+        visibility: false,
+    },
+    {
         name: 'Estadísticas',
         route: '/cotizaciones',
         icon: 'mdi-chart-areaspline',

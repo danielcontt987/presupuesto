@@ -16,7 +16,7 @@
                     <v-col cols="12">
                         <h4 class="font-weight-light mb-0">RFC</h4>
                         <h3 class="font-weight-bold mb-0">
-                            MCP041116LE7
+                            {{settingStore.business.fiscal_rfc}}
                         </h3>
                     </v-col>
                     <v-col cols="12">
@@ -24,13 +24,13 @@
                             Razón social
                         </h4>
                         <h3 class="font-weight-bold mb-0">
-                            MADERAS Y COMPLEMENTOS EL PROVEEDOR
+                            {{settingStore.business.fiscal_corporative_name}}
                         </h3>
                     </v-col>
                     <v-col cols="12">
                         <h4 class="font-weight-light mb-0">Domicilio</h4>
                         <h3 class="font-weight-bold mb-0">
-                            Diamante 125 C.P. 63195 / Colonia Valle de Matatipac Tepic, Nayarit. México
+                            {{ `${settingStore.business.fiscal_street} C.P. 63175 / Colonia Comerciantes Tepic, Nayarit, México` }}
                         </h3>
                     </v-col>
                     <v-col cols="12">
@@ -38,26 +38,29 @@
                             Regímen fiscal
                         </h4>
                         <h3 class="font-weight-bold mb-0">
-                            General de Ley Personas Morales
+                            {{settingStore.business.tax_regime}}
                         </h3>
                     </v-col>
                     <v-col cols="12">
                         <h4 class="font-weight-light mb-0">
                             Correo electrónico
                         </h4>
-                        <h3 class="font-weight-bold mb-0">
+                        <h3 class="font-weight-bold mb-0" v-if="settingStore.business.email_company">
+                            {{settingStore.business.email_company}}
+                        </h3>
+                        <h3 class="font-weight-bold mb-0" v-else>
                             No tiene registrado correo electrónico
                         </h3>
                     </v-col>
                     <v-col cols="12">
-                        <v-row class="mb-0 mt-1">
+                        <v-row class="mb-0 mt-1" no-gutters>
                             <v-col cols="12" class="d-flex justify-space-between">
                                 <div>
                                     <h4 class="font-weight-light mb-0">
                                         Certificado CSD (.CER)
                                     </h4>
                                 </div>
-                                <div class="mr-6">
+                                <div class="mr-6" v-if="settingStore.business.cer">
                                     <v-chip
                                         color="success"
                                         text-color="white"
@@ -68,21 +71,33 @@
                                         <b>VÁLIDO</b>
                                     </v-chip>
                                 </div>
+                                 <div class="mr-6" v-else>
+                                    <v-chip
+                                        color="fail"
+                                        variant="tonal"
+                                        text-color="white"
+                                        small
+                                        class="rounded-lg pt-2 pb-2"
+                                        
+                                    >
+                                        <b>SIN SUBIR</b>
+                                    </v-chip>
+                                </div>
                             </v-col>
                         </v-row>
                     </v-col>
                     <v-col cols="12">
-                        <v-row class="mb-0 mt-1">
+                        <v-row class="mb-0 mt-1" no-gutters>
                             <v-col cols="12" class="d-flex justify-space-between">
                                 <div>
                                     <h4 class="font-weight-light mb-0">
                                         LLave de seguridad (.KEY)
                                     </h4>
                                 </div>
-                                <div class="mr-6">
+                                <div class="mr-6" v-if="settingStore.business.key">
                                     <v-chip
+                                        variant="tonal"
                                         color="success"
-                                        text-color="white"
                                         small
                                         class="rounded-lg pt-2 pb-2"
                                         
@@ -90,26 +105,15 @@
                                         <b>VÁLIDO</b>
                                     </v-chip>
                                 </div>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col cols="12">
-                        <v-row class="mb-0 mt-1">
-                            <v-col cols="12" class="d-flex justify-space-between">
-                                <div>
-                                    <h4 class="font-weight-light mb-0">
-                                        Contraseña CSD (CSD)
-                                    </h4>
-                                </div>
-                                <div class="mr-6">
+                                 <div class="mr-6" v-else>
                                     <v-chip
-                                        color="success"
-                                        text-color="white"
+                                        variant="tonal"
+                                        color="fail"
                                         small
                                         class="rounded-lg pt-2 pb-2"
                                         
                                     >
-                                        <b>VÁLIDO</b>
+                                        <b>SIN SUBIR</b>
                                     </v-chip>
                                 </div>
                             </v-col>

@@ -2,13 +2,23 @@
     <v-container fluid class="d-flex flex-column bg-background fill height" style="height: 100vh; overflow: hidden;"
         :class="mdAndUp ? 'pa-0' : ''">
         <v-row align="center" justify="center">
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="7" v-if="mdAndUp == true" class="overflow-hidden bg-lightprimary">
+                <div class="image-container">
+                    <!-- Imagen de fondo -->
+                    <v-img src="/img/bg.jpg" height="110vh" class="elevation-6 bg-lightprimary" style="width: 100%;"
+                        cover />
+                    <!-- Overlay -->
+                    <div class="overlay"></div>
+                </div>
+            </v-col>
+            <v-col cols="12" md="5">
                 <v-card class="elevation-0 pa-3  mx-auto rounded-lg" max-width="500px">
                     <h2 class="text-center text-primary font-weight-bold pt-3" style="word-break: break-word">
-                        INICIAR SESIÓN
+                        👋
                     </h2>
-                    <p class="text-center pt-3">
-                        Ingresa las crendenciales para acceder al sistema
+                    <h2 class="text-center text-primary pt-3">
+                        Bienvenido</h2>
+                    <p class="text-center pt-3">Por favor, inicie sesión con su cuenta, o bien mediante código QR o reconocimiento facial.
                     </p>
                     <v-card-text class="pt-5">
                         <v-form v-model="isValid">
@@ -37,14 +47,16 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" class="pt-5">
-                                    <v-btn color="black" flat size="large" block variant="text" :loading="loading"
+                                    <v-btn color="greenLight" flat size="large" block :loading="loading"
                                         @click="openDialogQr">
+                                        <v-icon class="mr-5">mdi-qrcode</v-icon>
                                         Ingresar con qr
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" class="pt-5">
-                                    <v-btn color="black" flat size="large" block variant="text" :loading="loading"
+                                    <v-btn color="primary" flat size="large" block :loading="loading"
                                         @click="openDialogFace">
+                                        <v-icon class="mr-5">mdi-face</v-icon>
                                         Reconocimiento facial
                                     </v-btn>
                                 </v-col>
@@ -52,10 +64,6 @@
                         </v-form>
                     </v-card-text>
                 </v-card>
-            </v-col>
-            <v-col cols="12" md="6" v-if="mdAndUp == true" class="overflow-hidden bg-lightprimary">
-                <v-img src="https://software.tidingo.com/images/login_picture.jpg" height="100vh"
-                    class="elevation-6 bg-lightprimary" style="width: 100%;" cover />
             </v-col>
         </v-row>
         <v-dialog v-model="dialogQr" width="450" persistent>
@@ -317,34 +325,34 @@ const getDescriptor = async () => {
 const loginFace = async () => {
     try {
         const descriptor = await getDescriptor()
-        
+
         // const response = await axios.post('/user/login-face', { descriptor })
         // alert(response.data)
         // // Aquí puedes guardar token o redirigir
 
         userStore
-        .loginFace({descriptor})
-        .then((res) => {
-            loading.value = false;
-            window.location.href = "/inicio";
-        })
-        .catch((err) => {
-            alertNormal.show = true;
-            (alertNormal.color = "fail"),
-                (alertNormal.msg =
-                    "Las credenciales no son las correctas favor de verificar el email y la contraseña"),
-                (alertNormal.type = 0),
-                (alertNormal.icon = "mdi-close-circle-outline");
-        }).finally(() => {
-            loading.value = false;
-        });
-    } catch (err) {
+            .loginFace({ descriptor })
+            .then((res) => {
+                loading.value = false;
+                window.location.href = "/inicio";
+            })
+            .catch((err) => {
+                alertNormal.show = true;
+                (alertNormal.color = "fail"),
+                    (alertNormal.msg =
+                        "Las credenciales no son las correctas favor de verificar el email y la contraseña"),
+                    (alertNormal.type = 0),
+                    (alertNormal.icon = "mdi-close-circle-outline");
+            }).finally(() => {
+                loading.value = false;
+            });
+    } catch (err) {        
         alertNormal.show = true;
         (alertNormal.color = "fail"),
-        (alertNormal.msg =
-            "No hay cámara ó su reconocimiento facial no existe en el sistema"),
-        (alertNormal.type = 0),
-        (alertNormal.icon = "mdi-close-circle-outline");
+            (alertNormal.msg =
+                "No hay cámara ó su reconocimiento facial no existe en el sistema"),
+            (alertNormal.type = 0),
+            (alertNormal.icon = "mdi-close-circle-outline");
     }
 }
 
@@ -390,5 +398,30 @@ onBeforeUnmount(() => {
     width: 100%;
     height: 90vh;
     object-fit: cover;
+}
+
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 110vh;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.611); /* Color y opacidad */
+  z-index: 1;
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 </style>

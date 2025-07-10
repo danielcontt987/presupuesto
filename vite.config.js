@@ -3,7 +3,6 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-    
     scripts: { "dev": "vite", "build": "vite build" },
     plugins: [
         laravel({
@@ -21,11 +20,11 @@ export default defineConfig({
                 },
             },
         }),
-       
+
     ],
     resolve: {
         alias: {
-          'vue': 'vue/dist/vue.esm-bundler.js'
+            'vue': 'vue/dist/vue.esm-bundler.js'
         }
     },
 });

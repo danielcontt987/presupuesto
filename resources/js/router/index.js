@@ -12,6 +12,7 @@ import Client from '../view/Client/Client.vue';
 import CreateClient from '../view/Client/CreateClient.vue';
 import Product from '../view/Product/Product.vue';
 import CreateProduct from '../view/Product/CreateProduct.vue';
+import Restaurant from '../view/Restaurant/Restaurant.vue';
 
 const routes = [
     {
@@ -57,6 +58,11 @@ const routes = [
         path: '/punto-de-venta',
         name: 'Punto de venta',
         component: PointOfSale,
+    },
+    {
+        path: '/restaurante',
+        name: 'Restaurante',
+        component: Restaurant,
     },
     {
         path: '/clientes',

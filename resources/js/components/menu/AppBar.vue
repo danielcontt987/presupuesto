@@ -2,28 +2,23 @@
     <v-app-bar color="primary">
         <v-toolbar-title>
             <div class="d-flex align-center">
-                <router-link
-                    to="/inicio"
-                    class="d-flex align-center justify-center"
-                >
-                    <v-img src="../img/logo.png" width="50" height="50" />
+                <router-link to="/inicio" class="d-flex align-center justify-center">
+                    <v-img src="../img/logo.webp" width="50" height="50" eager />
                 </router-link>
-                <div
-                    class="ml-2 white--text hidden-xs-only"
-                    v-if="currentRouteName != 'Inicio'"
-                >
+                <div class="ml-2 white--text hidden-xs-only" v-if="currentRouteName != 'Inicio'">
                     |
                 </div>
-                <small
-                    class="ml-2 white--text hidden-xs-only font-weight-bold"
-                    v-if="currentRouteName != 'Inicio'"
-                >
+                <small class="ml-2 white--text hidden-xs-only font-weight-bold" v-if="currentRouteName != 'Inicio'">
                     {{ currentRouteName }}
                 </small>
             </div>
         </v-toolbar-title>
-         <v-btn color="white" icon @click="toggleTheme()">
-            <v-icon color="white">{{ themeName === 'customDarkTheme' ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
+        <v-btn color="white" icon @click="fullScreen()">
+            <v-icon color="white">mdi-vector-square</v-icon>
+        </v-btn>
+        <v-btn color="white" icon @click="toggleTheme()">
+            <v-icon color="white">{{ themeName === 'customDarkTheme' ? 'mdi-weather-sunny' : 'mdi-weather-night'
+                }}</v-icon>
         </v-btn>
         <v-btn color="white" icon>
             <v-icon>mdi-account</v-icon>
@@ -69,6 +64,17 @@ const logout = () => {
 const goToPerfil = () => {
     router.push("/mi-perfil");
 };
+
+const fullScreen = () => {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { // Safari
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { // IE11
+        elem.msRequestFullscreen();
+    }
+}
 
 
 </script>

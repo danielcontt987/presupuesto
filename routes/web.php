@@ -83,6 +83,10 @@ Route::get('/proyectos', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/restaurante', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Rutas
 
 Route::prefix('user')->group(function(){
