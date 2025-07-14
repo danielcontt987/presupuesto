@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 import Login from '../view/Login.vue';
 import Admin from '../view/Admin.vue';
@@ -84,12 +84,11 @@ const routes = [
         name: 'Crear producto',
         component: CreateProduct,
     },
-    // {
-    //     path: '/:pathMatch(.*)*',
-    //     name: '404',
-    //     component: () => import('../view/404.vue'),
-    // }
-
+    {
+        path: '/:pathMatch(.*)*',
+        name: '404',
+        component: () => import('../view/NotFound/404.vue'),
+    },
     {
         path: '/mi-perfil',
         name: 'Mi perfil',
@@ -99,6 +98,11 @@ const routes = [
         path: '/proyectos',
         name: 'Proyectos',
         component: () => import('../view/Project/Project.vue'),
+    },
+    {
+        path: '/seleccionar',
+        name: 'Seleccionar',
+        component: () => import('../view/Restaurant/SelectProduct.vue'),
     }
 ];
 

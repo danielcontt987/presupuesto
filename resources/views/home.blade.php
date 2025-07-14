@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-    <meta name="theme-color" content="#6777ef"/>
+    <meta name="theme-color" content="#6777ef" />
     <link rel="apple-touch-icon" href="{{ asset('logo.webp') }}">
     <link rel="preload" as="image" href="/img/logo.webp" />
 
     {{-- <link rel="manifest" href="{{ asset('/manifest.json') }}"> --}}
-    <title>JA</title>
+    <title>PosSys</title>
 
     {{-- <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">       
@@ -80,6 +81,7 @@
     </style>
     @vite('resources/css/app.css')
 </head>
+
 <body>
     <div id="loader"
         style="position: fixed; width: 100%; height: 100%; background: #192a67; display: flex; justify-content: center; align-items: center; z-index: 9999;">
@@ -89,7 +91,7 @@
         <admin></admin>
     </div>
     @vite('resources/js/app.js')
-     <script>
+    <script>
         // Marca el tiempo de inicio
         const loaderStart = Date.now();
 
@@ -114,4 +116,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PointSaleController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\SaleBoxController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -34,11 +35,11 @@ Route::get('/login', function () {
 Route::get('/admin', function () {
     return view('home');
 })->middleware('auth.user');
-    
+
 Route::get('/inicio', function () {
     return view('home');
 })->middleware('auth.user');
-    
+
 Route::get('/configuracion', function () {
     return view('home');
 })->middleware('auth.user');
@@ -87,9 +88,14 @@ Route::get('/restaurante', function () {
     return view('home');
 })->middleware('auth.user');
 
+//Not found
+Route::get('/{any}', function () {
+    return view('home'); // o la vista que uses
+})->where('any', '.*');
+
 //Rutas
 
-Route::prefix('user')->group(function(){
+Route::prefix('user')->group(function () {
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/login-qr', [UserController::class, 'loginToQr']);
     Route::post('/consult-user', [UserController::class, 'consultUser']);
@@ -98,55 +104,60 @@ Route::prefix('user')->group(function(){
     Route::post('/login-face', [UserController::class, 'loginFace']);
 })->middleware('auth.user');
 
-Route::prefix('setting')->group(function(){
+Route::prefix('setting')->group(function () {
     Route::post('/get', [SettingController::class, 'get']);
     Route::post('/update-part-1', [SettingController::class, 'updateInfo']);
     Route::post('/update-ubication', [SettingController::class, 'updateUbication']);
 })->middleware('auth.user');
 
-Route::prefix('area')->group(function(){
+Route::prefix('area')->group(function () {
     Route::post('/get', [AreaController::class, 'get']);
     Route::post('/consult-info', [AreaController::class, 'consultAreadetails']);
     Route::post('/store-permission', [AreaController::class, 'storePermission']);
-
 })->middleware('auth.user');
 
-Route::prefix('module')->group(function(){
+Route::prefix('module')->group(function () {
     Route::post('/list', [ModuleController::class, 'list']);
 })->middleware('auth.user');
 
-Route::prefix('module')->group(function(){
+Route::prefix('module')->group(function () {
     Route::post('/store', [ModuleController::class, 'store']);
     Route::post('/update', [ModuleController::class, 'update']);
 })->middleware('auth.user');
 
-Route::prefix('category')->group(function(){
+Route::prefix('category')->group(function () {
     Route::post('/store', [CategoryController::class, 'store']);
     Route::post('/list', [CategoryController::class, 'list']);
 })->middleware('auth.user');
 
-Route::prefix('product')->group(function(){
+Route::prefix('product')->group(function () {
     Route::post('/store', [ProductController::class, 'store']);
     Route::post('/list', [ProductController::class, 'list']);
     Route::post('/search', [ProductController::class, 'search']);
 })->middleware('auth.user');
 
-Route::prefix('salebox')->group(function(){
+Route::prefix('salebox')->group(function () {
     Route::post('/list', [SaleBoxController::class, 'list']);
     Route::post('/store', [SaleBoxController::class, 'store']);
 })->middleware('auth.user');
 
-Route::prefix('cashcut')->group(function(){
+Route::prefix('cashcut')->group(function () {
     Route::post('/get', [CashCutController::class, 'get']);
     Route::post('/store', [CashCutController::class, 'store']);
 })->middleware('auth.user');
 
-Route::prefix('sale')->group(function(){
+Route::prefix('sale')->group(function () {
     Route::post('/store', [PointSaleController::class, 'store']);
 })->middleware('auth');
 
-Route::prefix('qr')->group(function(){
+Route::prefix('qr')->group(function () {
     Route::get('/generate', [UserController::class, 'qrGenerate']);
 })->middleware('auth');
+
+
+Route::prefix('restaurant')->group(function () {
+    Route::post('/list', [RestaurantController::class, 'list']);
+    Route::post('/items', [RestaurantController::class, 'items']);
+});
 
 Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print'])->name('print.ticket')->middleware('auth');;

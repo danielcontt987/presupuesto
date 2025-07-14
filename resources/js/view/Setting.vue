@@ -1,33 +1,3 @@
-<!-- <template>
-    <div>
-        <v-row class="mb-5 ml-1">
-            <v-col cols="12" md="10">
-                <vc-back-button @backAction="navigateToHome"></vc-back-button>
-            </v-col>
-            <v-col cols="12" md="2" sm="12" class="text-end">
-                <slot></slot>
-            </v-col>
-        </v-row>
-        <v-row v-if="settingStore.isLoading">
-            <v-col cols="12" md="5">
-                <v-card elevation="0" style="margin-bottom: 0px !important" class="rounded-lg">
-                    <v-skeleton-loader type="article"></v-skeleton-loader><v-skeleton-loader
-                        type="article"></v-skeleton-loader><v-skeleton-loader type="article"></v-skeleton-loader>
-                </v-card>
-            </v-col>
-        </v-row>
-        <v-row v-else>
-            <v-col cols="12" md="4">
-                <v-col cols="12">
-                    <card-info />
-                </v-col>
-                <v-col cols="12">
-                    <operation-psw />
-                </v-col>
-            </v-col>
-        </v-row>
-    </div>
-</template> -->
 <template>
     <v-container grid-list-xl fluid class="grey lighten-4 px-4">
         <v-row class="mt-3">
@@ -78,6 +48,9 @@
                     <v-col cols="12">
                         <card-more-info />
                     </v-col>
+                    <v-col cols="12">
+                        <card-setting />
+                    </v-col>
                 </v-row>
             </v-col>
         </v-row>
@@ -96,6 +69,7 @@ import CardFiscal from "../components/Settings/CardFiscal.vue";
 import CardUbication from "../components/Settings/CardUbication.vue";
 import InfoPassword from "../components/Settings/InfoPassword.vue";
 import CardMoreInfo from "../components/Settings/CardMoreInfo.vue";
+import CardSetting from "../components/Settings/CardSetting.vue";
 
 
 const settingStore = useSettingStore();

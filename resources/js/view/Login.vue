@@ -18,7 +18,8 @@
                     </h2>
                     <h2 class="text-center text-primary pt-3">
                         Bienvenido</h2>
-                    <p class="text-center pt-3">Por favor, inicie sesión con su cuenta, o bien mediante código QR o reconocimiento facial.
+                    <p class="text-center pt-3">Por favor, inicie sesión con su cuenta, o bien mediante código QR o
+                        reconocimiento facial.
                     </p>
                     <v-card-text class="pt-5">
                         <v-form v-model="isValid">
@@ -128,7 +129,7 @@
                         </v-row>
                         <v-row>
                             <v-col cols="12">
-                                <div v-if="cameraReady" class="text-center justify-center">
+                                <div v-if="cameraReady" class="text-center justify-center rounded-lg">
                                     <video ref="video" autoplay muted width="320" height="240" />
                                 </div>
                             </v-col>
@@ -346,7 +347,7 @@ const loginFace = async () => {
             }).finally(() => {
                 loading.value = false;
             });
-    } catch (err) {        
+    } catch (err) {
         alertNormal.show = true;
         (alertNormal.color = "fail"),
             (alertNormal.msg =
@@ -402,26 +403,27 @@ onBeforeUnmount(() => {
 
 
 .image-container {
-  position: relative;
-  width: 100%;
-  height: 110vh;
+    position: relative;
+    width: 100%;
+    height: 110vh;
 }
 
 .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.611); /* Color y opacidad */
-  z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.611);
+    /* Color y opacidad */
+    z-index: 1;
 }
 
 .content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
 </style>

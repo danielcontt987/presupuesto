@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ProductService;
 use App\Microservices\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,48 +10,60 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    protected ProductService $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
     public function store(Request $request)
     {
-        DB::beginTransaction();
-        try {
-            $products = Product::store($request);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['status' => 500, "error" => $e->getMessage()], 500);
-        }
+        $validated = $request->validate([
+            'product.name' => 'required|string',
+            'product.barcode' => 'nullable|string',
+            'product.description' => 'nullable|string',
+            'product.category_id' => 'required|integer|exists:categories,id',
+            'product.price_s_shop' => 'required|numeric',
+            'product.price_shop' => 'required|numeric',
+            'product.price' => 'required|numeric',
+            'product.price_s_iva' => 'required|numeric',
+            'product.type' => 'required|string',
+            'product.stock' => 'required|numeric',
+            'product.weight' => 'required|numeric',
+            'product.folio' => 'nullable|string',
+        ]);
 
-        DB::commit();
-        return response()->json(["status" => "201", "products" => $products]);
+        try {
+            DB::beginTransaction();
+
+            $product = $this->productService->store($validated['product']);
+
+            DB::commit();
+            return response()->json(['status' => 201, 'product' => $product], 201);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
-    public function list() 
+    public function list()
     {
-        DB::beginTransaction();
-        try {
-            $business_id = Auth::user()->getBusiness();
-            $products = Product::list($business_id);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['status' => 500, "error" => $e->getMessage()], 500);
-        }
+        $businessId = Auth::user()->getBusiness();
 
-        DB::commit();
-        return response()->json(["status" => "201", "products" => $products]);
+        $products = $this->productService->list($businessId);
+
+        return response()->json(['status' => 200, 'products' => $products]);
     }
 
-    public function search(Request $request) 
+
+    public function search(Request $request)
     {
         $search = $request->input('search');
-        DB::beginTransaction();
-        try {
-            $business_id = Auth::user()->getBusiness();
-            $products = Product::search($business_id, $search);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['status' => 500, "error" => $e->getMessage()], 500);
-        }
+        $businessId = Auth::user()->getBusiness();
 
-        DB::commit();
-        return response()->json(["status" => "201", "products" => $products]);
+        $products = $this->productService->search($businessId, $search);
+
+        return response()->json(['status' => 200, 'products' => $products]);
     }
 }
