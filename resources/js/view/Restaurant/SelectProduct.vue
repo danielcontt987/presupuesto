@@ -1,5 +1,6 @@
 <template>
-    <v-navigation-drawer class="bg-white" permanent :location="sizeMd" width="400">
+    <v-navigation-drawer class="bg-white" permanent @update:model-value="openDrawerUpdate" :location="sizeMd"
+        width="400">
         <v-list-item lines="two" subtitle="Mesa seleccionada" title="Mesa 1">
             <template #prepend>
                 <v-avatar color="#00CFB5" :size="40" class="bordered-avatar font-weight-bold">
@@ -8,7 +9,7 @@
             </template>
         </v-list-item>
         <v-list-item class="text-center" v-if="restaurantStore.items.length == 0">
-            <v-col cols="12" class="text-center">
+            <v-col cols="12" class="text-center mt-12">
                 <v-icon color="background" size="200">mdi-food-apple-outline</v-icon>
                 <p class="text-primary text-center font-weight-bold">
                     Sin orden agregada
@@ -79,8 +80,9 @@
             <v-col cols="12" md="12">
                 <v-row v-if="mdDown" no-gutters>
                     <v-col cols="12" md="8">
-                        <v-select label="Cocina fría" :items="['Ensaladas', 'Sopas', 'Entradas']" item-title="text"
-                            item-value="value" variant="solo" flat />
+                        <v-select v-if="restaurantStore.categories.length > 0" label="Categoría"
+                            :items="restaurantStore.categories" item-value="id" v-model="category" item-title="name"
+                            @update:model-value="onCategoryChange" variant="solo" flat />
                     </v-col>
                     <v-col cols="12" md="4">
                         <v-text-field label="Buscar producto" variant="solo" flat />
@@ -88,14 +90,14 @@
                 </v-row>
                 <v-row v-else>
                     <v-col cols="12" md="8">
-                        <v-select label="Cocina fría" :items="['Ensaladas', 'Sopas', 'Entradas']" item-title="text"
-                            item-value="value" variant="solo" flat />
+                        <v-select v-if="restaurantStore.categories.length > 0" label="Categoría"
+                            :items="restaurantStore.categories" item-value="id" item-title="name" variant="solo" flat />
                     </v-col>
                     <v-col cols="12" md="4">
                         <v-text-field label="Buscar producto" variant="solo" flat />
                     </v-col>
                 </v-row>
-                <v-row no-gutters>
+                <!-- <v-row no-gutters>
                     <v-col cols="12">
                         <v-sheet class="mx-auto bg-white rounded-lg pa-2">
                             <v-slide-group show-arrows>
@@ -108,7 +110,7 @@
                             </v-slide-group>
                         </v-sheet>
                     </v-col>
-                </v-row>
+                </v-row> -->
                 <v-row>
                     <v-col cols="12" md="4" v-for="product in productStore.products" :key="product.id">
                         <v-card class="pa-2" flat @click="selectProduct(product)">
@@ -186,7 +188,8 @@ const productStore = useProductStore();
 
 const product = ref(null);
 const isLoading = ref(false);
-const products = ref([]);
+const category = ref(0);
+const openDrawer = ref(true);
 
 onMounted(() => {
     if (restaurantStore.selectedTable == null) {
@@ -194,6 +197,7 @@ onMounted(() => {
     }
 
     productStore.listProducts();
+    restaurantStore.listCategories();
 
 });
 
@@ -205,6 +209,10 @@ const sizeMd = computed(() => {
 const mdDown = computed(() => {
     return mdAndDown.value;
 });
+
+const openDrawerUpdate = (value) => {
+    openDrawer.value = value;
+};
 
 
 const currency = (value) => {
@@ -234,8 +242,17 @@ const closeModal = async () => {
 };
 
 const navigateToHome = () => {
-    router.push('/inicio');
+    router.push('/restaurante');
 };
+
+const onCategoryChange = (value) => {
+    console.log('Categoría seleccionada:', value);
+    if (value === 0) {
+        productStore.listProducts();
+    } else {
+        productStore.listProductsByCategory(value);
+    }
+}
 
 const addCommand = () => {
     if (product.value.qty <= 0) {

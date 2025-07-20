@@ -158,6 +158,7 @@ Route::prefix('qr')->group(function () {
 Route::prefix('restaurant')->group(function () {
     Route::post('/list', [RestaurantController::class, 'list']);
     Route::post('/items', [RestaurantController::class, 'items']);
+    Route::post('/categories', [RestaurantController::class, 'listCategories']);
 });
 
 Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print'])->name('print.ticket')->middleware('auth');;

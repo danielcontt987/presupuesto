@@ -7,6 +7,7 @@ export const useRestauratStore = defineStore('restaurant', {
         tables: [],
         items: [],
         products: [],
+        categories: [],
         selectedTable: null,
     }),
     actions: {
@@ -52,6 +53,17 @@ export const useRestauratStore = defineStore('restaurant', {
             if (index !== -1) {
                 this.items.splice(index, 1);
             }
+        },
+
+        listCategories() {
+            return new Promise((resolve, reject) => {
+                axios.post("restaurant/categories").then((response) => {
+                    resolve(response);
+                    this.categories = response.data.categories;
+                }).catch((error) => {
+                    reject(error)
+                })
+            })
         },
     }
 });

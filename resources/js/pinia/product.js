@@ -8,7 +8,7 @@ export const useProductStore = defineStore('product', {
         products: [],
     }),
     actions: {
-        storeProduct(payload){
+        storeProduct(payload) {
             return new Promise((resolve, reject) => {
                 axios.post("product/store", payload).then((response) => {
                     resolve(response);
@@ -32,14 +32,14 @@ export const useProductStore = defineStore('product', {
                         reject(error);
                     });
             });
-        },     
-        
+        },
+
         consultProducts(payload) {
 
             return new Promise((resolve, reject) => {
                 axios.post("product/search", payload)
                     .then((response) => {
-                        if(response.data.products.length > 0){
+                        if (response.data.products.length > 0) {
                             this.products = response.data.products.map(product => ({
                                 ...product,
                                 quantity: 1
@@ -51,9 +51,9 @@ export const useProductStore = defineStore('product', {
                         reject(error);
                     });
             });
-        },     
+        },
 
-        listCategory(){
+        listCategory() {
             return new Promise((resolve, reject) => {
                 axios.post("category/list").then((response) => {
                     resolve(response);
@@ -63,7 +63,7 @@ export const useProductStore = defineStore('product', {
             })
         },
 
-        storeCategory(payload){
+        storeCategory(payload) {
             return new Promise((resolve, reject) => {
                 axios.post("category/store", payload).then((response) => {
                     resolve(response);
@@ -72,11 +72,27 @@ export const useProductStore = defineStore('product', {
                 })
             })
         },
-        openDialogCategory(payload){
+        openDialogCategory(payload) {
             this.openModal = payload;
         },
-        closeopenDialog(payload){
+        closeopenDialog(payload) {
             this.openModal = payload;
+        },
+
+        listProductsByCategory(categoryId) {
+            return new Promise((resolve, reject) => {
+                axios.post("product/listByCategory", { category_id: categoryId })
+                    .then((response) => {
+                        this.products = response.data.products.map(product => ({
+                            ...product,
+                            quantity: 1
+                        }));
+                        resolve(response);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
         }
     }
 });

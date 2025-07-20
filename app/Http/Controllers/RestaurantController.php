@@ -32,4 +32,10 @@ class RestaurantController extends Controller
         $tableId = $request->input('table_id');
         return response()->json(['status' => 200, 'items' => $this->restaurantService->listItems($tableId)]);
     }
+
+    public function listCategories()
+    {
+        $businessId = Auth::user()->getBusiness();
+        return response()->json(['status' => 200, 'categories' => $this->restaurantService->listCategories($businessId)]);
+    }
 }

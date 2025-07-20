@@ -64,4 +64,12 @@ class ProductService
             ->where('name', 'like', '%' . $search . '%')
             ->get();
     }
+
+    public function listByCategory(int $businessId, int $categoryId)
+    {
+        return Product::with(['category', 'inventoryDetail'])
+            ->where('business_id', $businessId)
+            ->where('category_id', $categoryId)
+            ->get();
+    }
 }

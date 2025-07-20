@@ -66,4 +66,14 @@ class ProductController extends Controller
 
         return response()->json(['status' => 200, 'products' => $products]);
     }
+
+    public function listByCategory(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $businessId = Auth::user()->getBusiness();
+
+        $products = $this->productService->listByCategory($businessId, $categoryId);
+
+        return response()->json(['status' => 200, 'products' => $products]);
+    }
 }
