@@ -36,7 +36,8 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="12" lg="6">
-                                <v-text-field variant="outlined" label="Importe" v-model="amount" :rules="accountRules" />
+                                <v-text-field variant="outlined" label="Importe" v-model="amount"
+                                    :rules="accountRules" />
                             </v-col>
                             <v-col cols="12">
                                 <v-textarea filled rows="2" v-model="comment" variant="outlined" label="Comentarios" />
@@ -113,14 +114,14 @@
                 <div class="sk-chase-dot"></div>
             </div>
         </alert-progress> -->
-        <Alert/>
+        <Alert />
     </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useCashCutStore } from '../../../pinia/cashcut';
-import { useAlertNormalStore } from '../../../pinia/Alert';
+import { useAlertNormalStore } from '../../../pinia/alert';
 
 const cashCutStore = useCashCutStore();
 const alertStore = useAlertNormalStore();
@@ -164,7 +165,7 @@ const closeDialogBox = () => {
 
 const openSalebox = () => {
     openCreateBox.value = true;
-}   
+}
 
 const closeDialogCashCut = () => {
     openDialogSaleBox.value = false;
@@ -181,7 +182,7 @@ const storeCashCut = () => {
         alertStore.show = true;
         alertStore.color = "success";
         alertStore.msg = "Se han creado una nuevo corte de caja";
-        alertStore.type = 0; 
+        alertStore.type = 0;
 
         cashCutStore.listCashcuts().then((res) => {
             if (res.data.cashcuts.length === 0) {
@@ -194,7 +195,7 @@ const storeCashCut = () => {
         alertStore.show = true;
         alertStore.color = "fail";
         alertStore.msg = "No se ha podido crear el corte de caja";
-        alertStore.type = 1; 
+        alertStore.type = 1;
 
         cashCutStore.listCashcuts().then((res) => {
             if (res.data.cashcuts.length === 0) {
