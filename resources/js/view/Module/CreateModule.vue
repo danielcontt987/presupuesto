@@ -5,7 +5,7 @@
                 <vc-back-button @backAction="goTo"></vc-back-button>
             </v-col>
             <v-col cols="12">
-                <card-module />
+                <CardModule />
             </v-col>
         </v-row>
     </v-container>
@@ -13,7 +13,7 @@
 
 <script setup>
 import VcBackButton from "../../components/global/BackButton.vue";
-import CardModule from "../../components/module/CardModule.vue";
+import CardModule from "../../components/Module/CardModule.vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const goTo = () => {
