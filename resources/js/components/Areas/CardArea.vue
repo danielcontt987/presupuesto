@@ -50,32 +50,16 @@
                 <v-card-title>
                     <v-row>
                         <v-col cols="12" md="9">
-                            <v-chip
-                                color="background"
-                                class="text-primary rounded-lg pa-5 font-weight-bold text-uppercase"
-                                label
-                            >
+                            <v-chip color="background"
+                                class="text-primary rounded-lg pa-5 font-weight-bold text-uppercase" label>
                                 Áreas registradas
                             </v-chip>
                         </v-col>
                     </v-row>
-                    <v-tabs
-                        v-model="selectedtab"
-                        class="mt-5"
-                        centered
-                        background-color="background"
-                        grow
-                    >
-                        <v-tab
-                            value="one"
-                            class="rounded-lg mr-3 bg-background text-weight-bold text-primary"
-                            ><b>Áreas</b></v-tab
-                        >
-                        <v-tab
-                            value="two"
-                            class="rounded-lg bg-background text-primary"
-                            ><b>Usuarios</b></v-tab
-                        >
+                    <v-tabs v-model="selectedtab" class="mt-5" centered background-color="background" grow>
+                        <v-tab value="one"
+                            class="rounded-lg mr-3 bg-background text-weight-bold text-primary"><b>Áreas</b></v-tab>
+                        <v-tab value="two" class="rounded-lg bg-background text-primary"><b>Usuarios</b></v-tab>
                     </v-tabs>
                 </v-card-title>
 
@@ -90,36 +74,15 @@
             </v-card>
         </v-col>
     </v-row>
-    <v-dialog
-        v-model="showDatePicker"
-        width="400"
-        transition="dialog-bottom-transition"
-    >
-        <v-card
-            flat
-            class="ma-2 rounded-card"
-            style="overflow: hidden !important"
-        >
+    <v-dialog v-model="showDatePicker" width="400" transition="dialog-bottom-transition">
+        <v-card flat class="ma-2 rounded-card" style="overflow: hidden !important">
             <v-row>
-                <v-date-picker
-                    class="ma-2 pa-0 text-center"
-                    v-model="tempDate"
-                    width="800"
-                    :max="startDate == null ?? today"
-                    color="primary"
-                ></v-date-picker>
+                <v-date-picker class="ma-2 pa-0 text-center" v-model="tempDate" width="800"
+                    :max="startDate == null ?? today" color="primary"></v-date-picker>
             </v-row>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                    color="primary"
-                    class="rounded-lg"
-                    x-large
-                    text
-                    depressed
-                    block
-                    @click="acceptDate"
-                >
+                <v-btn color="primary" class="rounded-lg" x-large text depressed block @click="acceptDate">
                     Aceptar
                 </v-btn>
             </v-card-actions>
@@ -131,7 +94,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useAreaStore } from "../../pinia/area.js";
-import WindowTabArea from "./tabs/WindowTabArea.vue";
+import WindowTabArea from "./Tabs/WindowTabArea.vue";
 import moment from "moment";
 
 const areaStore = useAreaStore();
@@ -172,7 +135,7 @@ const show = (type) => {
     showDatePicker.value = true;
 };
 
-const today = computed(() =>{
+const today = computed(() => {
     return moment().format('YYYY-MM-DD');
 })
 </script>
