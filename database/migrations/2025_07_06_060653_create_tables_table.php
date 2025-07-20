@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->integer('capacity')->default(0);
             $table->boolean('is_active')->default(true);
-            $table->unsignedBigInteger('waiter_id')->nullable();
-            $table->foreign('waiter_id')->references('id')->on('users')->onDelete()->cascade();
+            $table->integer('waiter_id')->nullable();
             $table->timestamps();
         });
     }
