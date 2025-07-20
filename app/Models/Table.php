@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Table extends Model
 {
     use HasFactory;
+    protected $table = 'table_users'; // Ensure the table name matches the migration
     protected $fillable = [
         'name',
         'description',
