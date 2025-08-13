@@ -85,11 +85,6 @@ const routes = [
         component: CreateProduct,
     },
     {
-        path: '/:pathMatch(.*)*',
-        name: '404',
-        component: () => import('../view/NotFound/404.vue'),
-    },
-    {
         path: '/mi-perfil',
         name: 'Mi perfil',
         component: () => import('../view/Profile/Profile.vue'),
@@ -103,7 +98,12 @@ const routes = [
         path: '/seleccionar',
         name: 'Seleccionar',
         component: () => import('../view/Restaurant/SelectProduct.vue'),
-    }
+    },
+    {
+        path: '/estadisticas',
+        name: 'Estadísticas',
+        component: () => import('../view/Statistic/Statistic.vue'),
+    },
 ];
 
 const router = createRouter({

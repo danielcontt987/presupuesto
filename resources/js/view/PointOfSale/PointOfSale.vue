@@ -2,20 +2,17 @@
     <v-container fluid>
         <v-row v-if="infoCashCut != null">
             <v-col cols="6">
-               <p><b class="text-primary">Nombre: </b>{{infoCashCut.user.name + " " + infoCashCut.user.lastname}}</p>
-               <p><b class="text-primary">Caja:</b> {{infoCashCut.salebox.name}} </p>
+                <p><b class="text-primary">Nombre: </b>{{ infoCashCut.user.name + " " + infoCashCut.user.lastname }}</p>
+                <p><b class="text-primary">Caja:</b> {{ infoCashCut.salebox.name }} </p>
             </v-col>
             <v-col cols="6" class="text-right">
-               <p class="text-primary"><b>Última cotización:</b></p>
-               <p class="text-primary"><b>Cotización del día:</b></p>
-               <p class="text-primary"><b>Cotización en espera:</b></p>
-               <p class="text-primary"><b>Monto cotizado:</b></p>
+                <p class="text-primary"><b>Última cotización:</b></p>
+                <p class="text-primary"><b>Cotización del día:</b></p>
+                <p class="text-primary"><b>Cotización en espera:</b></p>
+                <p class="text-primary"><b>Monto cotizado:</b></p>
             </v-col>
             <v-col cols="4">
-                <v-select
-                 variant="outlined"
-                 label="Clientes"
-                />
+                <v-select variant="outlined" label="Clientes" />
             </v-col>
             <v-col cols="8">
                 <!-- <v-combobox
@@ -27,61 +24,32 @@
                     @update:model-value="addProduct"
                 /> -->
 
-                <v-autocomplete
-                    variant="outlined"
-                    return-object
-                    :items="productStore.products"
-                    item-title="name"
-                    v-model="product"
-                    label="Productos"
-                    @update:modelValue="addProduct"
-                    v-model:search="search"
-                    @keyup.enter="consultProduct(search)"
-                />
+                <v-autocomplete variant="outlined" return-object :items="productStore.products" item-title="name"
+                    v-model="product" label="Productos" @update:modelValue="addProduct" v-model:search="search"
+                    @keyup.enter="consultProduct(search)" />
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
                 <div class="table-responsive">
-                    <v-data-table
-                        class="rounded-lg bg-cardColor"
-                        :headers="headers"
-                        :items="pagedProducts">
+                    <v-data-table class="rounded-lg bg-cardColor" :headers="headers" :items="pagedProducts">
                         <template v-slot:item.quantity="{ item }">
-                            <v-text-field
-                                v-model="item.quantity"
-                                outlined
-                                dense
-                                class="rounded-lg"
-                                type="number"
-                                variant="outlined"
-                            />
+                            <v-text-field v-model="item.quantity" outlined dense class="rounded-lg" type="number"
+                                variant="outlined" />
                         </template>
                         <template v-slot:item.price="{ item }">
-                            <v-text-field
-                                v-model="item.price_sale"
-                                outlined
-                                dense
-                                class="rounded-lg"
-                                type="number"
-                                variant="outlined"
-                            />
+                            <v-text-field v-model="item.price_sale" outlined dense class="rounded-lg" type="number"
+                                variant="outlined" />
                         </template>
                         <template v-slot:item.subtotal="{ item }">
                             {{ currency(parseFloat(item.quantity) * parseFloat(item.price_sale)) }}
                         </template>
                         <template v-slot:item.total="{ item }">
-                            {{  currency(parseFloat(item.quantity) * parseFloat(item.price_sale))}}
+                            {{ currency(parseFloat(item.quantity) * parseFloat(item.price_sale)) }}
                         </template>
                         <template v-slot:item.actions="{ item }">
-                            <v-btn
-                                icon
-                                class="rounded-lg"
-                                color="error"
-                                flat
-                                @click="pointsaleStore.removeProducts(item)"
-                                
-                            >
+                            <v-btn icon class="rounded-lg" color="error" flat
+                                @click="pointsaleStore.removeProducts(item)">
                                 <v-icon>mdi-delete</v-icon>
                             </v-btn>
                         </template>
@@ -105,8 +73,8 @@
                         <card-grid color="greenLight" icon="mdi-more" text="Más opciones" />
                     </v-col>
                     <v-col cols="6">
-                        <card-grid color="success" icon="mdi mdi-cash-register" text="Cotiazar" @click="createSale($event)"
-                             />
+                        <card-grid color="success" icon="mdi mdi-cash-register" text="Cotiazar"
+                            @click="createSale($event)" />
                     </v-col>
                 </v-row>
             </v-col>
@@ -117,24 +85,26 @@
                 <card-info-sale :products-count="totalProducts" :total="total" />
             </v-col>
             <v-col cols="12" style="overflow-y: hidden; !important">
-                <dialog-open-box :saleboxes="saleboxStore.saleboxes" v-if="dialogData"/>
+                <dialog-open-box :saleboxes="saleboxStore.saleboxes" v-if="dialogData" />
             </v-col>
         </v-row>
-        <Alert/>
+        <Alert />
     </v-container>
 </template>
 
 <style>
-    .v-table > .v-table__wrapper > table > tbody > tr > th, .v-table > .v-table__wrapper > table > thead > tr > th, .v-table > .v-table__wrapper > table > tfoot > tr > th{
-        white-space: nowrap;
-    }
+.v-table>.v-table__wrapper>table>tbody>tr>th,
+.v-table>.v-table__wrapper>table>thead>tr>th,
+.v-table>.v-table__wrapper>table>tfoot>tr>th {
+    white-space: nowrap;
+}
 </style>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 
-import {useProductStore} from '../../pinia/product';
-import {usePointsaleStore} from '../../pinia/pointsale';
+import { useProductStore } from '../../pinia/product';
+import { usePointsaleStore } from '../../pinia/pointsale';
 import { useSaleboxStore } from '../../pinia/salebox';
 import { useCashCutStore } from '../../pinia/cashcut';
 import { useAlertNormalStore } from '../../pinia/alert';
@@ -195,10 +165,10 @@ const currency = (value) => {
     else return accounting.formatMoney(0, "- $ ");
 }
 
-const consultProduct = (search) => {   
+const consultProduct = (search) => {
     let params = {
         search: search
-    } 
+    }
     productStore.consultProducts(params);
 }
 
@@ -221,8 +191,8 @@ const createSale = () => {
         iva: iva.value,
         subtotal: subtotal.value
     }
-    pointsaleStore.storeSale(params).then((response) => {        
-        let saleWindow = window.open('/print-ticket/' +response.data.sale.id, '_blank');
+    pointsaleStore.storeSale(params).then((response) => {
+        window.open('/print-ticket/' + response.data.sale.id, '_blank');
         alertStore.show = true;
         alertStore.color = "success";
         alertStore.msg = "Se ha creado la cotización correctamente";

@@ -6,11 +6,11 @@ use App\Microservices\Cashcut;
 use App\Microservices\Sale;
 use App\Models\CashCut as ModelsCashCut;
 use App\Models\Sale as ModelsSale;
+use App\Models\Salebox;
 use App\Models\SaleDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use PDF;
 
 class PointSaleController extends Controller
@@ -83,58 +83,44 @@ class PointSaleController extends Controller
         // return response()->json(["status" => "201", "pointSale" => $pointSale]);
     }
 
-    public function list()
+    public function list(Request $request)
     {
         $business_id = Auth::user()->getBusiness();
-        $sale = Sale::list($business_id);
+        $salebox = Salebox::where('business_id', $business_id)->first()['business_id'];
+        $sales = ModelsSale::where('salebox_id', $salebox)->with(['client' => function ($query) {
+            $query->select('id', 'name', 'lastname');
+        }])
+            ->whereBetween('saledate', [$request->date1 . ' ' . '00:00:00', $request->date2 . ' ' . '23:59:59'])->get(['id', 'folio', 'saledate', 'total', 'status', 'status_ticket', 'client_id']);
+
+        return response()->json(["status" => "200", "sales" => $sales]);
     }
 
     public function print($id)
     {
-        // // Ruta de la imagen
-        // $imagePath = public_path('img/logoPDF.jpeg');
+        // dd("$");
+        // Ruta de la imagen
+        $imagePath = public_path('img/logoPDF.jpeg');
 
-        // // Convertir la imagen a Base64
-        // $imageData = base64_encode(file_get_contents($imagePath));
+        // Convertir la imagen a Base64
+        $imageData = base64_encode(file_get_contents($imagePath));
 
-        // // Crear el URI base64 para incluir en el HTML
-        // $base64Image = 'data:image/jpeg;base64,' . $imageData;
+        // Crear el URI base64 para incluir en el HTML
+        $base64Image = 'data:image/jpeg;base64,' . $imageData;
 
-        // $sale = ModelsSale::find($id);
-        // $date = Carbon::parse($sale->saledate)->format('d/m/Y');
-        // $user = Auth::user()->fullName();
-        // $saleDetails = SaleDetail::with(['product'])->where('sale_id', $id)->get();
-        // $data = [
-        //     'title' => 'Presupuesto', 
-        //     'sale' => $sale, 
-        //     'saleDetails' => $saleDetails, 
-        //     'img' => $base64Image,
-        //     'date' => $date,
-        //     'user' => $user,
-        //     'folio' => $sale->folio,
-        // ];
-        $ticketData = [
-            'empresa' => 'Mi Tienda S.A.',
-            'direccion' => 'Calle Falsa 123',
-            'telefono' => '555-123-4567',
-            'ticket_id' => 1001,
-            'fecha' => now()->format('d/m/Y H:i'),
-            'productos' => [
-                ['nombre' => 'Coca-Cola', 'cantidad' => 2, 'precio' => 15.00],
-                ['nombre' => 'Pan Bimbo', 'cantidad' => 1, 'precio' => 35.00],
-                ['nombre' => 'Queso', 'cantidad' => 1, 'precio' => 60.00],
-            ],
-            'total' => 125.00,
+        $sale = ModelsSale::find($id);
+        $date = Carbon::parse($sale->saledate)->format('d/m/Y');
+        $user = Auth::user()->fullName();
+        $saleDetails = SaleDetail::with(['product'])->where('sale_id', $id)->get();
+        $data = [
+            'title' => 'Presupuesto',
+            'sale' => $sale,
+            'saleDetails' => $saleDetails,
+            'img' => $base64Image,
+            'date' => $date,
+            'user' => $user,
+            'folio' => $sale->folio,
         ];
-        $pdf = PDF::loadView('printers.document', $ticketData);
-        $pdf->setPaper([0, 0, 226.77, 566.93], 'portrait');
+        $pdf = PDF::loadView('printers.ticket', $data);
         return $pdf->stream('prosupuesto.pdf');  // Usamos stream en lugar de download
-
-
-
-        // Http::post('http://localhost:5000/api/print', [
-        //     'html' => $ticketHtml,
-        //     'printer' => '58k',
-        // ]);
     }
 }

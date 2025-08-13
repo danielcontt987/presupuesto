@@ -1,6 +1,5 @@
 <template>
-    <v-navigation-drawer class="bg-white" permanent @update:model-value="openDrawerUpdate" :location="sizeMd"
-        width="400">
+    <v-navigation-drawer class="bg-white" permanent v-if="openDrawerUpdate" :location="sizeMd" width="400">
         <v-list-item lines="two" subtitle="Mesa seleccionada" title="Mesa 1">
             <template #prepend>
                 <v-avatar color="#00CFB5" :size="40" class="bordered-avatar font-weight-bold">
@@ -69,6 +68,95 @@
         </template>
     </v-navigation-drawer>
 
+    <template v-if="openDrawerUpdate == false">
+        <v-btn class="bg-primary text-white" style="position: absolute; bottom: 16px; left: 16px; z-index: 20;" icon
+            size="large" @click="openDrawer = !openDrawer">
+            <v-badge color="error" :content="restaurantStore.items.length" offset-x="-16" offset-y="-17">
+                <v-icon>mdi-plus</v-icon>
+            </v-badge>
+        </v-btn>
+    </template>
+
+    <v-navigation-drawer class="bg-white" v-model="openDrawer" v-if="!openDrawerUpdate" location="right" width="400">
+        <v-list-item lines="three" subtitle="Mesa seleccionada" title="Mesa 1">
+            <!-- Avatar a la izquierda -->
+            <template #prepend>
+                <v-avatar color="#00CFB5" :size="40" class="bordered-avatar font-weight-bold">
+                    <span class="text-white font-bold">{{ 1 }}</span>
+                </v-avatar>
+            </template>
+
+            <!-- Botón de cerrar a la derecha -->
+            <template #append>
+                <v-btn icon @click="openDrawer = false" flat>
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-list-item>
+
+        <v-list-item class="text-center" v-if="restaurantStore.items.length == 0">
+            <v-col cols="12" class="text-center mt-12">
+                <v-icon color="background" size="200">mdi-food-apple-outline</v-icon>
+                <p class="text-primary text-center font-weight-bold">
+                    Sin orden agregada
+                </p>
+            </v-col>
+        </v-list-item>
+        <v-list-item>
+            <v-row no-gutters class="mt-6" v-if="restaurantStore.items.length > 0">
+                <v-col cols="12">
+                    <v-btn color="primary" @click="openOrden = true">
+                        <v-badge color="error" :content="restaurantStore.items.length" offset-x="-15" offset-y="-6">
+                            <span class="py-2">Ver pedido</span>
+                        </v-badge>
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </v-list-item>
+        <v-list-item class="py-2">
+            <v-row no-gutters>
+                <v-col cols="12" v-for="item in restaurantStore.items" :key="item.id">
+                    <v-card variant="outlined" class="mb-2" color="grey">
+                        <v-card-text>
+                            <v-row no-gutters>
+                                <span>{{ item.qty }} x</span>
+                                <span class="text-black font-weight-bold ml-2">
+                                    {{ item.name }}
+                                </span>
+                            </v-row>
+                            <v-row no-gutters>
+                                <span class="text-black">
+                                    {{ item.comment ? item.comment : 'Sin comentario' }}
+                                </span>
+                            </v-row>
+                            <v-row no-gutters>
+                                <span class="text-black">
+                                    {{ item.price ? currency(item.price) : 'Sin precio' }}
+                                </span>
+                            </v-row>
+                            <v-row no-gutters class="text-right justify-end">
+                                <v-btn icon @click="removeItem(item)" class="rounded-lg" flat size="small"
+                                    color="error">
+                                    <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+                            </v-row>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-list-item>
+
+        <template v-slot:append>
+            <div class="pa-2">
+                <v-btn class="bg-primary text-white" block flat>
+                    Agregar a la cuenta
+                </v-btn>
+            </div>
+        </template>
+    </v-navigation-drawer>
+
+
+
     <!-- Contenido principal -->
     <v-container fluid>
         <v-row>
@@ -124,7 +212,7 @@
             </v-col>
         </v-row>
     </v-container>
-    <v-dialog v-model="openOrden" width="750" persistent class="rounded-lg">
+    <v-dialog v-model="openOrden" width="850" persistent class="rounded-lg">
         <card-base-modal outlined :loading="isLoading">
             <template v-slot:text>
                 <v-card-text class="mt-3 py-2">
@@ -152,12 +240,12 @@
             </template>
             <template v-slot:actions>
                 <v-card-actions class="mt-3 py-2">
-                    <v-col cols="12" md="6" order="2" order-md="1">
+                    <v-col cols="12" md="6" order="1" order-md="1">
                         <v-btn class="rounded-lg" size="large" @click="closeModal()" text depressed block color="error">
                             Cerrar
                         </v-btn>
                     </v-col>
-                    <v-col cols="12" md="6" order="1" order-md="2">
+                    <v-col cols="12" md="6" order="2" order-md="2">
                         <v-btn class="rounded-lg bg-primary" size="large" @click="addCommand" depressed block>
                             Agregar
                         </v-btn>
@@ -210,9 +298,11 @@ const mdDown = computed(() => {
     return mdAndDown.value;
 });
 
-const openDrawerUpdate = (value) => {
-    openDrawer.value = value;
-};
+const openDrawerUpdate = computed(() => {
+    if (mdAndDown.value) {
+        return openDrawer.value = false;
+    }
+});
 
 
 const currency = (value) => {

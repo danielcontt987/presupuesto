@@ -88,10 +88,14 @@ Route::get('/restaurante', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/estadisticas', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Not found
-Route::get('/{any}', function () {
-    return view('home'); // o la vista que uses
-})->where('any', '.*');
+// Route::get('/{any}', function () {
+//     return view('home'); // o la vista que uses
+// })->where('any', '.*');
 
 //Rutas
 
@@ -134,6 +138,7 @@ Route::prefix('product')->group(function () {
     Route::post('/store', [ProductController::class, 'store']);
     Route::post('/list', [ProductController::class, 'list']);
     Route::post('/search', [ProductController::class, 'search']);
+    Route::post('/list-by-category', [ProductController::class, 'listByCategory']);
 })->middleware('auth.user');
 
 Route::prefix('salebox')->group(function () {
@@ -161,4 +166,8 @@ Route::prefix('restaurant')->group(function () {
     Route::post('/categories', [RestaurantController::class, 'listCategories']);
 });
 
-Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print'])->name('print.ticket')->middleware('auth');;
+Route::prefix('pointsales')->group(function () {
+    Route::get('/list', [PointSaleController::class, 'list']);
+});
+
+Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print']);

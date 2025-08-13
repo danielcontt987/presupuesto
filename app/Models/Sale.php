@@ -24,4 +24,9 @@ class Sale extends Model
         'subtotal',
         'iva',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(User::class, 'client_id');
+    }
 }
