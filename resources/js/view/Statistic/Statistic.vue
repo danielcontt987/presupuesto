@@ -1,6 +1,11 @@
 <template>
     <v-container fluid>
         <v-row>
+            <v-col cols="12" md="10">
+                <vc-back-button @backAction="navigateToHome"></vc-back-button>
+            </v-col>
+        </v-row>
+        <v-row>
             <v-col cols="12">
                 <v-card class="rounded-lg" flat>
                     <v-card-title>
@@ -90,7 +95,7 @@
                                         <!-- Ver detalle -->
                                         <v-tooltip location="bottom">
                                             <template #activator="{ props }">
-                                                <v-btn v-bind="props" @click="editClient(item)" icon class="rounded-lg"
+                                                <v-btn v-bind="props" @click="goToDetail(item)" icon class="rounded-lg"
                                                     flat size="small" color="primary" :class="xs ? '' : 'mr-2'">
                                                     <v-icon>mdi-eye</v-icon>
                                                 </v-btn>
@@ -101,7 +106,7 @@
                                         <!-- Imprimir nuevamente -->
                                         <v-tooltip location="bottom">
                                             <template #activator="{ props }">
-                                                <v-btn v-bind="props" @click="editClient(item)" icon class="rounded-lg"
+                                                <v-btn v-bind="props" @click="printTicket(item)" icon class="rounded-lg"
                                                     flat size="small" color="greenLight" :class="xs ? '' : 'mr-2'">
                                                     <v-icon>mdi-printer</v-icon>
                                                 </v-btn>
@@ -127,15 +132,14 @@
                 </v-card>
             </v-col>
             <v-col cols="12" md="6" lg="4">
-                <info-card icon="mdi-currency-usd" title="Total" text="546000" color="success" isCurrency />
+                <info-card icon="mdi-pound" title="Total de cotizaciones" :text="total" color="greenLight" />
             </v-col>
             <v-col cols="12" md="6" lg="4">
-                <info-card icon="mdi-arrow-up-bold" title="Proveedor al que más le debo" text="Juan Gabriel"
-                    color="warning" />
+                <info-card icon="mdi-arrow-up-bold" title="Folio de cotización más reciente"
+                    :text="sales.length > 0 ? last.folio : 'No hay cotizaciones'" color="warning" />
             </v-col>
             <v-col cols="12" md="6" lg="4">
-                <info-card icon="mdi-arrow-down-bold" title="Proveedor al que menos le debo" text="Javier Solís"
-                    color="info" />
+                <info-card icon="mdi-currency-usd" title="Total " :text="totalAmount" color="success" isCurrency />
             </v-col>
 
         </v-row>
@@ -163,11 +167,13 @@ import { computed, onMounted, ref } from "vue";
 import moment from "moment";
 import { useStatisticStore } from "../../pinia/statistic.js";
 import { useDisplay } from "vuetify";
+import { useRouter } from "vue-router";
 import accounting from "accounting";
 import InfoCard from "../../components/Statistic/InfoCard.vue";
-// import ClientTable from "./ClientTable.vue";
+import VcBackButton from "../../components/global/BackButton.vue";
 const statisticStore = useStatisticStore();
 const display = useDisplay();
+const router = useRouter();
 
 
 const xs = computed(() => display.xs.value);
@@ -187,6 +193,9 @@ const dateType = ref('start');
 const startDate = ref(null);
 const endDate = ref(null);
 const tempDate = ref(null);
+const total = ref(0);
+const totalAmount = ref(0);
+const last = ref(null);
 const sales = ref([]);
 
 //Methods
@@ -200,6 +209,9 @@ const acceptDate = () => {
     showDatePicker.value = false;
 };
 
+const navigateToHome = () => {
+    router.push("/inicio");
+};
 const show = (type) => {
     dateType.value = type;
     if (dateType.value == "start") {
@@ -211,6 +223,23 @@ const show = (type) => {
     showDatePicker.value = true;
 };
 
+const goToDetail = (item) => {
+    if (!item) {
+        router.push({ name: 'Estadísticas' })
+        return;
+    };
+
+    console.log();
+
+    statisticStore.setSaleId(item.id);
+    statisticStore.getSalesDetails(item.id);
+    router.push({ name: 'Detalle de cotización' });
+};
+
+
+const printTicket = (item) => {
+    window.open(`/print-ticket/${item.id}`, '_blank');
+};
 // Computed
 const today = computed(() => {
     return moment().format('YYYY-MM-DD');
@@ -228,6 +257,9 @@ const filterDate = () => {
         };
         return statisticStore.consultSale(params).then((response) => {
             sales.value = response.data.sales;
+            total.value = response.data.total;
+            totalAmount.value = response.data.totalAmount;
+            last.value = response.data.last;
 
         }).catch((error) => {
             console.error(error);

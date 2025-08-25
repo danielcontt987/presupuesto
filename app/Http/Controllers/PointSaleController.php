@@ -92,7 +92,7 @@ class PointSaleController extends Controller
         }])
             ->whereBetween('saledate', [$request->date1 . ' ' . '00:00:00', $request->date2 . ' ' . '23:59:59'])->get(['id', 'folio', 'saledate', 'total', 'status', 'status_ticket', 'client_id']);
 
-        return response()->json(["status" => "200", "sales" => $sales]);
+        return response()->json(["status" => "200", "sales" => $sales, "total" => $sales->count(), "last" => $sales->last(), "totalAmount" => $sales->sum('total')]);
     }
 
     public function print($id)
@@ -122,5 +122,44 @@ class PointSaleController extends Controller
         ];
         $pdf = PDF::loadView('printers.ticket', $data);
         return $pdf->stream('prosupuesto.pdf');  // Usamos stream en lugar de download
+    }
+
+    public function get($id)
+    {
+        $id = intval($id);
+        $sale = ModelsSale::where('id', $id)->select(
+            'id',
+            'folio',
+            'client_id',
+            'salebox_id',
+            'user_id',
+            'saledate',
+            'total',
+            'subtotal',
+            'iva',
+            'transfer',
+            'card',
+            'cash',
+            'check',
+        )->with(['details' => function ($query) {
+            $query->select(
+                "id",
+                "sale_id",
+                "product_id",
+                "inventory_id",
+                "quantity",
+                "total",
+                "subtotal",
+                "iva",
+                "discount",
+            )->with(['product' => function ($query) {
+                $query->select('id', 'name', 'barcode', 'category_id');
+            }]);
+        }])->with(['user' => function ($query) {
+            $query->select('id', 'name', 'lastname');
+        }])->with(['salebox' => function ($query) {
+            $query->select('id', 'name');
+        }])->first();
+        return response()->json(["status" => "200", "sale" => $sale]);
     }
 }

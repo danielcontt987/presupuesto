@@ -168,6 +168,7 @@ Route::prefix('restaurant')->group(function () {
 
 Route::prefix('pointsales')->group(function () {
     Route::get('/list', [PointSaleController::class, 'list']);
+    Route::get('/get/{id}', [PointSaleController::class, 'get']);
 });
 
 Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print']);

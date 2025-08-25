@@ -104,6 +104,11 @@ const routes = [
         name: 'Estadísticas',
         component: () => import('../view/Statistic/Statistic.vue'),
     },
+    {
+        path: '/detalle-de-cotizacion',
+        name: 'Detalle de cotización',
+        component: () => import('../view/StatisticDetail/StatisticDetail.vue'),
+    }
 ];
 
 const router = createRouter({

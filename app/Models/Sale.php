@@ -23,10 +23,34 @@ class Sale extends Model
         'total',
         'subtotal',
         'iva',
+        'cash',
+        'transfer',
+        'card',
+        'check',
     ];
 
     public function client()
     {
         return $this->belongsTo(User::class, 'client_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function salebox()
+    {
+        return $this->belongsTo(Salebox::class);
+    }
+
+    public function cashcut()
+    {
+        return $this->belongsTo(CashCut::class);
+    }
+
+    public function details()
+    {
+        return $this->hasMany(SaleDetail::class);
     }
 }

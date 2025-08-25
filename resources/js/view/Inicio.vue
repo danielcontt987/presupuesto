@@ -150,7 +150,7 @@ const permissions_arr = ref([
     {
         name: 'Productos',
         route: '/productos',
-        icon: 'mdi-chart-areaspline',
+        icon: 'mdi-tag',
         visibility: false,
     },
     {

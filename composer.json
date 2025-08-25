@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "masbug/flysystem-google-drive-ext": "^2.4",
+        "phpoffice/phpspreadsheet": "*",
         "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {

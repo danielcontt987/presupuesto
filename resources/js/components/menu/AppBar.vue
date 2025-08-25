@@ -13,7 +13,7 @@
                 </small>
             </div>
         </v-toolbar-title>
-        <v-btn color="white" icon @click="fullScreen()">
+        <v-btn color="white" icon @click="toggleFullScreen()">
             <v-icon color="white">mdi-vector-square</v-icon>
         </v-btn>
         <v-btn color="white" icon @click="toggleTheme()">
@@ -41,6 +41,7 @@ import axios from "axios";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCustomTheme } from "@/composable/useCustomMode";
+import { el } from "vuetify/locale";
 const { toggleTheme, themeName } = useCustomTheme()
 
 const router = useRouter();
@@ -65,16 +66,29 @@ const goToPerfil = () => {
     router.push("/mi-perfil");
 };
 
-const fullScreen = () => {
-    const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { // Safari
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { // IE11
-        elem.msRequestFullscreen();
+const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+        // Entrar a pantalla completa
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { // Safari
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE11
+            elem.msRequestFullscreen();
+        }
+    } else {
+        // Salir de pantalla completa
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { // Safari
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { // IE11
+            document.msExitFullscreen();
+        }
     }
-}
+};
+
 
 
 </script>

@@ -17,10 +17,10 @@
                     <h4 class="text-uppercase font-weight-bold caption" v-if="title3 && text !== 0">
                         {{ title3 }}
                     </h4>
-                    <h2 class="primary--text font-weight-bold mt-3" :class="`${color}--text`" v-if="isCurrency">
+                    <h2 class="primary--text font-weight-bold mt-3" :class="'text-' + color" v-if="isCurrency">
                         {{ formatCurrency(text) }}
                     </h2>
-                    <h3 class="font-weight-bold mt-3" :class="`${color}--text`" v-else>
+                    <h3 class="font-weight-bold mt-3" :class="'text-' + color" v-else>
                         {{ text }}
                     </h3>
                 </v-col>
@@ -30,7 +30,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
 
 const props = defineProps({
     icon: String,
