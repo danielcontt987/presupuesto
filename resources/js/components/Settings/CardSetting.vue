@@ -118,9 +118,9 @@
 </template>
 
 <script setup>
-import CardBaseModal from "../global/CardBaseModal.vue";
-import { useAlertNormalStore } from "../../pinia/alert";
-import { useSettingStore } from "../../pinia/setting";
+import CardBaseModal from "@/components/global/CardBaseModal.vue";
+import { useAlertNormalStore } from "@/pinia/alert";
+import { useSettingStore } from "@/pinia/setting";
 import { onMounted, ref } from "vue";
 
 const openModal = ref(false);

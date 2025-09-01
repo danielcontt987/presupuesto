@@ -120,8 +120,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useCashCutStore } from '../../../pinia/cashcut';
-import { useAlertNormalStore } from '../../../pinia/alert';
+import { useCashCutStore } from '@/pinia/cashcut';
+import { useAlertNormalStore } from '@/pinia/alert';
 
 const cashCutStore = useCashCutStore();
 const alertStore = useAlertNormalStore();

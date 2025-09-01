@@ -41,8 +41,8 @@
 </template>
 
 <script setup>
-import { useSettingStore } from "../../pinia/setting";
-import CardBaseModal from '../global/CardBaseModal.vue';
+import { useSettingStore } from "@/pinia/setting";
+import CardBaseModal from '@/components/global/CardBaseModal.vue';
 const settingStore = useSettingStore();
 
 </script>

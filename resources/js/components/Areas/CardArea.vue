@@ -93,7 +93,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import { useAreaStore } from "../../pinia/area.js";
+import { useAreaStore } from "@/pinia/area.js";
 import WindowTabArea from "./Tabs/WindowTabArea.vue";
 import moment from "moment";
 

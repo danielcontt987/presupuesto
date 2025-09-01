@@ -13,37 +13,19 @@
             <v-card-text>
                 <v-row>
                     <v-col cols="12">
-                        <v-text-field
-                            variant="outlined"
-                            label="Nombre *"
-                            v-model="editModule.name"
-                            color="primary"
-                        />
+                        <v-text-field variant="outlined" label="Nombre *" v-model="editModule.name" color="primary" />
                     </v-col>
                 </v-row>
             </v-card-text>
             <v-card-actions class="mx-3">
                 <v-row>
                     <v-col cols="12" md="6">
-                        <v-btn
-                            large
-                            block
-                            class="rounded-lg"
-                            depressed
-                            color="error"
-                            @click="closeModal"
-                        >
+                        <v-btn large block class="rounded-lg" depressed color="error" @click="closeModal">
                             Cerrar
                         </v-btn>
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-btn
-                            large
-                            block
-                            class="rounded-lg bg-primary"
-                            depressed
-                            @click="udpateModule()"
-                        >
+                        <v-btn large block class="rounded-lg bg-primary" depressed @click="udpateModule()">
                             Actualizar
                         </v-btn>
                     </v-col>
@@ -56,12 +38,12 @@
 </template>
 
 <script setup>
-import { useAlertNormalStore } from '../../pinia/alert.js';
-import { useErrorNormalStore } from '../../pinia/error.js';
-import { useModuleStore } from '../../pinia/module.js';
+import { useAlertNormalStore } from '@/pinia/alert.js';
+import { useErrorNormalStore } from '@/pinia/error.js';
+import { useModuleStore } from '@/pinia/module.js';
 import { ref } from "vue";
 defineProps({
-    item:{
+    item: {
         type: Object,
     }
 });
@@ -76,7 +58,7 @@ const editModule = ref({
 })
 
 const udpateModule = () => {
-   
+
     let params = {
         id: moduleStore.moduleEdit.id,
         name: editModule.value.name
@@ -86,10 +68,10 @@ const udpateModule = () => {
         closeModal();
         alertNormal.show = true;
         (alertNormal.color = "success"),
-        (alertNormal.msg = "Se ha actualizado el nuevo módulo"),
-        (alertNormal.type = 0),
-        moduleStore.listModule();
-    }).catch(() =>{
+            (alertNormal.msg = "Se ha actualizado el nuevo módulo"),
+            (alertNormal.type = 0),
+            moduleStore.listModule();
+    }).catch(() => {
         alertError.showError = true;
         alertError.msgError = "success";
         alertError.colorError = "Ha ocurrido en el sistema al actulizar el módulo";
@@ -97,13 +79,13 @@ const udpateModule = () => {
     })
 }
 
-const closeModal = () =>{
+const closeModal = () => {
     moduleStore.closeModalEdit(false)
     moduleStore.clearModuleEdit()
 }
 </script>
 <style scoped>
-.v-card{
+.v-card {
     border-radius: 12px
 }
 </style>

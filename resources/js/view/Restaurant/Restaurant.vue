@@ -84,10 +84,10 @@
 <script setup>
 
 import { onMounted, ref } from 'vue';
-import TableCard from '../../components/Restaurant/Tables.vue';
-import DialogBox from '../../components/Modal/DialogBox.vue';
-import StatusTable from '../../components/Restaurant/StatusTable.vue';
-import { useRestauratStore } from '../../pinia/restaurant';
+import TableCard from '@/components/Restaurant/Tables.vue';
+import DialogBox from '@/components/Modal/DialogBox.vue';
+import StatusTable from '@/components/Restaurant/StatusTable.vue';
+import { useRestauratStore } from '@/pinia/restaurant.js';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 

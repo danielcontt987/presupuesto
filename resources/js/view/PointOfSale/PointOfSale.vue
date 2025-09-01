@@ -78,15 +78,13 @@
                     </v-col>
                 </v-row>
             </v-col>
-            <!-- <v-col cols="12" md="5" lg="4">
-                <card-info-sale :products-count="totalProducts" :subtotal="subtotal" :iva="iva" :total="total" />
-            </v-col> -->
             <v-col cols="12" md="5" lg="4">
                 <card-info-sale :products-count="totalProducts" :total="total" />
             </v-col>
             <v-col cols="12" style="overflow-y: hidden; !important">
                 <dialog-open-box :saleboxes="saleboxStore.saleboxes" v-if="dialogData" />
             </v-col>
+
         </v-row>
         <Alert />
     </v-container>
@@ -103,14 +101,15 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 
-import { useProductStore } from '../../pinia/product';
-import { usePointsaleStore } from '../../pinia/pointsale';
-import { useSaleboxStore } from '../../pinia/salebox';
-import { useCashCutStore } from '../../pinia/cashcut';
-import { useAlertNormalStore } from '../../pinia/alert';
-import CardGrid from '../../components/PointSale/Cards/CardGrid.vue';
-import CardInfoSale from '../../components/PointSale/Cards/CardInfoSale.vue';
-import DialogOpenBox from '../../components/PointSale/dialogs/DialogOpenBox.vue';
+import { useProductStore } from '@/pinia/product.js';
+import { usePointsaleStore } from '@/pinia/pointsale.js';
+import { useSaleboxStore } from '@/pinia/salebox.js';
+import { useCashCutStore } from '@/pinia/cashcut.js';
+import { useAlertNormalStore } from '@/pinia/alert.js';
+import CardGrid from '@/components/PointSale/Cards/CardGrid.vue';
+import CardInfoSale from '@/components/PointSale/Cards/CardInfoSale.vue';
+import DialogOpenBox from '@/components/PointSale/dialogs/DialogOpenBox.vue';
+
 import accounting from 'accounting';
 
 const productStore = useProductStore();
@@ -182,6 +181,8 @@ const createSale = () => {
         alertStore.type = 1;
         return;
     }
+
+
     let params = {
         products: JSON.stringify(pointsaleStore.products),
         cashcut_id: infoCashCut.value.id,

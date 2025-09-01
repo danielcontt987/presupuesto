@@ -106,9 +106,9 @@
 
 <script setup>
 import { useDisplay } from "vuetify";
-import CardBaseModal from "../global/CardBaseModal.vue";
-import { useAlertNormalStore } from "../../pinia/alert";
-import { useSettingStore } from "../../pinia/setting";
+import CardBaseModal from "@/components/global/CardBaseModal.vue";
+import { useAlertNormalStore } from "@/pinia/alert";
+import { useSettingStore } from "@/pinia/setting";
 import { ref } from "vue";
 
 const openModal = ref(false);

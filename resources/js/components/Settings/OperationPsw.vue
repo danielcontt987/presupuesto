@@ -19,7 +19,9 @@
                         </h3>
                     </v-col>
                     <v-col cols="12" class="text-left">
-                         <h4 class="font-weight-light mb-0">La contraseña de operación es la contraseña que se utiliza para acceder a la aplicación y se puede requerir para funcionalidades dentro del sistema.</h4>
+                        <h4 class="font-weight-light mb-0">La contraseña de operación es la contraseña que se utiliza
+                            para acceder a la aplicación y se puede requerir para funcionalidades dentro del sistema.
+                        </h4>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -80,9 +82,9 @@
 
 <script setup>
 import { useDisplay } from "vuetify";
-import CardBaseModal from "../global/CardBaseModal.vue";
-import { useAlertNormalStore } from "../../pinia/alert";
-import { useSettingStore } from "../../pinia/setting";
+import CardBaseModal from "@/components/global/CardBaseModal.vue";
+import { useAlertNormalStore } from "@/pinia/alert";
+import { useSettingStore } from "@/pinia/setting";
 import { ref } from "vue";
 
 const openModal = ref(false);

@@ -165,12 +165,12 @@
 //Imports
 import { computed, onMounted, ref } from "vue";
 import moment from "moment";
-import { useStatisticStore } from "../../pinia/statistic.js";
+import { useStatisticStore } from "@/pinia/statistic.js";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import accounting from "accounting";
-import InfoCard from "../../components/Statistic/InfoCard.vue";
-import VcBackButton from "../../components/global/BackButton.vue";
+import InfoCard from "@/components/Statistic/InfoCard.vue";
+import VcBackButton from "@/components/global/BackButton.vue";
 const statisticStore = useStatisticStore();
 const display = useDisplay();
 const router = useRouter();

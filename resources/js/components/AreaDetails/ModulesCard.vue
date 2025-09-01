@@ -56,9 +56,9 @@
 </template>
 
 <script setup>
-import { useAlertNormalStore } from "../../pinia/alert.js";
+import { useAlertNormalStore } from "@/pinia/alert.js";
 import { ref } from 'vue';
-import { useAreaStore } from '../../pinia/area';
+import { useAreaStore } from '@/pinia/area.js';
 
 const areaStore = useAreaStore();
 const alertNormal = useAlertNormalStore();
@@ -69,7 +69,7 @@ const editForm = () => {
     edit.value = !edit.value;
 };
 
-const changeState = (bool, permissionId) => { 
+const changeState = (bool, permissionId) => {
     areaStore.updatePermission(bool, permissionId);
 };
 
@@ -83,13 +83,13 @@ const storePermission = () => {
         "ids": idsPermission.value,
         "area_id": areaStore.area_id
     }
-    
-    areaStore.savePermission(params).then((response) =>{        
+
+    areaStore.savePermission(params).then((response) => {
         alertNormal.show = true;
         (alertNormal.color = "success"),
-        (alertNormal.msg = "Se han creado nuevos permisos"),
-        (alertNormal.type = 0),
-        (alertNormal.icon = "mdi-check-circle-outline");
+            (alertNormal.msg = "Se han creado nuevos permisos"),
+            (alertNormal.type = 0),
+            (alertNormal.icon = "mdi-check-circle-outline");
         let params = {
             area_id: areaStore.area_id
         }
@@ -97,10 +97,10 @@ const storePermission = () => {
     }).catch((error) => {
         alertNormal.show = true;
         (alertNormal.color = "error"),
-        (alertNormal.msg = "Ha ocurrido un error al crear los permisos para el área"),
-        (alertNormal.type = 0),
-        (alertNormal.icon = "mdi-close-circle-outline");
+            (alertNormal.msg = "Ha ocurrido un error al crear los permisos para el área"),
+            (alertNormal.type = 0),
+            (alertNormal.icon = "mdi-close-circle-outline");
     })
-    
+
 }
 </script>

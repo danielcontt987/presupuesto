@@ -90,7 +90,7 @@ class PointSaleController extends Controller
         $sales = ModelsSale::where('salebox_id', $salebox)->with(['client' => function ($query) {
             $query->select('id', 'name', 'lastname');
         }])
-            ->whereBetween('saledate', [$request->date1 . ' ' . '00:00:00', $request->date2 . ' ' . '23:59:59'])->get(['id', 'folio', 'saledate', 'total', 'status', 'status_ticket', 'client_id']);
+            ->whereBetween('saledate', [$request->date1 . ' ' . '00:00:00', $request->date2 . ' ' . '23:59:59'])->orderBy('id', 'desc')->get(['id', 'folio', 'saledate', 'total', 'status', 'status_ticket', 'client_id']);
 
         return response()->json(["status" => "200", "sales" => $sales, "total" => $sales->count(), "last" => $sales->last(), "totalAmount" => $sales->sum('total')]);
     }
@@ -159,7 +159,7 @@ class PointSaleController extends Controller
             $query->select('id', 'name', 'lastname');
         }])->with(['salebox' => function ($query) {
             $query->select('id', 'name');
-        }])->first();
+        }])->orderBy('id', 'desc')->first();
         return response()->json(["status" => "200", "sale" => $sale]);
     }
 }

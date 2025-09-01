@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PointSaleController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\SaleBoxController;
 use App\Http\Controllers\SettingController;
@@ -92,6 +93,10 @@ Route::get('/estadisticas', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/planificador', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Not found
 // Route::get('/{any}', function () {
 //     return view('home'); // o la vista que uses
@@ -169,6 +174,10 @@ Route::prefix('restaurant')->group(function () {
 Route::prefix('pointsales')->group(function () {
     Route::get('/list', [PointSaleController::class, 'list']);
     Route::get('/get/{id}', [PointSaleController::class, 'get']);
+});
+
+Route::prefix('projects')->group(function () {
+    Route::get('/list', [ProjectController::class, 'list']);
 });
 
 Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print']);

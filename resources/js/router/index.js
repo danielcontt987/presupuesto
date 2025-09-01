@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Login from '../view/Login.vue';
-import Admin from '../view/Admin.vue';
-import Inicio from '../view/Inicio.vue';
-import Ajustes from '../view/Setting.vue';
-import Area from '../view/Area.vue';
-import AreaDetails from '../view/AreaDetail/AreaDetails.vue';
-import CreateModule from '../view/Module/CreateModule.vue';
-import PointOfSale from '../view/PointOfSale/PointOfSale.vue';
-import Client from '../view/Client/Client.vue';
-import CreateClient from '../view/Client/CreateClient.vue';
-import Product from '../view/Product/Product.vue';
-import CreateProduct from '../view/Product/CreateProduct.vue';
-import Restaurant from '../view/Restaurant/Restaurant.vue';
+import Login from '@/view/Login.vue';
+import Admin from '@/view/Admin.vue';
+import Inicio from '@/view/Inicio.vue';
+import Ajustes from '@/view/Setting.vue';
+import Area from '@/view/Area.vue';
+import AreaDetails from '@/view/AreaDetail/AreaDetails.vue';
+import CreateModule from '@/view/Module/CreateModule.vue';
+import PointOfSale from '@/view/PointOfSale/PointOfSale.vue';
+import Client from '@/view/Client/Client.vue';
+import CreateClient from '@/view/Client/CreateClient.vue';
+import Product from '@/view/Product/Product.vue';
+import CreateProduct from '@/view/Product/CreateProduct.vue';
+import Restaurant from '@/view/Restaurant/Restaurant.vue';
 
 const routes = [
     {
@@ -87,27 +87,37 @@ const routes = [
     {
         path: '/mi-perfil',
         name: 'Mi perfil',
-        component: () => import('../view/Profile/Profile.vue'),
+        component: () => import('@/view/Profile/Profile.vue'),
     },
     {
         path: '/proyectos',
         name: 'Proyectos',
-        component: () => import('../view/Project/Project.vue'),
+        component: () => import('@/view/Project/Project.vue'),
     },
     {
         path: '/seleccionar',
         name: 'Seleccionar',
-        component: () => import('../view/Restaurant/SelectProduct.vue'),
+        component: () => import('@/view/Restaurant/SelectProduct.vue'),
     },
     {
         path: '/estadisticas',
         name: 'Estadísticas',
-        component: () => import('../view/Statistic/Statistic.vue'),
+        component: () => import('@/view/Statistic/Statistic.vue'),
     },
     {
         path: '/detalle-de-cotizacion',
         name: 'Detalle de cotización',
-        component: () => import('../view/StatisticDetail/StatisticDetail.vue'),
+        component: () => import('@/view/StatisticDetail/StatisticDetail.vue'),
+    },
+    {
+        path: '/planificador',
+        name: 'Planificador',
+        component: () => import('@/view/Planner/Planner.vue'),
+    },
+    {
+        path: '/detalle-del-proyecto',
+        name: 'Detalle del proyecto',
+        component: () => import('@/view/PlannerDetail/PlannerDetail.vue'),
     }
 ];
 

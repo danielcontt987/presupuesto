@@ -159,6 +159,12 @@ const permissions_arr = ref([
         icon: 'mdi-chart-areaspline',
         visibility: false,
     },
+    {
+        name: 'Planificador',
+        route: '/planificador',
+        icon: 'mdi-chart-areaspline',
+        visibility: false,
+    },
 ]);
 
 const permissions = ref([]);

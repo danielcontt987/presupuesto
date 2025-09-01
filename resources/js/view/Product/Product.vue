@@ -124,9 +124,9 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
-import { useProductStore } from '../../pinia/product';
+import { useProductStore } from '@/pinia/product.js';
 import accounting from 'accounting';
-import BackButton from '../../components/global/BackButton.vue';
+import BackButton from '@/components/global/BackButton.vue';
 
 const productStore = useProductStore();
 

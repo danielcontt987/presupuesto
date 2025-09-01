@@ -24,73 +24,73 @@
                     <v-card-text class="mt-3">
                         <v-row class="mt-3">
                             <v-col md="3" cols="12">
-                                <p class="text-primary">CAJA</p>
+                                <p class="text-greyDark">CAJA</p>
                                 <v-chip variant="tonal" color="greenLight" class="rounded-lg mt-2"
                                     v-if="statisticStore && statisticStore.datailSale && statisticStore.datailSale.salebox">
-                                    {{ statisticStore.datailSale.salebox.name }}
+                                    <b>{{ statisticStore.datailSale.salebox.name }}</b>
                                 </v-chip>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">FOLIO</p>
+                                <p class="text-greyDark">FOLIO</p>
                                 <v-chip variant="tonal" color="fail" class="rounded-lg mt-2"
                                     v-if="statisticStore && statisticStore.datailSale">
-                                    {{ statisticStore.datailSale.folio }}
+                                    <b>{{ statisticStore.datailSale.folio }}</b>
                                 </v-chip>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">USUARIO</p>
-                                <h3 class="font-weight-bold text-grey_dark mt-2" v-if="statisticStore">{{
+                                <p class="text-greyDark">USUARIO</p>
+                                <h3 class="font-weight-bold tex-black mt-2" v-if="statisticStore">{{
                                     'Jose Daniel Contreras Perez'
                                     }}</h3>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">CLIENTE</p>
-                                <h3 class="font-weight-bold text-grey_dark mt-2" v-if="statisticStore">{{
+                                <p class="text-greyDark">CLIENTE</p>
+                                <h3 class="font-weight-bold tex-black mt-2" v-if="statisticStore">{{
                                     "Jose Damina Lopez Perez"
                                     }}</h3>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">FECHA DE COTIZACIÓN</p>
-                                <h3 class="font-weight-bold text-grey_dark mt-2"
+                                <p class="text-greyDark">FECHA DE COTIZACIÓN</p>
+                                <h3 class="font-weight-bold tex-black mt-2"
                                     v-if="statisticStore && statisticStore.datailSale">{{
                                         statisticStore.datailSale.saledate
                                     }}</h3>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">SUBTOTAL</p>
-                                <h3 class="font-weight-bold text-grey_dark mt-2"
+                                <p class="text-greyDark">SUBTOTAL</p>
+                                <h3 class="font-weight-bold tex-black mt-2"
                                     v-if="statisticStore && statisticStore.datailSale">{{
                                         currency(statisticStore.datailSale.subtotal) }}</h3>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">IVA</p>
-                                <h3 class="font-weight-bold text-grey_dark mt-2"
+                                <p class="text-greyDark">IVA</p>
+                                <h3 class="font-weight-bold tex-black mt-2"
                                     v-if="statisticStore && statisticStore.datailSale">{{
                                         currency(statisticStore.datailSale.iva) }}</h3>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">TOTAL</p>
-                                <h3 class="font-weight-bold text-grey_dark mt-2"
+                                <p class="text-greyDark">TOTAL</p>
+                                <h3 class="font-weight-bold tex-black mt-2"
                                     v-if="statisticStore && statisticStore.datailSale">{{
                                         currency(statisticStore.datailSale.total) }}</h3>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">DOCUMENTO EXPEDIDO</p>
-                                <h3 class="font-weight-bold text-grey_dark mt-2"
+                                <p class="text-greyDark">DOCUMENTO EXPEDIDO</p>
+                                <h3 class="font-weight-bold tex-black mt-2"
                                     v-if="statisticStore && statisticStore.datailSale">{{
                                         'COTIZACIÓN' }}</h3>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">ESTATUS DE COTIZACIÓN</p>
-                                <!-- <h3 class="font-weight-bold text-grey_dark mt-2" v-if="statisticStore">{{
+                                <p class="text-greyDark">ESTATUS DE COTIZACIÓN</p>
+                                <!-- <h3 class="font-weight-bold tex-black mt-2" v-if="statisticStore">{{
                                     'Sin descuentos' }}</h3> -->
                                 <v-chip variant="tonal" color="success" class="rounded-lg mt-2" v-if="statisticStore">
-                                    {{ "FINALIZADA" }}
+                                    <b>{{ "FINALIZADA" }}</b>
                                 </v-chip>
                             </v-col>
                             <v-col md="3" cols="12">
-                                <p class="text-primary">ESTATUS DE PAGO</p>
-                                <h3 class="font-weight-bold text-grey_dark mt-2" v-if="statisticStore">{{
+                                <p class="text-greyDark">ESTATUS DE PAGO</p>
+                                <h3 class="font-weight-bold text-black mt-2" v-if="statisticStore">{{
                                     'Sin descuentos' }}</h3>
                             </v-col>
                         </v-row>
@@ -168,13 +168,13 @@
 </template>
 
 <script setup>
-import VcBackButton from '../../components/global/BackButton.vue';
+import VcBackButton from '@/components/global/BackButton.vue';
 import { useDisplay } from 'vuetify';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
-import { useStatisticStore } from '../../pinia/statistic';
+import { useStatisticStore } from '@/pinia/statistic';
 import accounting from 'accounting';
-import InfoCard from '../../components/Statistic/InfoCard.vue';
+import InfoCard from '@/components/Statistic/InfoCard.vue';
 
 
 // variables

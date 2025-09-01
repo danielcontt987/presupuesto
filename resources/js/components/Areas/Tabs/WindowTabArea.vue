@@ -4,13 +4,8 @@
             <template v-slot:top>
                 <v-row class="mx-1">
                     <v-col cols="12">
-                        <v-text-field
-                            v-model="search"
-                            variant="outlined"
-                            label="Buscar"
-                            single-line
-                            hide-details
-                        ></v-text-field>
+                        <v-text-field v-model="search" variant="outlined" label="Buscar" single-line
+                            hide-details></v-text-field>
                     </v-col>
                 </v-row>
             </template>
@@ -18,30 +13,18 @@
                 {{ item.users }}
             </template>
             <template v-slot:item.actions="{ item }">
-                <v-btn
-                    icon="mdi-eye"
-                    class="rounded-lg"
-                    flat
-                    size="small"
-                    color="primary"
-                    @click="goToDetail(item.id)"
-                ></v-btn>
+                <v-btn icon="mdi-eye" class="rounded-lg" flat size="small" color="primary"
+                    @click="goToDetail(item.id)"></v-btn>
             </template>
         </v-data-table>
         <div class="text-center pt-2">
-            <v-pagination
-                elevation="3"
-                v-model="page"
-                :length="pageCount"
-                size="small"
-                color="primary"
-            />
+            <v-pagination elevation="3" v-model="page" :length="pageCount" size="small" color="primary" />
         </div>
     </v-window-item>
 </template>
 
 <script setup>
-import { useAreaStore } from "../../../pinia/area.js";
+import { useAreaStore } from "@/pinia/area.js";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();

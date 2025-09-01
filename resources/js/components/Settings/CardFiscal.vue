@@ -16,7 +16,7 @@
                     <v-col cols="12">
                         <h4 class="font-weight-light mb-0">RFC</h4>
                         <h3 class="font-weight-bold mb-0">
-                            {{settingStore.business.fiscal_rfc}}
+                            {{ settingStore.business.fiscal_rfc }}
                         </h3>
                     </v-col>
                     <v-col cols="12">
@@ -24,13 +24,14 @@
                             Razón social
                         </h4>
                         <h3 class="font-weight-bold mb-0">
-                            {{settingStore.business.fiscal_corporative_name}}
+                            {{ settingStore.business.fiscal_corporative_name }}
                         </h3>
                     </v-col>
                     <v-col cols="12">
                         <h4 class="font-weight-light mb-0">Domicilio</h4>
                         <h3 class="font-weight-bold mb-0">
-                            {{ `${settingStore.business.fiscal_street} C.P. 63175 / Colonia Comerciantes Tepic, Nayarit, México` }}
+                            {{ `${settingStore.business.fiscal_street} C.P. 63175 / Colonia Comerciantes Tepic, Nayarit,
+                            México` }}
                         </h3>
                     </v-col>
                     <v-col cols="12">
@@ -38,7 +39,7 @@
                             Regímen fiscal
                         </h4>
                         <h3 class="font-weight-bold mb-0">
-                            {{settingStore.business.tax_regime}}
+                            {{ settingStore.business.tax_regime }}
                         </h3>
                     </v-col>
                     <v-col cols="12">
@@ -46,7 +47,7 @@
                             Correo electrónico
                         </h4>
                         <h3 class="font-weight-bold mb-0" v-if="settingStore.business.email_company">
-                            {{settingStore.business.email_company}}
+                            {{ settingStore.business.email_company }}
                         </h3>
                         <h3 class="font-weight-bold mb-0" v-else>
                             No tiene registrado correo electrónico
@@ -61,25 +62,13 @@
                                     </h4>
                                 </div>
                                 <div class="mr-6" v-if="settingStore.business.cer">
-                                    <v-chip
-                                        color="success"
-                                        text-color="white"
-                                        small
-                                        class="rounded-lg pt-2 pb-2"
-                                        
-                                    >
+                                    <v-chip color="success" text-color="white" small class="rounded-lg pt-2 pb-2">
                                         <b>VÁLIDO</b>
                                     </v-chip>
                                 </div>
-                                 <div class="mr-6" v-else>
-                                    <v-chip
-                                        color="fail"
-                                        variant="tonal"
-                                        text-color="white"
-                                        small
-                                        class="rounded-lg pt-2 pb-2"
-                                        
-                                    >
+                                <div class="mr-6" v-else>
+                                    <v-chip color="fail" variant="tonal" text-color="white" small
+                                        class="rounded-lg pt-2 pb-2">
                                         <b>SIN SUBIR</b>
                                     </v-chip>
                                 </div>
@@ -95,24 +84,12 @@
                                     </h4>
                                 </div>
                                 <div class="mr-6" v-if="settingStore.business.key">
-                                    <v-chip
-                                        variant="tonal"
-                                        color="success"
-                                        small
-                                        class="rounded-lg pt-2 pb-2"
-                                        
-                                    >
+                                    <v-chip variant="tonal" color="success" small class="rounded-lg pt-2 pb-2">
                                         <b>VÁLIDO</b>
                                     </v-chip>
                                 </div>
-                                 <div class="mr-6" v-else>
-                                    <v-chip
-                                        variant="tonal"
-                                        color="fail"
-                                        small
-                                        class="rounded-lg pt-2 pb-2"
-                                        
-                                    >
+                                <div class="mr-6" v-else>
+                                    <v-chip variant="tonal" color="fail" small class="rounded-lg pt-2 pb-2">
                                         <b>SIN SUBIR</b>
                                     </v-chip>
                                 </div>
@@ -184,9 +161,9 @@
 
 <script setup>
 import { useDisplay } from "vuetify";
-import CardBaseModal from "../global/CardBaseModal.vue";
-import { useAlertNormalStore } from "../../pinia/alert";
-import { useSettingStore } from "../../pinia/setting";
+import CardBaseModal from "@/components/global/CardBaseModal.vue";
+import { useAlertNormalStore } from "@/pinia/alert";
+import { useSettingStore } from "@/pinia/setting";
 import { ref } from "vue";
 
 const openModal = ref(false);

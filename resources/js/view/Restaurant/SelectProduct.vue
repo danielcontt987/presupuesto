@@ -260,11 +260,11 @@
 <script setup>
 import accounting from 'accounting';
 import { computed, nextTick, onMounted, ref } from 'vue';
-import { useRestauratStore } from '../../pinia/restaurant';
+import { useRestauratStore } from '@/pinia/restaurant';
 import { useRouter } from 'vue-router';
-import { useProductStore } from '../../pinia/product';
-import CardBaseModal from '../../components/global/CardBaseModal.vue';
-import VcBackButton from '../../components/global/BackButton.vue';
+import { useProductStore } from '@/pinia/product';
+import CardBaseModal from '@/components/global/CardBaseModal.vue';
+import VcBackButton from '@/components/global/BackButton.vue';
 import { useDisplay } from 'vuetify';
 
 const { mdAndDown } = useDisplay();

@@ -88,8 +88,7 @@
                                 </h4>
                             </div>
                             <div>
-                                <v-switch v-model="editSetting.iva"
-                                    color="primary" hide-details inset></v-switch>
+                                <v-switch v-model="editSetting.iva" color="primary" hide-details inset></v-switch>
                             </div>
                         </v-col>
                     </v-row>
@@ -120,8 +119,8 @@
 
 <script setup>
 import CardBaseModal from "../global/CardBaseModal.vue";
-import { useAlertNormalStore } from "../../pinia/alert";
-import { useSettingStore } from "../../pinia/setting";
+import { useAlertNormalStore } from "@/pinia/alert";
+import { useSettingStore } from "@/pinia/setting";
 import { onMounted, ref } from "vue";
 
 const openModal = ref(false);
