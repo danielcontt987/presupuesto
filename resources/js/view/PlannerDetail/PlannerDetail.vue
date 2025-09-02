@@ -1,16 +1,16 @@
 <template>
     <v-container fluid class="pa-6 mb-6">
-        <!-- Header -->
         <v-row>
             <v-col cols="12" md="10">
                 <vc-back-button @backAction="navigateToHome()"></vc-back-button>
             </v-col>
         </v-row>
+        <!-- Header -->
         <v-row>
             <v-col cols="12">
-                <h1 class="text-h4 font-weight-bold mb-2">Project Board</h1>
+                <h1 class="text-h4 font-weight-bold mb-2">{{ plannerStore.project.name }}</h1>
                 <p class="text-body-2 text-medium-emphasis">
-                    Manage your tasks and track progress across different stages
+                    {{ plannerStore.project.description }}
                 </p>
             </v-col>
         </v-row>
@@ -33,8 +33,8 @@
                     <!-- Column Header -->
                     <div class="d-flex justify-space-between align-center mb-3">
                         <div class="d-flex align-center">
-                            <span class="font-weight-medium">{{ col.title }}</span>
-                            <v-chip size="small" class="ml-2">{{ col.cards.length }}</v-chip>
+                            <span class="font-weight-medium">{{ col.name }}</span>
+                            <v-chip size="small" class="ml-2">{{ col.details.length }}</v-chip>
                         </div>
                         <v-menu>
                             <template #activator="{ props }">
@@ -53,10 +53,11 @@
 
                     <!-- Cards -->
                     <div>
-                        <v-card v-for="card in col.cards" flat :key="card.id" class="mb-3 pa-3" outlined
+                        <v-card v-for="card in col.details" :key="card.id" flat outlined class="mb-3 pa-3"
                             draggable="true" @dragstart="onDragStart($event, card.id)">
+                            <!-- título + menú -->
                             <div class="d-flex justify-space-between align-start mb-2">
-                                <span class="font-weight-medium">{{ card.title }}</span>
+                                <span class="font-weight-medium">{{ card.task_name }}</span>
                                 <v-menu>
                                     <template #activator="{ props }">
                                         <v-btn icon="mdi-dots-horizontal" v-bind="props" size="x-small"
@@ -72,21 +73,35 @@
                                     </v-list>
                                 </v-menu>
                             </div>
-                            <p v-if="card.description" class="text-caption mb-2">{{ card.description }}</p>
-                            <!-- Avatares encimados -->
-                            <div class="d-flex avatar-stack" v-if="card.assignees && card.assignees.length">
-                                <!-- Mostramos solo los 3 primeros -->
-                                <v-avatar v-for="(user, index) in card.assignees.slice(0, 3)" :key="index" size="24"
-                                    :color="getColor(index)" class="stacked-avatar">
+
+                            <!-- descripción -->
+                            <p v-if="card.task_description" class="text-caption mb-2">
+                                {{ card.task_description }}
+                            </p>
+                            <!-- avatares -->
+                            <div class="d-flex  avatar-stack" v-if="parseAssignees(card).length || card.priority">
+                                <v-avatar v-for="(user, index) in parseAssignees(card).slice(0, 3)" :key="index"
+                                    size="30" :color="getColor(index)" class="stacked-avatar" variant="tonal">
                                     <span class="text-caption">{{ getInitials(user) }}</span>
                                 </v-avatar>
-
-                                <!-- Si hay más de 3, mostrar +N -->
-                                <v-avatar v-if="card.assignees.length > 3" size="24" color="grey-darken-1"
+                                <v-avatar v-if="parseAssignees(card).length > 3" size="30" color="primary"
                                     class="stacked-avatar">
-                                    <span class="text-caption">+{{ card.assignees.length - 3 }}</span>
+                                    <span class="text-caption">+{{ parseAssignees(card).length - 3 }}</span>
                                 </v-avatar>
                             </div>
+
+                            <v-chip size="small" :color="priorityColor(card.priority)" variant="tonal"
+                                class="rounded-lg mt-4" v-if="card.priority == 'low'">
+                                <b> {{ "BAJA" }}</b>
+                            </v-chip>
+                            <v-chip size="small" :color="priorityColor(card.priority)" variant="tonal"
+                                class="rounded-lg mt-4" v-if="card.priority == 'medium'">
+                                <b> {{ "MEDIA" }}</b>
+                            </v-chip>
+                            <v-chip size="small" :color="priorityColor(card.priority)" variant="tonal"
+                                class="rounded-lg mt-4" v-if="card.priority == 'hight'">
+                                <b>{{ "ALTA" }}</b>
+                            </v-chip>
                         </v-card>
                     </div>
 
@@ -113,8 +128,8 @@
                 <v-card-text>
                     <v-text-field v-model="cardForm.title" label="Title"></v-text-field>
                     <v-textarea v-model="cardForm.description" label="Description"></v-textarea>
-                    <v-select v-model="cardForm.priority" :items="['low', 'medium', 'high']"
-                        label="Priority"></v-select>
+                    <v-select v-model="cardForm.priority" :items="[' low', 'medium', 'high']" label="Priority">
+                    </v-select>
                     <v-text-field v-model="cardForm.assignee" label="Assignee"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -144,77 +159,50 @@
 
 <script setup>
 
-import { ref, watch, onMounted } from "vue"
+import { ref, onMounted } from "vue"
 import VcBackButton from "@/components/global/BackButton.vue"
 import { useRouter } from "vue-router"
+import { usePlannerStore } from "@/pinia/planner.js"
+const plannerStore = usePlannerStore();
 const router = useRouter();
 
-const STORAGE_KEY = "kanban-board-data"
-
-// Colores predefinidos de Vuetify
-const colors = ["red", "blue", "green", "purple", "indigo", "teal", "orange"];
-
-// Función para obtener color basado en el índice
-const getColor = (index) => colors[index % colors.length];
-
-const initialData = [
-    {
-        id: "todo",
-        title: "Pendiente",
-        cards: [
-            { id: "1", title: "Design landing page", description: "Wireframes and mockups", priority: "high", assignee: "Sarah Chen" },
-            { id: "2", title: "Set up analytics", description: "Google Analytics setup", priority: "medium", assignee: "Mike Johnson" }
-        ]
-    },
-    {
-        id: "En",
-        title: "En espera",
-        cards: [
-            {
-                id: "3", title: "API Integration", description: "Connect with payment API", priority: "high", assignees: ["Juan Pérez", "María López", "Carlos Sánchez", "Ana Torres", "Luis Gómez"]
-            }
-        ]
-    },
-    {
-        id: "En2",
-        title: "En progreso",
-        cards: [
-            { id: "3", title: "API Integration", description: "Connect with payment API", priority: "high", assignee: "Alex Rodriguez" }
-        ]
-    },
-    {
-        id: "En3",
-        title: "En revisión",
-        cards: [
-            { id: "3", title: "API Integration", description: "Connect with payment API", priority: "high", assignee: "Alex Rodriguez" }
-        ]
-    },
-    {
-        id: "En4",
-        title: "Completado",
-        cards: [
-            { id: "3", title: "API Integration", description: "Connect with payment API", priority: "high", assignee: "Alex Rodriguez" }
-        ]
+const parseAssignees = (card) => {
+    try {
+        const parsed = JSON.parse(card.assigned_to.replace(/'/g, '"'))
+        return Array.isArray(parsed[0]) ? parsed[0] : parsed
+    } catch (e) {
+        return []
     }
-]
+}
+
+const colors = ["greenLight", "icon_color", "green", "purple", "indigo", "teal", "orange"];
+
+// Helpers
+const getInitials = (name) => {
+    if (typeof name !== "string") return ""
+    return name.split(" ").map(n => n[0]).join("")
+}
+const getColor = (index) => colors[index % colors.length];
+const priorityColor = (priority) => {
+    switch (priority) {
+        case 'hight':
+            return 'red darken-2';
+        case 'medium':
+            return 'orange darken-2';
+        case 'low':
+            return 'green darken-2';
+        default:
+            return 'grey';
+    }
+}
 
 const columns = ref([])
 const dragOverColumn = ref(null)
 
 // Load data
 onMounted(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    columns.value = saved ? JSON.parse(saved) : initialData
+    columns.value = plannerStore.project.columns;
 })
-
-// Save data
-watch(columns, (val) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(val))
-}, { deep: true })
-
-// Helpers
-
-const getInitials = (name) => name.split(" ").map(n => n[0]).join("")
 
 // Drag & Drop
 const draggedCardId = ref(null)
@@ -231,17 +219,38 @@ const onDropCard = (e, targetColId) => {
     let sourceColId = null
 
     columns.value.forEach(col => {
-        const idx = col.cards.findIndex(c => c.id === cardId)
+        // return console.log(col);
+        const idx = col.details.findIndex(c => c.id === cardId)
+
         if (idx !== -1) {
-            draggedCard = col.cards[idx]
+            draggedCard = col.details[idx]
             sourceColId = col.id
-            col.cards.splice(idx, 1)
+            col.details.splice(idx, 1)
+
         }
     })
 
     if (draggedCard && sourceColId !== targetColId) {
         const targetCol = columns.value.find(c => c.id === targetColId)
-        targetCol.cards.push(draggedCard)
+        targetCol.details.push(draggedCard)
+        let params = {
+            cardId: cardId,
+            sourceColId: sourceColId,
+            targetColId: targetColId
+        }
+        plannerStore.updateCard(params)
+            .then(() => {
+                plannerStore.getProject(plannerStore.projectId)
+            }).catch(() => {
+                // Error: revertir cambios en la UI
+                columns.value.forEach(col => {
+                    if (col.id === sourceColId) {
+                        col.details.push(draggedCard)
+                    } else if (col.id === targetColId) {
+                        col.details = col.details.filter(c => c.id !== cardId)
+                    }
+                })
+            })
     }
 
     dragOverColumn.value = null

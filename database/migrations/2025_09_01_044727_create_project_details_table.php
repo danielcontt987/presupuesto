@@ -18,7 +18,8 @@ return new class extends Migration
             $table->text('task_description')->nullable();
             $table->text('img')->nullable();
             $table->date('due_date')->nullable();
-            $table->integer('assigned_to')->nullable();
+            $table->text('assigned_to')->nullable();
+            $table->enum('priority', ['low', 'medium', 'higth'])->default('low');
             $table->integer('project_colums_id');
             $table->timestamps();
             $table->softDeletes();

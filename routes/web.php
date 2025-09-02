@@ -178,6 +178,8 @@ Route::prefix('pointsales')->group(function () {
 
 Route::prefix('projects')->group(function () {
     Route::get('/list', [ProjectController::class, 'list']);
+    Route::get('/get', [ProjectController::class, 'get']);
+    Route::post('/update-card', [ProjectController::class, 'updateCard']);
 });
 
 Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print']);

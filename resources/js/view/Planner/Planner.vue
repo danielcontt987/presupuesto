@@ -44,7 +44,7 @@
                                         <v-icon>mdi-dots-vertical</v-icon>
                                         <v-menu activator="parent">
                                             <v-list>
-                                                <v-list-item @click="goToDetails()">
+                                                <v-list-item @click="goToDetails(project.id)">
                                                     <v-list-item-title>Ver proyecto</v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -81,10 +81,9 @@ import CardBaseModal from "@/components/global/CardBaseModal.vue";
 import VcBackButton from "@/components/global/BackButton.vue";
 import { useRouter } from "vue-router";
 import { usePlannerStore } from "@/pinia/planner";
-const PlannerStore = usePlannerStore();
+const plannerStore = usePlannerStore();
 const router = useRouter();
 
-const projects = ref([]);
 const page = ref(1);
 const itemsPerPage = ref(5);
 
@@ -92,13 +91,13 @@ const itemsPerPage = ref(5);
 const pagedProjects = computed(() => {
     const startIndex = (page.value - 1) * itemsPerPage.value;
     const endIndex = startIndex + itemsPerPage.value;
-    return PlannerStore.projects.slice(startIndex, endIndex);
+    return plannerStore.projects.slice(startIndex, endIndex);
 });
 
-const pageCount = computed(() => Math.ceil(PlannerStore.projects.length / itemsPerPage.value));
+const pageCount = computed(() => Math.ceil(plannerStore.projects.length / itemsPerPage.value));
 
 onMounted(() => {
-    PlannerStore.listProject();
+    plannerStore.listProject();
 });
 
 
@@ -108,8 +107,12 @@ onMounted(() => {
 const navigateToHome = () => {
     router.push({ name: 'home' });
 };
-const goToDetails = () => {
-    router.push({ name: 'Detalle del proyecto' })
+
+const goToDetails = (id) => {
+    plannerStore.getProject(id).then(() => {
+        plannerStore.setProjectId(id);
+        router.push({ name: 'Detalle del proyecto' });
+    });
 };
 
 

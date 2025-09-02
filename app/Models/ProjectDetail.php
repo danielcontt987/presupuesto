@@ -17,6 +17,7 @@ class ProjectDetail extends Model
         'due_date',
         'assigned_to',
         'project_colums_id',
+        'priority',
     ];
 
     public function project()
@@ -27,10 +28,5 @@ class ProjectDetail extends Model
     public function column()
     {
         return $this->belongsTo(ProjectColums::class, 'project_colums_id');
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'assigned_to');
     }
 }
