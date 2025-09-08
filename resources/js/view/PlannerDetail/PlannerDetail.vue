@@ -17,7 +17,7 @@
 
         <v-row>
             <v-col cols="12" md="5">
-                <v-btn color="success" class="mr-5" flat>Agregar Tarea</v-btn>
+                <v-btn color="success" class="mr-5" flat @click="addNewTask()">Agregar Tarea</v-btn>
                 <v-btn color="greenLight" flat>Agregar colaborador</v-btn>
             </v-col>
         </v-row>
@@ -271,6 +271,10 @@ const openCardDialog = (card, columnId) => {
     activeColumnId.value = columnId
     cardForm.value = card ? { ...card } : { title: "", description: "", priority: "medium", assignee: "" }
     cardDialog.value = true
+}
+
+const addNewTask = () => {
+    openCardDialog(null, columns.value[0].id)
 }
 
 const closeCardDialog = () => {

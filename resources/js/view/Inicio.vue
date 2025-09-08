@@ -165,6 +165,12 @@ const permissions_arr = ref([
         icon: 'mdi-chart-areaspline',
         visibility: false,
     },
+    {
+        name: 'Cocina',
+        route: '/cocina',
+        icon: 'mdi-chart-areaspline',
+        visibility: false,
+    },
 ]);
 
 const permissions = ref([]);

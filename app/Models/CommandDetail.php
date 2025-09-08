@@ -18,4 +18,14 @@ class CommandDetail extends Model
         'status',
         'notes',
     ];
+
+    public function command()
+    {
+        return $this->belongsTo(Command::class, 'command_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

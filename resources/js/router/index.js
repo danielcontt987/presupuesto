@@ -118,6 +118,11 @@ const routes = [
         path: '/detalle-del-proyecto',
         name: 'Detalle del proyecto',
         component: () => import('@/view/PlannerDetail/PlannerDetail.vue'),
+    },
+    {
+        path: '/cocina',
+        name: 'Cocina',
+        component: () => import('@/view/Cook/Cook.vue'),
     }
 ];
 

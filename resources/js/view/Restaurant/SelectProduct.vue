@@ -1,13 +1,15 @@
 <template>
     <v-navigation-drawer class="bg-white" permanent v-if="openDrawerUpdate" :location="sizeMd" width="400">
-        <v-list-item lines="two" subtitle="Mesa seleccionada" title="Mesa 1">
+        <v-list-item lines="two" subtitle="Mesa seleccionada"
+            :title="restaurantStore.selectedTable ? restaurantStore.selectedTable.name : 'Sin mesa seleccionada'">
             <template #prepend>
                 <v-avatar color="#00CFB5" :size="40" class="bordered-avatar font-weight-bold">
-                    <span class="text-white font-bold">{{ 1 }}</span>
+                    <span class="text-white font-bold">{{ restaurantStore.selectedTable ??
+                        restaurantStore.selectedTable.number }}</span>
                 </v-avatar>
             </template>
         </v-list-item>
-        <v-list-item class="text-center" v-if="restaurantStore.items.length == 0">
+        <v-list-item class="text-center" v-if="restaurantStore.commands && restaurantStore.commands.length == 0">
             <v-col cols="12" class="text-center mt-12">
                 <v-icon color="background" size="200">mdi-food-apple-outline</v-icon>
                 <p class="text-primary text-center font-weight-bold">
@@ -16,10 +18,10 @@
             </v-col>
         </v-list-item>
         <v-list-item>
-            <v-row no-gutters class="mt-6" v-if="restaurantStore.items.length > 0">
+            <v-row no-gutters class="mt-6" v-if="restaurantStore.commands.length > 0">
                 <v-col cols="12">
-                    <v-btn color="primary" @click="openOrden = true">
-                        <v-badge color="error" :content="restaurantStore.items.length" offset-x="-15" offset-y="-6">
+                    <v-btn color="primary" @click="openCommand = true">
+                        <v-badge color="error" :content="restaurantStore.commands.length" offset-x="-15" offset-y="-6">
                             <span class="py-2">Ver pedido</span>
                         </v-badge>
                     </v-btn>
@@ -71,30 +73,32 @@
     <template v-if="openDrawerUpdate == false">
         <v-btn class="bg-primary text-white" style="position: absolute; bottom: 16px; left: 16px; z-index: 20;" icon
             size="large" @click="openDrawer = !openDrawer">
-            <v-badge color="error" :content="restaurantStore.items.length" offset-x="-16" offset-y="-17">
+            <v-badge color="error" :content="restaurantStore.commands.length" offset-x="-16" offset-y="-17">
                 <v-icon>mdi-plus</v-icon>
             </v-badge>
         </v-btn>
     </template>
 
     <v-navigation-drawer class="bg-white" v-model="openDrawer" v-if="!openDrawerUpdate" location="right" width="400">
-        <v-list-item lines="three" subtitle="Mesa seleccionada" title="Mesa 1">
+        <v-list-item lines="three" subtitle="Mesa seleccionada"
+            :title="restaurantStore.selectedTable ? restaurantStore.selectedTable.name : 'Sin mesa seleccionada'">
             <!-- Avatar a la izquierda -->
             <template #prepend>
                 <v-avatar color="#00CFB5" :size="40" class="bordered-avatar font-weight-bold">
-                    <span class="text-white font-bold">{{ 1 }}</span>
+                    <span class="text-white font-bold">{{ restaurantStore.selectedTable ?
+                        restaurantStore.selectedTable.number : 'Sin mesa seleccionada' }}</span>
                 </v-avatar>
             </template>
 
             <!-- Botón de cerrar a la derecha -->
             <template #append>
-                <v-btn icon @click="openDrawer = false" flat>
+                <v-btn icon @click="openDrawer = false" flat v-if="mobile">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
             </template>
         </v-list-item>
 
-        <v-list-item class="text-center" v-if="restaurantStore.items.length == 0">
+        <v-list-item class="text-center" v-if="restaurantStore.commands && restaurantStore.commands.length == 0">
             <v-col cols="12" class="text-center mt-12">
                 <v-icon color="background" size="200">mdi-food-apple-outline</v-icon>
                 <p class="text-primary text-center font-weight-bold">
@@ -103,10 +107,10 @@
             </v-col>
         </v-list-item>
         <v-list-item>
-            <v-row no-gutters class="mt-6" v-if="restaurantStore.items.length > 0">
+            <v-row no-gutters class="mt-6" v-if="restaurantStore.commands.length > 0">
                 <v-col cols="12">
-                    <v-btn color="primary" @click="openOrden = true">
-                        <v-badge color="error" :content="restaurantStore.items.length" offset-x="-15" offset-y="-6">
+                    <v-btn color="primary" @click="openCommand = true">
+                        <v-badge color="error" :content="restaurantStore.commands.length" offset-x="-15" offset-y="-6">
                             <span class="py-2">Ver pedido</span>
                         </v-badge>
                     </v-btn>
@@ -148,8 +152,13 @@
 
         <template v-slot:append>
             <div class="pa-2">
-                <v-btn class="bg-primary text-white" block flat>
+                <v-btn class="bg-primary text-white" block flat @click="addAccount()">
                     Agregar a la cuenta
+                </v-btn>
+            </div>
+            <div class="pa-2" v-if="restaurantStore.commands && restaurantStore.commands.length > 0">
+                <v-btn class="bg-greenLight text-white" block flat @click="payAccount()">
+                    Pagar y cuenta
                 </v-btn>
             </div>
         </template>
@@ -168,9 +177,9 @@
             <v-col cols="12" md="12">
                 <v-row v-if="mdDown" no-gutters>
                     <v-col cols="12" md="8">
-                        <v-select v-if="restaurantStore.categories.length > 0" label="Categoría"
-                            :items="restaurantStore.categories" item-value="id" v-model="category" item-title="name"
-                            @update:model-value="onCategoryChange" variant="solo" flat />
+                        <v-select v-model="category" :items="restaurantStore.categories" item-value="id"
+                            item-title="name" label="Categoría" :loading="isLoading" variant="solo" flat
+                            @update:model-value="onCategoryChange" />
                     </v-col>
                     <v-col cols="12" md="4">
                         <v-text-field label="Buscar producto" variant="solo" flat />
@@ -178,8 +187,9 @@
                 </v-row>
                 <v-row v-else>
                     <v-col cols="12" md="8">
-                        <v-select v-if="restaurantStore.categories.length > 0" label="Categoría"
-                            :items="restaurantStore.categories" item-value="id" item-title="name" variant="solo" flat />
+                        <v-select v-model="category" :items="restaurantStore.categories" item-value="id"
+                            item-title="name" label="Categoría" :loading="isLoading" variant="solo" flat
+                            @update:model-value="onCategoryChange" />
                     </v-col>
                     <v-col cols="12" md="4">
                         <v-text-field label="Buscar producto" variant="solo" flat />
@@ -200,7 +210,10 @@
                     </v-col>
                 </v-row> -->
                 <v-row>
-                    <v-col cols="12" md="4" v-for="product in productStore.products" :key="product.id">
+                    <v-col cols="12" md="4" v-for="n in 9" :key="n" v-if="isLoadingProduct">
+                        <v-skeleton-loader class="rounded-lg" flat type="heading, text" />
+                    </v-col>
+                    <v-col v-else cols="12" md="4" v-for="product in productStore.products" :key="product.id">
                         <v-card class="pa-2" flat @click="selectProduct(product)">
                             <v-card-text>
                                 <h3 class="text-uppercase">{{ product.name }}</h3>
@@ -212,6 +225,61 @@
             </v-col>
         </v-row>
     </v-container>
+    <v-dialog v-model="openCommand" width="850" persistent class="rounded-lg">
+        <card-base-modal outlined :loading="isLoading">
+            <template v-slot:text>
+                <v-card-text class="mt-3 py-2">
+                    <v-row class="mx-0">
+                        <v-col cols="12" style="padding-left: 0">
+                            <v-chip color="background" class="text-primary rounded-lg pa-6 font-weight-bold" label>
+                                Comanda(s)
+                            </v-chip>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12" v-for="item in restaurantStore.commands" :key="item.id">
+                            <v-expansion-panels>
+                                <v-expansion-panel expand>
+                                    <v-expansion-panel-title class="text-primary"> <b> Comanda #{{ item.id }}</b>
+                                    </v-expansion-panel-title>
+                                    <v-expansion-panel-text>
+                                        <v-data-table :headers="headers" :items="item.details" class="elevation-0" flat>
+                                            <template v-slot:item.name="{ item }">
+                                                {{ item.product.name }}
+                                            </template>
+                                            <template v-slot:item.note="{ item }">
+                                                {{ item.notes ? item.notes : 'Sin comentario' }}
+                                            </template>
+                                            <template v-slot:item.qty="{ item }">
+                                                {{ item.quantity }}
+                                            </template>
+                                            <template v-slot:item.price="{ item }">
+                                                {{ currency(item.price) }}
+                                            </template>
+                                            <template v-slot:item.total="{ item }">
+                                                {{ currency(item.total) }}
+                                            </template>
+
+                                        </v-data-table>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </template>
+            <template v-slot:actions>
+                <v-card-actions class="mt-3 py-2">
+                    <v-col cols="12" order="1" order-md="1">
+                        <v-btn class="rounded-lg" size="large" @click="openCommand = false" text depressed block
+                            color="error">
+                            Cerrar
+                        </v-btn>
+                    </v-col>
+                </v-card-actions>
+            </template>
+        </card-base-modal>
+    </v-dialog>
     <v-dialog v-model="openOrden" width="850" persistent class="rounded-lg">
         <card-base-modal outlined :loading="isLoading">
             <template v-slot:text>
@@ -247,13 +315,14 @@
                     </v-col>
                     <v-col cols="12" md="6" order="2" order-md="2">
                         <v-btn class="rounded-lg bg-primary" size="large" @click="addCommand" depressed block>
-                            Agregar
+                            Cerrar
                         </v-btn>
                     </v-col>
                 </v-card-actions>
             </template>
         </card-base-modal>
     </v-dialog>
+    <Alert />
 </template>
 
 
@@ -266,8 +335,13 @@ import { useProductStore } from '@/pinia/product';
 import CardBaseModal from '@/components/global/CardBaseModal.vue';
 import VcBackButton from '@/components/global/BackButton.vue';
 import { useDisplay } from 'vuetify';
+import { useAlertNormalStore } from '@/pinia/alert.js';
+
 
 const { mdAndDown } = useDisplay();
+const { mobile } = useDisplay();
+const alertStore = useAlertNormalStore();
+
 
 const router = useRouter();
 
@@ -276,17 +350,41 @@ const productStore = useProductStore();
 
 const product = ref(null);
 const isLoading = ref(false);
-const category = ref(0);
+const isLoadingProduct = ref(true);
+const category = ref(null);
 const openDrawer = ref(true);
+
+
+const headers = [
+    { title: 'Platillo', align: 'center', key: 'name' },
+    { title: 'Comentario', align: 'center', key: 'note' },
+    { title: 'Cantidad', align: 'center', key: 'qty' },
+    { title: 'Precio', align: 'center', key: 'price' },
+    { title: 'Total', align: 'center', key: 'total' },
+];
 
 onMounted(() => {
     if (restaurantStore.selectedTable == null) {
         router.push({ name: 'Restaurante' });
     }
 
-    productStore.listProducts();
-    restaurantStore.listCategories();
+    restaurantStore.listItems({ table_id: restaurantStore.selectedTable.id });
 
+    category.value = 0;
+    productStore.listProducts().then(() => {
+        isLoadingProduct.value = false;
+    }).catch(() => {
+        isLoadingProduct.value = false;
+    }).finally(() => {
+        isLoadingProduct.value = false;
+    });
+    restaurantStore.listCategories().then(() => {
+        isLoading.value = false;
+    }).catch(() => {
+        isLoading.value = false;
+    }).finally(() => {
+        isLoading.value = false;
+    });
 });
 
 
@@ -304,6 +402,83 @@ const openDrawerUpdate = computed(() => {
     }
 });
 
+
+
+
+const payAccount = () => {
+    return alert('Función en desarrollo');
+    if (restaurantStore.items.length == 0) {
+        alertStore.show = true;
+        alertStore.color = "error";
+        alertStore.msg = "No has agrgado ninguna comanda";
+        alertStore.type = 1;
+        return;
+    }
+
+    const total = restaurantStore.items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
+    let params = {
+        table_id: restaurantStore.selectedTable.id,
+        items: JSON.stringify(restaurantStore.items),
+        total: total,
+    };
+
+    restaurantStore.payAccount(params).then(() => {
+        alertStore.show = true;
+        alertStore.color = "success";
+        alertStore.msg = "Cuenta pagada con éxito";
+        alertStore.type = 0;
+        restaurantStore.items = [];
+        if (openDrawerUpdate.value) {
+            openDrawer.value = true;
+        }
+
+        restaurantStore.listItems({ table_id: restaurantStore.selectedTable.id });
+
+    }).catch(() => {
+        alertStore.show = true;
+        alertStore.color = "error";
+        alertStore.msg = "Error al pagar la cuenta";
+        alertStore.type = 1;
+    });
+}
+
+const addAccount = () => {
+    if (restaurantStore.items.length == 0) {
+        alertStore.show = true;
+        alertStore.color = "error";
+        alertStore.msg = "No has agrgado ninguna comanda";
+        alertStore.type = 1;
+        return;
+    }
+
+    const total = restaurantStore.items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
+    let params = {
+        table_id: restaurantStore.selectedTable.id,
+        items: JSON.stringify(restaurantStore.items),
+        total: total,
+    };
+
+    restaurantStore.addToAccount(params).then(() => {
+        alertStore.show = true;
+        alertStore.color = "success";
+        alertStore.msg = "Comanda agregada a la cuenta";
+        alertStore.type = 0;
+        restaurantStore.items = [];
+        if (openDrawerUpdate.value) {
+            openDrawer.value = true;
+        }
+
+        restaurantStore.listItems({ table_id: restaurantStore.selectedTable.id });
+
+    }).catch(() => {
+        alertStore.show = true;
+        alertStore.color = "error";
+        alertStore.msg = "Error al agregar la comanda a la cuenta";
+        alertStore.type = 1;
+    });
+}
 
 const currency = (value) => {
     if (value >= 0) return accounting.formatMoney(value);
@@ -323,6 +498,8 @@ const selectProduct = (item) => {
         comment: null,
     };
 };
+
+const openCommand = ref(false);
 
 const closeModal = async () => {
     openOrden.value = false;

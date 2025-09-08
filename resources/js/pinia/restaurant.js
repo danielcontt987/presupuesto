@@ -8,6 +8,9 @@ export const useRestauratStore = defineStore('restaurant', {
         items: [],
         products: [],
         categories: [],
+        commands: [],
+        commandsCook: [],
+        statuses: [],
         selectedTable: null,
     }),
     actions: {
@@ -34,7 +37,7 @@ export const useRestauratStore = defineStore('restaurant', {
         listItems(payload) {
             return new Promise((resolve, reject) => {
                 axios.post("restaurant/items", payload).then((response) => {
-                    this.items = response.data.items;
+                    this.commands = response.data.items;
                 }).catch((error) => {
                     reject(error)
                 })
@@ -65,5 +68,28 @@ export const useRestauratStore = defineStore('restaurant', {
                 })
             })
         },
+
+        addToAccount(payload) {
+            return new Promise((resolve, reject) => {
+                axios.post("restaurant/add-to-account", payload).then((response) => {
+                    this.items = [];
+                    resolve(response);
+                }).catch((error) => {
+                    reject(error)
+                })
+            })
+        },
+
+        listItemCook() {
+            return new Promise((resolve, reject) => {
+                axios.get("restaurant/list-item-cook").then((response) => {
+                    this.commandsCook = response.data.items.orders;
+                    this.statuses = response.data.items.statuses;
+                    resolve(response);
+                }).catch((error) => {
+                    reject(error)
+                })
+            })
+        }
     }
 });

@@ -11,7 +11,16 @@
             <v-card-text>
                 <v-row no-gutters justify="center" align="center" class="flex-column">
                     <!-- Avatar centrado -->
-                    <v-avatar color="#00CFB5" :size="60" class="bordered-avatar mb-4 font-weight-bold">
+                    <v-avatar v-if="table.status == 'available'" :color="colors('available')" :size="60"
+                        class="bordered-avatar mb-4 font-weight-bold">
+                        <span class="text-white font-bold">{{ table.number }}</span>
+                    </v-avatar>
+                    <v-avatar v-if="table.status == 'unavailable'" :color="colors('unavailable')" :size="60"
+                        class="bordered-avatar mb-4 font-weight-bold">
+                        <span class="text-white font-bold">{{ table.number }}</span>
+                    </v-avatar>
+                    <v-avatar v-if="table.status == 'reserved'" :color="colors('reserved')" :size="60"
+                        class="bordered-avatar mb-4 font-weight-bold">
                         <span class="text-white font-bold">{{ table.number }}</span>
                     </v-avatar>
 
@@ -36,6 +45,17 @@ const emit = defineEmits(['select']);
 const handleClick = () => {
     emit('select', props.table);
 };
+
+const colors = (color) => {
+    switch (color) {
+        case 'available':
+            return 'greenLight';
+        case 'unavailable':
+            return 'fail';
+        default:
+            return 'grey';
+    }
+}
 
 </script>
 

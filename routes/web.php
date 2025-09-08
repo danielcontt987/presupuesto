@@ -97,6 +97,10 @@ Route::get('/planificador', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/cocina', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Not found
 // Route::get('/{any}', function () {
 //     return view('home'); // o la vista que uses
@@ -169,6 +173,9 @@ Route::prefix('restaurant')->group(function () {
     Route::post('/list', [RestaurantController::class, 'list']);
     Route::post('/items', [RestaurantController::class, 'items']);
     Route::post('/categories', [RestaurantController::class, 'listCategories']);
+    Route::post('/add-to-account', [RestaurantController::class, 'addToAccount']);
+    Route::get('/list-item-cook', [RestaurantController::class, 'listItemCook']);
+    Route::post('/update-order', [RestaurantController::class, 'updateItemStatus']);
 });
 
 Route::prefix('pointsales')->group(function () {

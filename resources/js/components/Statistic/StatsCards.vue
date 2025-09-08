@@ -16,5 +16,5 @@
 
 <script setup>
 // No props ni lógica, solo presentación
-import InfoCard from "../../components/Statistic/InfoCard.vue";
+import InfoCard from "@/components/Statistic/InfoCard.vue";
 </script>

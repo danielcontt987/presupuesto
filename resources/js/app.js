@@ -2,7 +2,7 @@ import './bootstrap';
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css';
 import { createApp, ref } from 'vue';
-import { createVuetify} from 'vuetify';
+import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import router from './router/index.js';
@@ -32,9 +32,10 @@ const customLightTheme = {
     background_drawer: "#FFF",
     background_nav: "#ffffff",
     text_grey: "#7f7c87",
-    background_color:"#EDECF4",
+    background_color: "#EDECF4",
     grey_dark: "#5b5867",
     greyLight: '#92969e',
+    greyDate: "#4B5563",
     fail: '#F50057',
     icon_color: '#F30D46',
     successLight: "#e2fbf6",
@@ -50,7 +51,7 @@ const customLightTheme = {
     greyDark: "#afafaf",
     rose: "#fcd6e6",
     greenLight3: "#c2f8d6"
-    
+
     /*
     primary_dark: '#051942',
     fail: '#F50057',
@@ -101,39 +102,39 @@ const customDarkTheme = {
     // background: "#1F2A3D",
     background_color: "#25293c",
     background_drawer: "#2e3248",
-    purple_primary:"#9c5df9",
+    purple_primary: "#9c5df9",
     grey_dark: "#acb0cc",
-    purple_dark:"#8436f7",
-    
+    purple_dark: "#8436f7",
+
     purple_light2: "#313258",
     purple_dark_accent: "#7367f0",
-    
-    blue_light_sky: "#1f4357",
-    aqua_normal:"#00cfe8",
 
-    orange_light2:"#483b3d",
+    blue_light_sky: "#1f4357",
+    aqua_normal: "#00cfe8",
+
+    orange_light2: "#483b3d",
     orange_l2: "#ff9e43",
 
     wather_melon: "#82424f",
     red_dark_2: "#ff3838",
 
-    
+
   },
 };
 const vuetify = createVuetify({
-    components,
-    directives,
-    theme: {
-      defaultTheme: "customLightTheme",
-      themes: {
-        customLightTheme,
-        customDarkTheme,
-      },
+  components,
+  directives,
+  theme: {
+    defaultTheme: "customLightTheme",
+    themes: {
+      customLightTheme,
+      customDarkTheme,
     },
-    locale: {
-      locale: "es",
-      fallback: "es", // Especifica la localidad de respaldo una vez
-      messages: { es },
+  },
+  locale: {
+    locale: "es",
+    fallback: "es", // Especifica la localidad de respaldo una vez
+    messages: { es },
   },
 })
 
@@ -154,7 +155,7 @@ app.component('Admin', Admin);
 app.component('Alert', Alert);
 app.component('AlertError', AlertError);
 app.use(router);
-app.use(vuetify,{
+app.use(vuetify, {
   lang: {
     locales: { es },
     current: 'es-mx',

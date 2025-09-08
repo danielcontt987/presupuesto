@@ -59,17 +59,17 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { useSettingStore } from "../pinia/setting.js";
+import { useSettingStore } from "@/pinia/setting.js";
 import { useRouter } from 'vue-router';
 
-import VcBackButton from '../components/global/BackButton.vue';
-import CardInfo from '../components/Settings/CardInfo.vue';
-import OperationPsw from '../components/Settings/OperationPsw.vue';
-import CardFiscal from "../components/Settings/CardFiscal.vue";
-import CardUbication from "../components/Settings/CardUbication.vue";
-import InfoPassword from "../components/Settings/InfoPassword.vue";
-import CardMoreInfo from "../components/Settings/CardMoreInfo.vue";
-import CardSetting from "../components/Settings/CardSetting.vue";
+import VcBackButton from '@/components/global/BackButton.vue';
+import CardInfo from '@/components/Settings/CardInfo.vue';
+import OperationPsw from '@/components/Settings/OperationPsw.vue';
+import CardFiscal from "@/components/Settings/CardFiscal.vue";
+import CardUbication from "@/components/Settings/CardUbication.vue";
+import InfoPassword from "@/components/Settings/InfoPassword.vue";
+import CardMoreInfo from "@/components/Settings/CardMoreInfo.vue";
+import CardSetting from "@/components/Settings/CardSetting.vue";
 
 
 const settingStore = useSettingStore();

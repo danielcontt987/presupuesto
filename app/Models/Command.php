@@ -16,4 +16,8 @@ class Command extends Model
         'notes',
         'chef_id',
     ];
+    public function details()
+    {
+        return $this->hasMany(CommandDetail::class, 'command_id');
+    }
 }

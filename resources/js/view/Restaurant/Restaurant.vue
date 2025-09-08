@@ -83,7 +83,7 @@
 
 <script setup>
 
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import TableCard from '@/components/Restaurant/Tables.vue';
 import DialogBox from '@/components/Modal/DialogBox.vue';
 import StatusTable from '@/components/Restaurant/StatusTable.vue';
@@ -103,8 +103,6 @@ const selectedTable = ref(null);
 const drawer = ref(false);
 
 const openDrawer = (table) => {
-    restaurantStore.listItems({ table_id: table.id });
-
     if (restaurantStore.items.length > 0) {
         selectedTable.value = table;
         drawer.value = true;

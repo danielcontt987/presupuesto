@@ -81,7 +81,7 @@ export const useProductStore = defineStore('product', {
 
         listProductsByCategory(categoryId) {
             return new Promise((resolve, reject) => {
-                axios.post("product/listByCategory", { category_id: categoryId })
+                axios.post("product/list-by-category", { category_id: categoryId })
                     .then((response) => {
                         this.products = response.data.products.map(product => ({
                             ...product,
