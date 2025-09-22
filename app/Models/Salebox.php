@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Salebox extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'business_id'
+    ];
 }

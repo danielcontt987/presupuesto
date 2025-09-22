@@ -6,6 +6,10 @@ export const useProductStore = defineStore('product', {
     state: () => ({
         openModal: false,
         products: [],
+        categories: [],
+        openModalExcel: false,
+        productId: 0,
+        product: null,
     }),
     actions: {
         storeProduct(payload) {
@@ -93,6 +97,34 @@ export const useProductStore = defineStore('product', {
                         reject(error);
                     });
             });
+        },
+
+        setOpenModalExcel(payload) {
+            this.openModalExcel = payload;
+        },
+        closeDialogExcel(payload) {
+            this.openModalExcel = payload;
+        },
+
+        importProductsFromExcel(formData) {
+            return new Promise((resolve, reject) => {
+                axios.post("product/import-excel", formData)
+                    .then((response) => {
+                        resolve(response);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        },
+
+        getProductId(payload) {
+            this.productId = payload
+        },
+
+        getProduct(payload) {
+            this.product = payload
         }
+
     }
 });

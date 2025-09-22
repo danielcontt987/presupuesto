@@ -3,21 +3,12 @@
         <v-card-title>
             <v-row class="mx-0">
                 <v-col cols="12" md="9" style="padding-left: 0">
-                    <v-chip
-                        color="background"
-                        class="text-primary rounded-lg pa-5 font-weight-bold"
-                        label
-                    >
+                    <v-chip color="background" class="text-primary rounded-lg pa-5 font-weight-bold" label>
                         Detalles del area
                     </v-chip>
                 </v-col>
                 <v-col cols="12" md="3" class="text-right">
-                    <v-btn
-                        color="background"
-                        class="rounded-lg text-primary text-uppercase"
-                        flat
-                        @click="editForm"
-                    >
+                    <v-btn color="background" class="rounded-lg text-primary text-uppercase" flat @click="editForm">
                         <b>{{ edit ? "Cancelar" : "Editar" }}</b>
                     </v-btn>
                 </v-col>
@@ -25,16 +16,8 @@
         </v-card-title>
         <v-card-text v-if="edit">
             <v-col cols="12">
-                <v-text-field
-                    v-model="name"
-                    label="Nombre del área"
-                    variant="outlined"
-                />
-                <v-text-field
-                    v-model="folio"
-                    label="Folio"
-                    variant="outlined"
-                />
+                <v-text-field v-model="name" label="Nombre del área" variant="outlined" />
+                <v-text-field v-model="folio" label="Folio" variant="outlined" />
             </v-col>
         </v-card-text>
         <v-card-text v-else="edit">
@@ -62,24 +45,12 @@
         <v-card-actions v-if="edit">
             <v-row>
                 <v-col cols="12" md="6" order="2" order-md="1">
-                    <v-btn
-                        class="rounded-lg"
-                        large
-                        text
-                        depressed
-                        block
-                        color="error"
-                    >
+                    <v-btn class="rounded-lg" large text depressed block color="error">
                         Eliminar área
                     </v-btn>
                 </v-col>
                 <v-col cols="12" md="6" order="1" order-md="2">
-                    <v-btn
-                        class="rounded-lg bg-primary"
-                        large
-                        depressed
-                        block
-                    >
+                    <v-btn class="rounded-lg bg-primary" large depressed block>
                         Guadar cambios
                     </v-btn>
                 </v-col>

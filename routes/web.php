@@ -101,6 +101,18 @@ Route::get('/cocina', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/detalle-producto', function () {
+    return view('home');
+})->middleware('auth.user');
+
+Route::get('/home', function () {
+    return view('home');
+});
+
+Route::get('/tarjetas', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Not found
 // Route::get('/{any}', function () {
 //     return view('home'); // o la vista que uses
@@ -148,6 +160,7 @@ Route::prefix('product')->group(function () {
     Route::post('/list', [ProductController::class, 'list']);
     Route::post('/search', [ProductController::class, 'search']);
     Route::post('/list-by-category', [ProductController::class, 'listByCategory']);
+    Route::post('/import-excel', [ProductController::class, 'importExcel']);
 })->middleware('auth.user');
 
 Route::prefix('salebox')->group(function () {
@@ -158,6 +171,7 @@ Route::prefix('salebox')->group(function () {
 Route::prefix('cashcut')->group(function () {
     Route::post('/get', [CashCutController::class, 'get']);
     Route::post('/store', [CashCutController::class, 'store']);
+    Route::post('/store-box', [CashCutController::class, 'storeBox']);
 })->middleware('auth.user');
 
 Route::prefix('sale')->group(function () {
@@ -185,6 +199,7 @@ Route::prefix('pointsales')->group(function () {
 
 Route::prefix('projects')->group(function () {
     Route::get('/list', [ProjectController::class, 'list']);
+    Route::post('/store', [ProjectController::class, 'store']);
     Route::get('/get', [ProjectController::class, 'get']);
     Route::post('/update-card', [ProjectController::class, 'updateCard']);
 });

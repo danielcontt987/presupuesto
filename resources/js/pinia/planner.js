@@ -7,6 +7,7 @@ export const usePlannerStore = defineStore("planner", {
         project: null,
         isLoading: false,
         projectId: null,
+        isOpenModal: false,
     }),
     actions: {
         listProject() {
@@ -55,5 +56,20 @@ export const usePlannerStore = defineStore("planner", {
                     });
             });
         },
+        openModal(status) {
+            this.isOpenModal = status;
+        },
+
+        addProject(params) {
+            return new Promise((resolve, reject) => {
+                axios.post('projects/store', params)
+                    .then((response) => {
+                        resolve(response);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        }
     }
 });

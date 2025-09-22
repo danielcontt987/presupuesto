@@ -92,8 +92,8 @@ import { useAlertNormalStore } from "@/pinia/alert";
 
 const openModal = ref(false)
 const isLoading = ref(false)
-const lat = ref(null)
-const lng = ref(null)
+const lat = ref(0)
+const lng = ref(0)
 const settingStore = useSettingStore()
 const alertNormal = useAlertNormalStore();
 

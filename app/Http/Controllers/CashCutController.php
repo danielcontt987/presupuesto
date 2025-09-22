@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Microservices\Cashcut;
+use App\Models\Salebox;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class CashCutController extends Controller
         return response()->json(["status" => "200", "cashcut" => $cashcut]);
     }
 
-    public function get() 
+    public function get()
     {
         DB::beginTransaction();
         try {
@@ -36,5 +37,24 @@ class CashCutController extends Controller
 
         DB::commit();
         return response()->json(["status" => "200", "cashcuts" => $cashcuts]);
+    }
+
+    public function storeBox(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $id = Auth::user()->id;
+            $boxes = Salebox::create([
+                'name' => $request->input('salebox'),
+                'business_id' => Auth::user()->getBusiness()
+
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 500, "error" => $e->getMessage()], 500);
+        }
+
+        DB::commit();
+        return response()->json(["status" => "200", "cashcuts" => $boxes]);
     }
 }

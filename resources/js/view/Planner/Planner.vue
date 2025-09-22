@@ -19,7 +19,7 @@
                                 </v-col>
                                 <v-col cols="12" md="3" class="text-right">
                                     <v-btn class="elevation-0 rounded-lg font-weight-bold mx-0" color="primary"
-                                        variant="outlined">
+                                        variant="outlined" @click="openProjectModal()">
                                         Agregar proyecto
                                     </v-btn>
                                 </v-col>
@@ -69,6 +69,7 @@
             </v-col>
         </v-row>
     </v-container>
+    <PlannerOpenModal />
 </template>
 
 
@@ -81,6 +82,8 @@ import CardBaseModal from "@/components/global/CardBaseModal.vue";
 import VcBackButton from "@/components/global/BackButton.vue";
 import { useRouter } from "vue-router";
 import { usePlannerStore } from "@/pinia/planner";
+import PlannerOpenModal from "@/components/Planner/OpenModal.vue";
+
 const plannerStore = usePlannerStore();
 const router = useRouter();
 
@@ -100,12 +103,14 @@ onMounted(() => {
     plannerStore.listProject();
 });
 
-
+const openProjectModal = () => {
+    plannerStore.openModal(true);
+}
 //Variables
 
 //Methods
 const navigateToHome = () => {
-    router.push({ name: 'home' });
+    router.push({ name: 'Inicio' });
 };
 
 const goToDetails = (id) => {

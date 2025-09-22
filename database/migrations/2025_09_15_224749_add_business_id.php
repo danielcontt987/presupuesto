@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tables', function (Blueprint $table) {
-            $table->enum('status', ['available', 'unavailable', 'reserved'])->default('available');
+            $table->integer('business_id')->default(0);
+            $table->integer('number')->default(0);
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tables', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('business_id');
+            $table->dropColumn('number');
         });
     }
 };

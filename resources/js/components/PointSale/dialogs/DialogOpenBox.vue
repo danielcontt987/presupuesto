@@ -87,7 +87,7 @@
                             </v-btn>
                         </v-col>
                         <v-col cols="12" lg="6">
-                            <v-btn block depressed class="bg-primary rounded-lg white--text" @click="storeCashCut()">
+                            <v-btn block depressed class="bg-primary rounded-lg white--text" @click="createSalebox()">
                                 Agregar
                             </v-btn>
                         </v-col>
@@ -169,6 +169,24 @@ const openSalebox = () => {
 
 const closeDialogCashCut = () => {
     openDialogSaleBox.value = false;
+}
+
+const createSalebox = () => {
+    let params = {
+        salebox: salebox.value
+    }
+
+    cashCutStore.storeBox(params).then(() => {
+        alertStore.show = true;
+        alertStore.color = "success";
+        alertStore.msg = "Se han creado una nuevo corte de caja";
+        alertStore.type = 0;
+    }).catch(() => {
+        alertStore.show = true;
+        alertStore.color = "fail";
+        alertStore.msg = "Se han creado una nuevo corte de caja";
+        alertStore.type = 0;
+    })
 }
 
 const storeCashCut = () => {

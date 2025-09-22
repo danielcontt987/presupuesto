@@ -4,9 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Language" content="es" />
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-    
     <title>Presupueto</title>
 
     {{-- <!-- Fonts -->

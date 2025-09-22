@@ -11,17 +11,6 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <!-- <v-row>
-            <v-col cols="12" md="6" lg="4">
-                <info-card icon="mdi-alert-circle" title="Pedidos pendientes" text="1" color="warning" />
-            </v-col>
-            <v-col cols="12" md="6" lg="4">
-                <info-card icon="mdi-chef-hat" title="En preparación" text="1" color="primary" />
-            </v-col>
-            <v-col cols="12" md="6" lg="4">
-                <info-card icon="mdi-checkbox-marked-circle-outline" title="Listo" text="1" color="success" />
-            </v-col>
-        </v-row> -->
         <v-row>
             <v-col v-for="(stat, index) in statCards" :key="index" cols="12" md="6" lg="4">
                 <v-card class="rounded-lg pa-6" flat>
@@ -166,92 +155,73 @@ const getOrdersByStatus = (status) => computed({
 
 
 onMounted(async () => {
+    // 1️⃣ Cargar órdenes iniciales
     await restaurantStore.listItemCook();
 
+    // Inicializar columnas locales
     restaurantStore.statuses.forEach(status => {
         columnsData[status.title] = restaurantStore.commandsCook.filter(
             o => o.status === status.title
         ) || [];
     });
+
+    // 2️⃣ Listener de Echo (solo una vez)
+    if (window.Echo) {
+        window.Echo.channel('cook-items')
+            .listen('.OrderStatusChangeEvent', (e) => {
+
+                // Actualizar store global
+                restaurantStore.commandsCook = e.items;
+
+                // Actualizar columnas locales
+                restaurantStore.statuses.forEach(status => {
+                    const filtered = restaurantStore.commandsCook.filter(o => o.status === status.title);
+                    if (columnsData[status.title]) {
+                        columnsData[status.title].splice(0, columnsData[status.title].length, ...filtered);
+                    } else {
+                        columnsData[status.title] = filtered;
+                    }
+                });
+            });
+    }
 });
+
 
 const handleDragChange = async (evt, newStatus) => {
-    if (evt.added) {
-        const movedOrder = evt.added.element;
+    if (!evt.added) return;
 
-        // oldStatus: usa la propiedad status que ya tiene el elemento
-        const oldStatus = evt.removed?.element?.status || movedOrder.status;
+    const movedOrder = evt.added.element;
+    const oldStatus = evt.removed?.element?.status || movedOrder.status;
 
-        // actualizar status a la columna destino
-        movedOrder.status = newStatus;
+    // Actualizar status localmente
+    movedOrder.status = newStatus;
 
-        // actualizar store global
-        restaurantStore.commandsCook = restaurantStore.commandsCook.map(o =>
-            o.id === movedOrder.id ? movedOrder : o
-        );
+    // Actualizar store global
+    restaurantStore.commandsCook = restaurantStore.commandsCook.map(o =>
+        o.id === movedOrder.id ? movedOrder : o
+    );
 
-        // enviar al backend
-        try {
-            await axios.post('/restaurant/update-order', {
-                id: movedOrder.id,
-                oldStatus,
-                newStatus
-            });
-            restaurantStore.listItemCook();
-            console.log('Order updated:', movedOrder);
-        } catch (error) {
-            console.error('Error updating order:', error);
+    // Actualizar columnas locales
+    restaurantStore.statuses.forEach(status => {
+        const filtered = restaurantStore.commandsCook.filter(o => o.status === status.title) || [];
+        if (columnsData[status.title]) {
+            columnsData[status.title].splice(0, columnsData[status.title].length, ...filtered);
+        } else {
+            columnsData[status.title] = filtered;
         }
-    }
-};
+    });
 
-
-
-
-
-const updateColumnOrders = async (status) => {
-    const updated = columnsData[status] ?? [];
-
-    if (!updated.length) return;
-
-
-    updated.forEach(order => order.status = status);
-
-    // Actualizar store
-    restaurantStore.commandsCook = [
-        ...restaurantStore.commandsCook.filter(
-            o => !updated.some(u => u.id === o.id)
-        ),
-        ...updated
-    ];
-
-    console.log('Updated orders:', updated);
-
-    // Enviar al backend
+    // Enviar cambio al backend
     try {
-        for (const order of updated) {
-
-            await axios.post('/restaurant/update-order', {
-                id: order.id,
-                status: order.status,
-                items: order.items,
-                table: order.table,
-                total: order.total
-            });
-        }
-        console.log('Orders updated in DB successfully');
+        await axios.post('/restaurant/update-order', {
+            id: movedOrder.id,
+            oldStatus,
+            newStatus
+        });
     } catch (error) {
-        console.error('Error updating orders in DB', error);
+        console.error('Error updating order in backend:', error);
     }
 };
-
-
-const stats = ref({
-    pendingOrders: 12,
-    preparingOrders: 8,
-    readyOrders: 15,
-    avgPreparationTime: 20
-});
 
 const statCards = ref([
     {

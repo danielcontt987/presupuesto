@@ -10,6 +10,41 @@
                     <v-skeleton-loader type="card" />
                 </v-card>
             </v-col>
+            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
+                <v-card elevation="0">
+                    <v-skeleton-loader type="card" />
+                </v-card>
+            </v-col>
+            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
+                <v-card elevation="0">
+                    <v-skeleton-loader type="card" />
+                </v-card>
+            </v-col>
+            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
+                <v-card elevation="0">
+                    <v-skeleton-loader type="card" />
+                </v-card>
+            </v-col>
+            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
+                <v-card elevation="0">
+                    <v-skeleton-loader type="card" />
+                </v-card>
+            </v-col>
+            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
+                <v-card elevation="0">
+                    <v-skeleton-loader type="card" />
+                </v-card>
+            </v-col>
+            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
+                <v-card elevation="0">
+                    <v-skeleton-loader type="card" />
+                </v-card>
+            </v-col>
+            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
+                <v-card elevation="0">
+                    <v-skeleton-loader type="card" />
+                </v-card>
+            </v-col>
 
             <v-col v-else cols="6" sm="4" md="4" lg="3" v-for="(item, key) in dataFiltered" :key="key">
                 <div class="d-flex justify-center align-center flex-column py-5"
@@ -169,6 +204,12 @@ const permissions_arr = ref([
         name: 'Cocina',
         route: '/cocina',
         icon: 'mdi-chart-areaspline',
+        visibility: false,
+    },
+    {
+        name: 'Administración de tarjetas',
+        route: '/tarjetas',
+        icon: 'mdi-card',
         visibility: false,
     },
 ]);

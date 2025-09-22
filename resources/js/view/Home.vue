@@ -1,63 +1,93 @@
-<template>
-    <v-app>
-        <slider />
-        <v-container>
-            <v-row class="text-center mt-6 mb-3">
-                <v-col cols="12">
-                    <h2>Servicios</h2>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col
-                    cols="12"
-                    md="4"
-                    v-for="(item, index) in items"
-                    :key="index"
-                >
-                    <card-info
-                        :icon="item.icon"
-                        :title="item.title"
-                        :text="item.text"
-                    />
-                </v-col>
-            </v-row>
-        </v-container>
-        <!-- <v-footer class="bg-backgroundColor" v-if="router.path == '/'">
-                <div class="text-center w-100 bg-backgroundColor">
-                    {{ 'Derechos de autor &copy; ' + new Date().getFullYear() + '. Todos los derechos reservados.' }}
-                </div>
-            </v-footer> -->
-    </v-app>
-</template>
-
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import AppBar from "../components/AppBar.vue";
-import CardInfo from "../components/info/CardInfo.vue";
-import Slider from "../components/Slider.vue";
+import { ref } from "vue";
 
-// const router = useRouter();
+const drawer = ref(false);
+const tab = ref("building");
 
-const items = ref([
-    {
-        icon: "mdi-note",
-        title: "Presupuestos",
-        text: "Ofrecemos consultas gratuitas donde discutiremos tus necesidades y a su vez te proporcionaremos un estimado inicial del costo.",
-    },
-
-    {
-        icon: "mdi-home",
-        title: "Contrucciones",
-        text: "Utilizamos los materiales más duraderos y las técnicas de construcción más avanzadas para garantizar la calidad y la seguridad de tu hogar.",
-    },
-
-    {
-        icon: "mdi-bitbucket",
-        title: "impermeabilizante",
-        text: "Basándonos en las necesidades específicas de tu hogar, te ofreceremos las mejores soluciones de impermeabilización de muy alta calidad.",
-    },
-]);
+const menuItems = [
+    { title: "Home", link: "/" },
+    { title: "Projects", link: "/projects" },
+    { title: "Services", link: "/services" },
+    { title: "About Us", link: "/about" },
+    { title: "Blog", link: "/blog" },
+    { title: "Contact", link: "/contact" },
+];
 </script>
 
-<style></style>
+<template>
+    <v-app>
+        <!-- Header -->
+        <v-app-bar flat color="primary" dark>
+            <v-app-bar-nav-icon @click="drawer = !drawer" />
+            <v-toolbar-title>Construct</v-toolbar-title>
+            <v-spacer />
+            <v-btn text v-for="item in menuItems" :key="item.title" :to="item.link">
+                {{ item.title }}
+            </v-btn>
+        </v-app-bar>
+
+        <!-- Navigation Drawer -->
+        <v-navigation-drawer v-model="drawer" temporary>
+            <v-list>
+                <v-list-item v-for="item in menuItems" :key="item.title" :to="item.link">
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
+
+        <!-- Hero Section -->
+        <v-container fluid class="py-12 text-center"
+            style="background:url('/images/background02.jpg'); background-size:cover;">
+            <h1 class="display-2 font-weight-bold white--text">
+                We <span class="text-warning">Build</span> Great Projects
+            </h1>
+            <p class="white--text">We aim to eliminate the task of dividing your project between different companies.
+            </p>
+            <v-btn color="yellow" variant="outlined" class="mt-4">Contact Us</v-btn>
+        </v-container>
+
+        <!-- Tabs Section -->
+        <v-container class="my-12">
+            <v-tabs v-model="tab" align-tabs="center" color="primary">
+                <v-tab value="building">Building</v-tab>
+                <v-tab value="construction">Construction</v-tab>
+                <v-tab value="isolation">Isolation</v-tab>
+            </v-tabs>
+
+            <v-window v-model="tab" class="mt-6">
+                <v-window-item value="building">
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <h2>Building A New Green House</h2>
+                            <p>
+                                We are a company that offers design and build services for you
+                                from initial sketches to the final construction.
+                            </p>
+                            <v-btn color="red" variant="outlined">Contact Us</v-btn>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-img src="/images/image02.png" />
+                        </v-col>
+                    </v-row>
+                </v-window-item>
+
+                <v-window-item value="construction">
+                    <h2>Construction Tab</h2>
+                    <p>Content for construction projects...</p>
+                </v-window-item>
+
+                <v-window-item value="isolation">
+                    <h2>Isolation Tab</h2>
+                    <p>Content for isolation projects...</p>
+                </v-window-item>
+            </v-window>
+        </v-container>
+
+        <!-- Footer -->
+        <v-footer color="primary" app>
+            <v-col class="text-center white--text">
+                © {{ new Date().getFullYear() }} Construct. All rights reserved.
+            </v-col>
+        </v-footer>
+    </v-app>
+</template>

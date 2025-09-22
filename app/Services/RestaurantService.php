@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderStatusChangeEvent;
 use App\Models\Category as ModelsCategory;
 use App\Models\Command;
 use App\Models\CommandDetail;
@@ -56,6 +57,7 @@ class RestaurantService
             ['title' => 'ready'],
         ];
 
+        // event(new OrderStatusChangeEvent($newArray));
         return [
             'orders'   => $newArray,
             'statuses' => $statuses,
@@ -96,6 +98,7 @@ class RestaurantService
                 $note = $item['comment'] ?? null;
                 $this->addCommandDetail($command, $productId, $quantity, $total, $price,  $note);
             }
+            event(new OrderStatusChangeEvent($this->listItemCook()['orders']));
             return ['success' => true, 'item' => $command];
         } catch (\Exception $e) {
             // Log the error message if needed
@@ -138,6 +141,8 @@ class RestaurantService
 
         $command->status = $newStatus;
         $command->save();
+
+        event(new OrderStatusChangeEvent($this->listItemCook()['orders']));
 
         return ['success' => true, 'item' => $command];
     }

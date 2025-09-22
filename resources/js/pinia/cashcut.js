@@ -8,13 +8,13 @@ export const useCashCutStore = defineStore('cashcut', {
         openDialogCashCut: false,
     }),
     actions: {
-        listCashcuts(payload){            
+        listCashcuts(payload) {
             return new Promise((resolve, reject) => {
                 axios.post("cashcut/get", payload).then((response) => {
                     this.cashcuts = response.data.cashcuts;
                     if (!!this.cashcuts) {
                         this.openDialogCashCut = false;
-                    }else{
+                    } else {
                         this.openDialogCashCut = true;
                     }
                     resolve(response);
@@ -24,7 +24,7 @@ export const useCashCutStore = defineStore('cashcut', {
             })
         },
 
-        storeCashcuts(payload){            
+        storeCashcuts(payload) {
             return new Promise((resolve, reject) => {
                 axios.post("cashcut/store", payload).then((response) => {
                     resolve(response);
@@ -33,5 +33,15 @@ export const useCashCutStore = defineStore('cashcut', {
                 })
             })
         },
+
+        storeBox(payload) {
+            return new Promise(() => {
+                axios.post("cashcut/store-box", payload).then((response) => {
+                    resolve(response);
+                }).catch((error) => {
+                    reject(error)
+                })
+            })
+        }
     }
 });

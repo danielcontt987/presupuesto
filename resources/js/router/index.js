@@ -123,7 +123,22 @@ const routes = [
         path: '/cocina',
         name: 'Cocina',
         component: () => import('@/view/Cook/Cook.vue'),
+    },
+    {
+        path: '/detalle-producto',
+        name: 'Producto del producto',
+        component: () => import('@/view/Product/ProductDetail.vue'),
+    },
+    {
+        path: '/tarjetas',
+        name: 'Administración de tarjetas',
+        component: () => import('@/view/Card/Card.vue'),
     }
+    // {
+    //     path: '/home',
+    //     name: 'Home',
+    //     component: () => import('@/view/Home.vue'),
+    // },
 ];
 
 const router = createRouter({

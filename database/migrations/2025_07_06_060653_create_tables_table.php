@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('table_users', function (Blueprint $table) {
+        Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->string('description')->nullable();
             $table->integer('capacity')->default(0);
             $table->boolean('is_active')->default(true);
+            $table->enum('status', ['available', 'unavailable', 'reserved'])->default('available');
             $table->integer('waiter_id')->nullable();
             $table->timestamps();
         });

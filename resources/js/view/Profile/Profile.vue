@@ -254,7 +254,7 @@ const getDescriptor = async () => {
 }
 
 const navigateToHome = () => {
-    router.push({ name: '/inicio' });
+    router.push({ name: 'Inicio' });
 }
 
 const register = async () => {

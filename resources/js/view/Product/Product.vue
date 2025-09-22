@@ -25,7 +25,7 @@
                                             <v-list-item @click="openModalCategories()">
                                                 <v-list-item-title>Categorías</v-list-item-title>
                                             </v-list-item>
-                                            <v-list-item @click="openModalCategories()">
+                                            <v-list-item @click="productStore.setOpenModalExcel(true)">
                                                 <v-list-item-title>Cargar plantilla Excel</v-list-item-title>
                                             </v-list-item>
                                             <v-list-item @click="openModalCategories()">
@@ -72,7 +72,8 @@
                                             </v-col>
                                             <v-col cols="12" md="6" class="text-right">
                                                 <p>EXISTENCIAS</p>
-                                                <p class="text-fail">{{ product.inventory_detail.stock }}</p>
+                                                <p class="text-fail">{{ product.inventory_detail ?
+                                                    product.inventory_detail.stock : 0 }}</p>
                                             </v-col>
                                             <v-col cols="12">
                                                 <p>PRECIO</p>
@@ -100,7 +101,8 @@
                                     <v-card-actions>
                                         <v-row>
                                             <v-col cols="12" md="6">
-                                                <v-btn class="rounded-lg bg-primary" large depressed block>
+                                                <v-btn class="rounded-lg bg-primary" large depressed block
+                                                    @click="goToDetail(product)">
                                                     Ver detalle
                                                 </v-btn>
                                             </v-col>
@@ -119,6 +121,7 @@
             </v-col>
         </v-row>
     </v-container>
+    <load-excel />
     <product-dialog />
 </template>
 <script setup>
@@ -127,6 +130,7 @@ import { useDisplay } from 'vuetify';
 import { useProductStore } from '@/pinia/product.js';
 import accounting from 'accounting';
 import BackButton from '@/components/global/BackButton.vue';
+import LoadExcel from '@/components/Product/Dialog/LoadExcel.vue';
 
 const productStore = useProductStore();
 
@@ -144,9 +148,11 @@ const goToBack = () => {
     router.push('/inicio')
 }
 
-// const formatCurrency = (value) => {
-//     return accounting.formatMoney(value);
-// }
+const goToDetail = (product) => {
+    productStore.getProductId(product.id);
+    productStore.getProduct(product);
+    router.push('/detalle-producto')
+}
 
 const currency = (value) => {
     if (value >= 0) return accounting.formatMoney(value);

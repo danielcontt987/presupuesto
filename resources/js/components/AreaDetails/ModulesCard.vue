@@ -75,7 +75,9 @@ const changeState = (bool, permissionId) => {
 
 const storePermission = () => {
     areaStore.permission.forEach(element => {
-        if (element.granted) {
+        console.log(element);
+
+        if (element.granted == 1 || element.granted == true) {
             idsPermission.value.push(element.module_id);
         }
     });
@@ -94,6 +96,7 @@ const storePermission = () => {
             area_id: areaStore.area_id
         }
         areaStore.consulInfo(params);
+
     }).catch((error) => {
         alertNormal.show = true;
         (alertNormal.color = "error"),

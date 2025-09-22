@@ -6,6 +6,8 @@ use App\Models\Area;
 use App\Models\AreaUser;
 use App\Models\Business;
 use App\Models\Colony;
+use App\Models\Module;
+use App\Models\Permission;
 use App\Models\User as ModelsUser;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -89,6 +91,24 @@ class User extends Seeder
         AreaUser::create([
             'user_id' => $userId,
             'area_id' => $areaId,
+        ]);
+
+        $module = Module::create([
+            'name' => 'Registrar modulos',
+        ]);
+
+        $moduleArea = Module::create([
+            'name' => 'Áreas',
+        ]);
+
+        Permission::create([
+            'area_id' => $areaId,
+            'module_id' => $moduleArea->id,
+        ]);
+
+        Permission::create([
+            'area_id' => $areaId,
+            'module_id' => $module->id,
         ]);
     }
 }

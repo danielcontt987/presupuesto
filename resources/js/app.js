@@ -8,12 +8,9 @@ import * as directives from 'vuetify/directives';
 import router from './router/index.js';
 import { es } from "vuetify/locale";
 import moment from 'moment';
-import accounting from 'accounting';
-
 
 //Pinia
 import { createPinia } from 'pinia';
-
 
 const customLightTheme = {
   colors: {
@@ -36,6 +33,8 @@ const customLightTheme = {
     grey_dark: "#5b5867",
     greyLight: '#92969e',
     greyDate: "#4B5563",
+    greyDense: "#F9FAFB",
+    greyIcon: "#767D8A",
     fail: '#F50057',
     icon_color: '#F30D46',
     successLight: "#e2fbf6",
@@ -50,7 +49,8 @@ const customLightTheme = {
     warning: "#FBC02D",
     greyDark: "#afafaf",
     rose: "#fcd6e6",
-    greenLight3: "#c2f8d6"
+    greenLight3: "#c2f8d6",
+    sky: "#DBEAFE"
 
     /*
     primary_dark: '#051942',
