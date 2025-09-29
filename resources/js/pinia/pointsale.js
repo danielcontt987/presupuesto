@@ -5,17 +5,18 @@ import { defineStore } from 'pinia';
 export const usePointsaleStore = defineStore('pointsale', {
     state: () => ({
         products: [],
+        openDialogSell: false,
     }),
     actions: {
-        addProducts(payload){            
+        addProducts(payload) {
             this.products.push(payload);
         },
 
-        removeProducts(payload){
+        removeProducts(payload) {
             this.products = this.products.filter(product => product.id != payload.id);
         },
 
-        storeSale(payload){
+        storeSale(payload) {
             return new Promise((resolve, reject) => {
                 axios.post("sale/store", payload).then((response) => {
                     resolve(response);
@@ -25,8 +26,12 @@ export const usePointsaleStore = defineStore('pointsale', {
             })
         },
 
-        clearSale(){
+        clearSale() {
             this.products = [];
-        }
+        },
+
+        openDialogSeller(payload) {
+            this.openDialogSell = payload;
+        },
     }
 });

@@ -29,14 +29,14 @@ class CashCutController extends Controller
         DB::beginTransaction();
         try {
             $id = Auth::user()->id;
-            $cashcuts = Cashcut::get($id);
+            $cashcut = Cashcut::get($id);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['status' => 500, "error" => $e->getMessage()], 500);
         }
 
         DB::commit();
-        return response()->json(["status" => "200", "cashcuts" => $cashcuts]);
+        return response()->json(["status" => "200", "cashcut" => $cashcut]);
     }
 
     public function storeBox(Request $request)

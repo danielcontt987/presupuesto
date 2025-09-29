@@ -124,7 +124,7 @@ export const useProductStore = defineStore('product', {
 
         getProduct(payload) {
             this.product = payload
-        }
+        },
 
     }
 });

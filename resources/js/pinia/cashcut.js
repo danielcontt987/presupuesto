@@ -4,17 +4,17 @@ import { defineStore } from 'pinia';
 
 export const useCashCutStore = defineStore('cashcut', {
     state: () => ({
-        cashcuts: [],
+        cashcut: null,
         openDialogCashCut: false,
+        infoCashCut: null,
+        openSaleBox: false,
     }),
     actions: {
         listCashcuts(payload) {
             return new Promise((resolve, reject) => {
                 axios.post("cashcut/get", payload).then((response) => {
-                    this.cashcuts = response.data.cashcuts;
-                    if (!!this.cashcuts) {
-                        this.openDialogCashCut = false;
-                    } else {
+                    this.infoCashCut = response.data.cashcut;
+                    if (response.data.cashcut == null) {
                         this.openDialogCashCut = true;
                     }
                     resolve(response);
@@ -35,13 +35,19 @@ export const useCashCutStore = defineStore('cashcut', {
         },
 
         storeBox(payload) {
-            return new Promise(() => {
+            return new Promise((resolve, reject) => {
                 axios.post("cashcut/store-box", payload).then((response) => {
                     resolve(response);
                 }).catch((error) => {
                     reject(error)
                 })
             })
+        },
+        dialog(payload) {
+            this.openSaleBox = payload;
+        },
+        dialogCashCut(payload) {
+            this.openDialogCashCut = payload;
         }
     }
 });

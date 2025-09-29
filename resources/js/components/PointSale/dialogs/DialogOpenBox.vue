@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-dialog v-model="openDialogSaleBox" :width="dialogWidth()" class="mt-0" persistent>
+        <v-dialog v-model="cashCutStore.openDialogCashCut" :width="dialogWidth()" class="mt-0" persistent>
             <v-card class="rounded-lg">
                 <v-card-title class="bg-secondary_dark">
                     <v-row class="mx-3 mt-0 mb-0">
@@ -61,7 +61,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="openCreateBox" :width="dialogWidthBox()">
+        <v-dialog v-model="cashCutStore.openSaleBox" :width="dialogWidthBox()">
             <v-card class="overflow-hidden">
                 <v-card-title class="bg-primary">
                     <v-row class="mx-3 mt-0 mb-0">
@@ -82,7 +82,7 @@
                 <v-card-actions class="justify-center">
                     <v-row class="mx-0">
                         <v-col cols="12" lg="6">
-                            <v-btn block depressed class="rounded-lg text-fail" @click="closeDialogBox()">
+                            <v-btn block depressed class="rounded-lg text-fail" @click="closeSalebox()">
                                 Cerrar
                             </v-btn>
                         </v-col>
@@ -95,25 +95,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <!-- <v-notification-dialog>
-            <v-row class="mx-0">
-                <v-col class="text-center">
-                    <v-btn class="rounded-lg" large depressed block color="primary text-white" @click="closeDialog()">
-                        Entendido
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-notification-dialog> -->
-        <!-- <alert-progress>
-            <div class="sk-chase">
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-            </div>
-        </alert-progress> -->
         <Alert />
     </div>
 </template>
@@ -121,9 +102,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useCashCutStore } from '@/pinia/cashcut';
+import { useSaleboxStore } from '@/pinia/salebox';
+
+
 import { useAlertNormalStore } from '@/pinia/alert';
 
 const cashCutStore = useCashCutStore();
+const saleboxStore = useSaleboxStore();
 const alertStore = useAlertNormalStore();
 
 
@@ -132,11 +117,9 @@ defineProps({
 });
 
 onMounted(() => {
-    openDialogSaleBox.value = true;
+    cashCutStore.openDialogCashCut;
 });
 
-const openDialogSaleBox = ref(false);
-const openCreateBox = ref(false);
 const salebox = ref('');
 const salebox_id = ref(null);
 const amount = ref(null);
@@ -160,15 +143,19 @@ const accountRules = [
 ]
 
 const closeDialogBox = () => {
-    openCreateBox.value = false;
+    cashCutStore.dialog(false);
 }
 
 const openSalebox = () => {
-    openCreateBox.value = true;
+    cashCutStore.dialog(true);
+}
+
+const closeSalebox = () => {
+    cashCutStore.dialog(false);
 }
 
 const closeDialogCashCut = () => {
-    openDialogSaleBox.value = false;
+    cashCutStore.dialogCashCut(false);
 }
 
 const createSalebox = () => {
@@ -181,6 +168,10 @@ const createSalebox = () => {
         alertStore.color = "success";
         alertStore.msg = "Se han creado una nuevo corte de caja";
         alertStore.type = 0;
+        saleboxStore.listSaleboxes();
+        salebox.value = '';
+        closeDialogBox();
+        cashCutStore.infoCashCut
     }).catch(() => {
         alertStore.show = true;
         alertStore.color = "fail";
@@ -202,13 +193,8 @@ const storeCashCut = () => {
         alertStore.msg = "Se han creado una nuevo corte de caja";
         alertStore.type = 0;
 
-        cashCutStore.listCashcuts().then((res) => {
-            if (res.data.cashcuts.length === 0) {
-                openDialogSaleBox.value = true;
-            } else {
-                openDialogSaleBox.value = false;
-            }
-        });
+        cashCutStore.listCashcuts()
+        cashCutStore.dialogCashCut(false);
     }).catch((error) => {
         alertStore.show = true;
         alertStore.color = "fail";

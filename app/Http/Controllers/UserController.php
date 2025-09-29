@@ -12,19 +12,19 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class UserController extends Controller
 {
-    public function login(Request $request) 
+    public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        
+
         if (Auth::attempt($credentials)) {
             Redirect::to('/admin');
             return response()->json(['status' => 200]);
         }
-    
+
         return response()->json(['status' => 401], 401);
     }
 
-    public function loginToQr(Request $request) 
+    public function loginToQr(Request $request)
     {
 
         $qr = $request->input('qr');
@@ -37,28 +37,31 @@ class UserController extends Controller
         Auth::login($user);
 
         Redirect::to('/admin');
-        return response()->json(['status' => 200]);    
+        return response()->json(['status' => 200]);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return response()->json(['status' => 200]);
-    } 
+    }
 
-    public function consultUser(){
+    public function consultUser()
+    {
         return response()->json(["status" => 200, "permissions" => Auth::user()->getPermission()], 200);
     }
 
-    public function qrGenerate(){
-        $numero = "000001";
+    public function qrGenerate()
+    {
+        $numero = "1111";
 
         $qr = \QrCode::format('svg')->size(300)->generate($numero);
         $success = Storage::disk('google')->put("qrcodes/{$numero}.svg", $qr);
 
         if ($success) {
-            return '✅ Archivo subido correctamente a Google Drive.';
+            return '✅ Archivo subido correctamente a Google Drive.' . ' ' . $success;
         } else {
             return '❌ Falló la subida del archivo.';
         }
@@ -92,7 +95,7 @@ class UserController extends Controller
         return response()->json(['success' => true, 'message' => 'Rostro guardado.']);
     }
 
-     public function loginFace(Request $request)
+    public function loginFace(Request $request)
     {
         $request->validate([
             'descriptor' => 'required|array|size:128',
@@ -108,7 +111,7 @@ class UserController extends Controller
             if ($distance < 0.6) {
                 Auth::login($user);
                 Redirect::to('/admin');
-                return response()->json(['status' => 200]);    
+                return response()->json(['status' => 200]);
             }
         }
 
@@ -119,5 +122,4 @@ class UserController extends Controller
     {
         return sqrt(array_sum(array_map(fn($i, $j) => pow($i - $j, 2), $a, $b)));
     }
-
 }

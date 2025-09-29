@@ -14,7 +14,7 @@ class Cashcut extends Microservice
         $count = ModelsCashCut::where('user_id', $request->user_id)->where('salebox_id', $request->salebox_id)->count();
         if ($count > 0) {
             $folio = $count + 1;
-        }else{
+        } else {
             $folio = 1;
         }
         $cashcut = ModelsCashCut::create([
@@ -28,16 +28,16 @@ class Cashcut extends Microservice
             'date_opening' => Carbon::now(),
             'folio' => $folio,
         ]);
-        
+
         return $cashcut;
     }
 
     public static function get($id)
     {
-        $cashcuts = ModelsCashCut::where('date_cute', null)
-        ->where('user_id', Auth::user()->id)
-        ->with(['salebox', 'user'])
-        ->orderBy("id", 'desc')->first();
-        return $cashcuts;
+        $cashcut = ModelsCashCut::where('date_cute', null)
+            ->where('user_id', $id)
+            ->with(['salebox', 'user'])
+            ->orderBy("id", 'desc')->first();
+        return $cashcut;
     }
 }

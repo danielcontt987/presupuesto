@@ -55,7 +55,7 @@ Route::get('/detalle-del-area', function () {
 
 Route::get('/crear-modulos', function () {
     return view('home');
-})->middleware('auth.user');
+})->middleware('auth.user', 'permission:Registrar modulos');
 
 Route::get('/punto-de-venta', function () {
     return view('home');
@@ -71,7 +71,7 @@ Route::get('/crear-cliente', function () {
 
 Route::get('/productos', function () {
     return view('home');
-})->middleware('auth.user');
+})->middleware('auth.user', 'permission:Producto');
 
 Route::get('/crear-producto', function () {
     return view('home');

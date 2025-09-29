@@ -90,6 +90,6 @@ export const useRestauratStore = defineStore('restaurant', {
                     reject(error)
                 })
             })
-        }
+        },
     }
 });

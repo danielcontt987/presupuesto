@@ -1,29 +1,21 @@
 <template>
     <v-container fluid>
-        <v-row v-if="infoCashCut != null">
+        <v-row v-if="cashCutStore.infoCashCut != null">
             <v-col cols="6">
-                <p><b class="text-primary">Nombre: </b>{{ infoCashCut.user.name + " " + infoCashCut.user.lastname }}</p>
-                <p><b class="text-primary">Caja:</b> {{ infoCashCut.salebox.name }} </p>
+                <p><b class="text-primary">Nombre: </b>{{ cashCutStore.infoCashCut.user.name + " " +
+                    cashCutStore.infoCashCut.user.lastname }}</p>
+                <p><b class="text-primary">Caja:</b> {{ cashCutStore.infoCashCut.salebox.name }} </p>
             </v-col>
             <v-col cols="6" class="text-right">
-                <p class="text-primary"><b>Última cotización:</b></p>
-                <p class="text-primary"><b>Cotización del día:</b></p>
-                <p class="text-primary"><b>Cotización en espera:</b></p>
-                <p class="text-primary"><b>Monto cotizado:</b></p>
+                <p class="text-primary"><b>Última venta:</b></p>
+                <p class="text-primary"><b>Venta del día:</b></p>
+                <p class="text-primary"><b>Venta en espera:</b></p>
+                <p class="text-primary"><b>Monto de venta:</b></p>
             </v-col>
             <v-col cols="4">
                 <v-select variant="outlined" label="Clientes" />
             </v-col>
             <v-col cols="8">
-                <!-- <v-combobox
-                    variant="outlined"
-                    :items="productStore.products"
-                    item-title="name"
-                    v-model="product"
-                    label="Productos"
-                    @update:model-value="addProduct"
-                /> -->
-
                 <v-autocomplete variant="outlined" return-object :items="productStore.products" item-title="name"
                     v-model="product" label="Productos" @update:modelValue="addProduct" v-model:search="search"
                     @keyup.enter="consultProduct(search)" />
@@ -67,14 +59,14 @@
                         <card-grid color="grey" icon="mdi mdi-percent" text="Aplicar descuento" />
                     </v-col>
                     <v-col cols="6" class="pb-0">
-                        <card-grid color="fail" icon="mdi-close" text="Cancelar cotización" @click="cancelDialog()" />
+                        <card-grid color="fail" icon="mdi-close" text="Cancelar venta" @click="cancelDialog()" />
                     </v-col>
                     <v-col cols="6">
                         <card-grid color="greenLight" icon="mdi-more" text="Más opciones" />
                     </v-col>
                     <v-col cols="6">
-                        <card-grid color="success" icon="mdi mdi-cash-register" text="Cotiazar"
-                            @click="createSale($event)" />
+                        <card-grid color="success" icon="mdi mdi-cash-register" text="Cobrar"
+                            @click="pointsaleStore.openDialogSeller(true)" />
                     </v-col>
                 </v-row>
             </v-col>
@@ -85,6 +77,11 @@
                 <dialog-open-box :saleboxes="saleboxStore.saleboxes" v-if="dialogData" />
             </v-col>
 
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <dialog-open />
+            </v-col>
         </v-row>
         <Alert />
     </v-container>
@@ -109,6 +106,7 @@ import { useAlertNormalStore } from '@/pinia/alert.js';
 import CardGrid from '@/components/PointSale/Cards/CardGrid.vue';
 import CardInfoSale from '@/components/PointSale/Cards/CardInfoSale.vue';
 import DialogOpenBox from '@/components/PointSale/dialogs/DialogOpenBox.vue';
+import DialogOpen from '@/components/PointSale/dialogs/DialogOpen.vue';
 
 import accounting from 'accounting';
 
@@ -124,10 +122,6 @@ onMounted(() => {
     cashCutStore.listCashcuts().then((res) => {
         if (res.data.cashcuts == null) {
             dialogData.value = true;
-        } else {
-            infoCashCut.value = res.data.cashcuts;
-            dialogData.value = false;
-
         }
     });
 });
@@ -172,40 +166,41 @@ const consultProduct = (search) => {
 }
 
 const createSale = () => {
-    if (isProcessing.value) return; // Evita duplicación
-    isProcessing.value = true;
-    if (pointsaleStore.products.length == 0) {
-        alertStore.show = true;
-        alertStore.color = "error";
-        alertStore.msg = "No hay productos en la cotización";
-        alertStore.type = 1;
-        return;
-    }
+
+    // if (isProcessing.value) return; // Evita duplicación
+    // isProcessing.value = true;
+    // if (pointsaleStore.products.length == 0) {
+    //     alertStore.show = true;
+    //     alertStore.color = "error";
+    //     alertStore.msg = "No hay productos en la venta";
+    //     alertStore.type = 1;
+    //     return;
+    // }
 
 
-    let params = {
-        products: JSON.stringify(pointsaleStore.products),
-        cashcut_id: infoCashCut.value.id,
-        user_id: infoCashCut.value.user.id,
-        salebox_id: infoCashCut.value.salebox.id,
-        total: total.value,
-        iva: iva.value,
-        subtotal: subtotal.value
-    }
-    pointsaleStore.storeSale(params).then((response) => {
-        window.open('/print-ticket/' + response.data.sale.id, '_blank');
-        alertStore.show = true;
-        alertStore.color = "success";
-        alertStore.msg = "Se ha creado la cotización correctamente";
-        alertStore.type = 0;
-        isProcessing.value = false;
-        pointsaleStore.products = [];
-    }).catch((error) => {
-        alertStore.show = true;
-        alertStore.color = "error";
-        alertStore.msg = "Se ha producido un error al crear la cotización";
-        alertStore.type = 1;
-    })
+    // let params = {
+    //     products: JSON.stringify(pointsaleStore.products),
+    //     cashcut_id: infoCashCut.value.id,
+    //     user_id: infoCashCut.value.user.id,
+    //     salebox_id: infoCashCut.value.salebox.id,
+    //     total: total.value,
+    //     iva: iva.value,
+    //     subtotal: subtotal.value
+    // }
+    // pointsaleStore.storeSale(params).then((response) => {
+    //     window.open('/print-ticket/' + response.data.sale.id, '_blank');
+    //     alertStore.show = true;
+    //     alertStore.color = "success";
+    //     alertStore.msg = "Se ha creado la venta correctamente";
+    //     alertStore.type = 0;
+    //     isProcessing.value = false;
+    //     pointsaleStore.products = [];
+    // }).catch((error) => {
+    //     alertStore.show = true;
+    //     alertStore.color = "error";
+    //     alertStore.msg = "Se ha producido un error al crear la venta";
+    //     alertStore.type = 1;
+    // })
 }
 
 const totalProducts = computed(() => {
