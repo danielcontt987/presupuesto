@@ -38,10 +38,10 @@ export const useSettingStore = defineStore("setting", {
                         reject(error);
                     });
             });
-        },       
-        updateUbication(payload) {
+        },
+        updateDocumentType(payload) {
             return new Promise((resolve, reject) => {
-                axios.post("setting/update-ubication", payload)
+                axios.post("setting/update-document-type", payload)
                     .then((response) => {
                         resolve(response);
                         this.getSetting();
@@ -50,6 +50,6 @@ export const useSettingStore = defineStore("setting", {
                         reject(error);
                     });
             });
-        }        
+        }
     },
 });

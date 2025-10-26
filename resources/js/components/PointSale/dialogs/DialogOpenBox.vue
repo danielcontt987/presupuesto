@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-dialog v-model="openDialogSaleBox" :width="dialogWidth()" class="mt-0" persistent>
+        <v-dialog v-model="cashCutStore.openDialogCashCut" :width="dialogWidth()" class="mt-0" persistent>
             <v-card class="rounded-lg">
                 <v-card-title class="bg-secondary_dark">
                     <v-row class="mx-3 mt-0 mb-0">
@@ -61,70 +61,23 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="openCreateBox" :width="dialogWidthBox()">
-            <v-card class="overflow-hidden">
-                <v-card-title class="bg-primary">
-                    <v-row class="mx-3 mt-0 mb-0">
-                        <v-col cols="12">
-                            <h4 class="text-center p-0">
-                                Crear caja
-                            </h4>
-                        </v-col>
-                    </v-row>
-                </v-card-title>
-                <v-card-text>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="salebox" variant="outlined" label="Nombre de la caja" />
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions class="justify-center">
-                    <v-row class="mx-0">
-                        <v-col cols="12" lg="6">
-                            <v-btn block depressed class="rounded-lg text-fail" @click="closeDialogBox()">
-                                Cerrar
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" lg="6">
-                            <v-btn block depressed class="bg-primary rounded-lg white--text" @click="createSalebox()">
-                                Agregar
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <!-- <v-notification-dialog>
-            <v-row class="mx-0">
-                <v-col class="text-center">
-                    <v-btn class="rounded-lg" large depressed block color="primary text-white" @click="closeDialog()">
-                        Entendido
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-notification-dialog> -->
-        <!-- <alert-progress>
-            <div class="sk-chase">
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-            </div>
-        </alert-progress> -->
+        <DialogBox />
         <Alert />
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRouter } from "vue-router";
 import { useCashCutStore } from '@/pinia/cashcut';
+import { useSaleboxStore } from '@/pinia/salebox';
 import { useAlertNormalStore } from '@/pinia/alert';
+import DialogBox from './DialogBox.vue';
 
 const cashCutStore = useCashCutStore();
 const alertStore = useAlertNormalStore();
+const saleboxStore = useSaleboxStore();
+const router = useRouter();
 
 
 defineProps({
@@ -132,22 +85,15 @@ defineProps({
 });
 
 onMounted(() => {
-    openDialogSaleBox.value = true;
+    cashCutStore.listCashcuts();
 });
 
-const openDialogSaleBox = ref(false);
-const openCreateBox = ref(false);
-const salebox = ref('');
 const salebox_id = ref(null);
 const amount = ref(null);
 const comment = ref(null);
 
 const dialogWidth = () => {
     return window.innerWidth < 600 ? '90%' : '50%';
-}
-
-const dialogWidthBox = () => {
-    return window.innerWidth < 600 ? '90%' : '40%';
 }
 
 const boxRules = [
@@ -159,34 +105,14 @@ const accountRules = [
     v => /^[0-9]+(\.[0-9]{1,2})?$/.test(v) || 'El importe debe ser un número válido',
 ]
 
-const closeDialogBox = () => {
-    openCreateBox.value = false;
-}
 
 const openSalebox = () => {
-    openCreateBox.value = true;
+    saleboxStore.dialogBox(true);
 }
 
 const closeDialogCashCut = () => {
-    openDialogSaleBox.value = false;
-}
-
-const createSalebox = () => {
-    let params = {
-        salebox: salebox.value
-    }
-
-    cashCutStore.storeBox(params).then(() => {
-        alertStore.show = true;
-        alertStore.color = "success";
-        alertStore.msg = "Se han creado una nuevo corte de caja";
-        alertStore.type = 0;
-    }).catch(() => {
-        alertStore.show = true;
-        alertStore.color = "fail";
-        alertStore.msg = "Se han creado una nuevo corte de caja";
-        alertStore.type = 0;
-    })
+    // openDialogSaleBox.value = false;
+    router.push({ name: 'Inicio' });
 }
 
 const storeCashCut = () => {
@@ -201,27 +127,19 @@ const storeCashCut = () => {
         alertStore.color = "success";
         alertStore.msg = "Se han creado una nuevo corte de caja";
         alertStore.type = 0;
-
+        cashCutStore.dialogCashCut(false);
         cashCutStore.listCashcuts().then((res) => {
             if (res.data.cashcuts.length === 0) {
-                openDialogSaleBox.value = true;
+                cashCutStore.dialogCashCut(true);
             } else {
-                openDialogSaleBox.value = false;
+                cashCutStore.dialogCashCut(false);
             }
         });
     }).catch((error) => {
         alertStore.show = true;
         alertStore.color = "fail";
-        alertStore.msg = "No se ha podido crear el corte de caja";
+        alertStore.msg = "No se ha podido crear el corte de a";
         alertStore.type = 1;
-
-        cashCutStore.listCashcuts().then((res) => {
-            if (res.data.cashcuts.length === 0) {
-                openDialogSaleBox.value = true;
-            } else {
-                openDialogSaleBox.value = false;
-            }
-        });
     })
 }
 

@@ -22,9 +22,9 @@ export const useProductStore = defineStore('product', {
             })
         },
 
-        listProducts() {
+        listProducts(params) {
             return new Promise((resolve, reject) => {
-                axios.post("product/list")
+                axios.post("product/list", params)
                     .then((response) => {
                         this.products = response.data.products.map(product => ({
                             ...product,

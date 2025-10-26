@@ -133,12 +133,12 @@ const routes = [
         path: '/tarjetas',
         name: 'Administración de tarjetas',
         component: () => import('@/view/Card/Card.vue'),
-    }
-    // {
-    //     path: '/home',
-    //     name: 'Home',
-    //     component: () => import('@/view/Home.vue'),
-    // },
+    },
+    {
+        path: '/cotizaciones',
+        name: 'Cotizaciones',
+        component: () => import('@/view/Quotation/Quotation.vue'),
+    },
 ];
 
 const router = createRouter({

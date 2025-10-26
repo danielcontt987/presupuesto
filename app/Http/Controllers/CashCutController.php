@@ -43,9 +43,8 @@ class CashCutController extends Controller
     {
         DB::beginTransaction();
         try {
-            $id = Auth::user()->id;
             $boxes = Salebox::create([
-                'name' => $request->input('salebox'),
+                'name' => $request->input('name'),
                 'business_id' => Auth::user()->getBusiness()
 
             ]);

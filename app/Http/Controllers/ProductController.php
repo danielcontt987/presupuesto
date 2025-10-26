@@ -51,11 +51,11 @@ class ProductController extends Controller
         }
     }
 
-    public function list()
+    public function list(Request $request)
     {
         $businessId = Auth::user()->getBusiness();
 
-        $products = $this->productService->list($businessId);
+        $products = $this->productService->list($businessId, $request->input('is_service'));
 
         return response()->json(['status' => 200, 'products' => $products]);
     }
@@ -130,6 +130,8 @@ class ProductController extends Controller
                     $weight     = $worksheet->getCell("M{$row}")->getValue();
                     $type       = $worksheet->getCell("K{$row}")->getValue();
                     $stock      = $worksheet->getCell("L{$row}")->getValue();
+                    $is_iva     = $worksheet->getCell("N{$row}")->getValue();
+                    $isService     = $worksheet->getCell("O{$row}")->getValue();
 
                     $product = ModelsProduct::create([
                         'name' => $name,
@@ -141,12 +143,14 @@ class ProductController extends Controller
                         'price_s_shop' => $price_s_shop,
                         'price_sale' => $price_sale,
                         'price_s_sale' => $price_s_sale,
-                        'iva' => ($price_sale * .16),
+                        'iva' => $is_iva == "S" ? ($price_sale * .16) : 0,
                         'business_id' => Auth::user()->getBusiness(),
                         'user_id' => Auth::id(),
-                        'weight' => $weight,
+                        'weight' => $weight ?? 0,
                         'type' => $type,
                         'category_id' => $categoryId,
+                        'is_iva' => $is_iva == "S" ? 1 : 0,
+                        'is_service' => $isService == "S" ? 1 : 0,
                     ]);
 
                     $inventory = Inventory::where('area_id', Auth::user()->getArea())->first();

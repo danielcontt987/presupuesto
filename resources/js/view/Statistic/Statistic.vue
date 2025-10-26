@@ -229,8 +229,6 @@ const goToDetail = (item) => {
         return;
     };
 
-    console.log();
-
     statisticStore.setSaleId(item.id);
     statisticStore.getSalesDetails(item.id);
     router.push({ name: 'Detalle de cotización' });

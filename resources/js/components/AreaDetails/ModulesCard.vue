@@ -75,8 +75,6 @@ const changeState = (bool, permissionId) => {
 
 const storePermission = () => {
     areaStore.permission.forEach(element => {
-        console.log(element);
-
         if (element.granted == 1 || element.granted == true) {
             idsPermission.value.push(element.module_id);
         }

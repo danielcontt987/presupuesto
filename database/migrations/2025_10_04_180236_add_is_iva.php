@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->decimal('weight')->default(0.00);
-            $table->enum('type', ['Pieza', 'Metros cubicos', 'Metros cuadrados', 'Litro', 'Unidad', 'Kilogramo']);
+            $table->boolean('is_iva')->default(false);
         });
     }
 
@@ -23,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('weight');
-            $table->dropColumn('type');
+            $table->dropColumn('is_iva');
         });
     }
 };

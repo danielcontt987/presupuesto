@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CashCutController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModuleController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\SaleBoxController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TurnController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -113,6 +115,10 @@ Route::get('/tarjetas', function () {
     return view('home');
 })->middleware('auth.user');
 
+Route::get('/cotizaciones', function () {
+    return view('home');
+})->middleware('auth.user');
+
 //Not found
 // Route::get('/{any}', function () {
 //     return view('home'); // o la vista que uses
@@ -132,6 +138,7 @@ Route::prefix('user')->group(function () {
 Route::prefix('setting')->group(function () {
     Route::post('/get', [SettingController::class, 'get']);
     Route::post('/update-part-1', [SettingController::class, 'updateInfo']);
+    Route::post('/update-document-type', [SettingController::class, 'documentType']);
     Route::post('/update-ubication', [SettingController::class, 'updateUbication']);
 })->middleware('auth.user');
 
@@ -204,4 +211,15 @@ Route::prefix('projects')->group(function () {
     Route::post('/update-card', [ProjectController::class, 'updateCard']);
 });
 
+Route::prefix('turn')->group(function () {
+    Route::post('/store', [TurnController::class, 'store']);
+    Route::post('/list', [TurnController::class, 'list']);
+});
+
+Route::prefix('business')->group(function () {
+    Route::get('/list', [BusinessController::class, 'list']);
+});
+
+
 Route::get('/print-ticket/{sale}', [PointSaleController::class, 'print']);
+Route::get('/ticket', [PointSaleController::class, 'generate']);

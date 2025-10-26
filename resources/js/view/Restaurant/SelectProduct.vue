@@ -513,7 +513,6 @@ const navigateToHome = () => {
 };
 
 const onCategoryChange = (value) => {
-    console.log('Categoría seleccionada:', value);
     if (value === 0) {
         productStore.listProducts();
     } else {

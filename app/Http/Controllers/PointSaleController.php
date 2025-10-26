@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Microservices\Cashcut;
 use App\Microservices\Sale;
+use App\Models\Business;
 use App\Models\CashCut as ModelsCashCut;
 use App\Models\Sale as ModelsSale;
 use App\Models\Salebox;
@@ -111,6 +112,7 @@ class PointSaleController extends Controller
         $date = Carbon::parse($sale->saledate)->format('d/m/Y');
         $user = Auth::user()->fullName();
         $saleDetails = SaleDetail::with(['product'])->where('sale_id', $id)->get();
+        $business = Business::find(Auth::user()->getBusiness());
         $data = [
             'title' => 'Presupuesto',
             'sale' => $sale,
@@ -120,8 +122,24 @@ class PointSaleController extends Controller
             'user' => $user,
             'folio' => $sale->folio,
         ];
-        $pdf = PDF::loadView('printers.ticket', $data);
-        return $pdf->stream('prosupuesto.pdf');  // Usamos stream en lugar de download
+
+        if ($business->document_type == 'document') {
+            $pdf = PDF::loadView('printers.document', $data);
+            return $pdf->stream('prosupuesto.pdf');
+        } else {
+            $items = [
+                ['name' => 'Pizza', 'quantity' => 2, 'price' => 150],
+                ['name' => 'Refresco', 'quantity' => 3, 'price' => 25],
+            ];
+            $total = collect($items)->sum(fn($i) => $i['price'] * $i['quantity']);
+
+            $pdf = PDF::loadView('printers.ticket', compact('items', 'total'))
+                ->setPaper([0, 0, 226.77, 800]); // tamaño papel térmico 80mm ancho (aprox)
+
+            return $pdf->stream('ticket.pdf');
+            // $pdf = PDF::loadView('printers.ticket', $data);
+            return $pdf->stream('prosupuesto.pdf');
+        } // Usamos stream en lugar de download
     }
 
     public function get($id)
@@ -161,5 +179,42 @@ class PointSaleController extends Controller
             $query->select('id', 'name');
         }])->orderBy('id', 'desc')->first();
         return response()->json(["status" => "200", "sale" => $sale]);
+    }
+
+    public function generate()
+    {
+        // 🔹 Datos de ejemplo (pueden venir de base de datos)
+        $data = [
+            'empresa' => [
+                'nombre' => 'CARRASCO SANTA CRUZ DEISLER ANTONY',
+                'ruc' => '10757017291',
+                'direccion' => 'CALLE AYACUCHO 187 - JAEN - CAJAMARCA',
+                'telefono' => '920468502',
+            ],
+            'boleta' => [
+                'serie' => 'B004-00000011',
+                'fecha' => now()->format('Y-m-d H:i:s'),
+                'cliente' => 'CLIENTES VARIOS',
+            ],
+            'items' => [
+                ['descripcion' => 'PRUEBA02 (AC FARMA)', 'cantidad' => 2, 'precio' => 2.00, 'importe' => 4.00],
+            ],
+            'totales' => [
+                'op_gravadas' => 3.39,
+                'igv' => 0.61,
+                'total' => 4.00,
+                'total_letras' => 'CUATRO CON 00/100 SOLES',
+            ],
+            'pago' => 'Contado',
+            'vendedor' => 'Apurway Dev',
+            'logo' => public_path('logo.png'), // ruta al logo
+            'qr' => public_path('logo.png'), // ruta al QR
+        ];
+
+        // 🔹 Generar PDF desde la vista Blade
+        $pdf = PDF::loadView('printers.ticket', $data)
+            ->setPaper([0, 0, 226.77, 600], 'portrait'); // 80mm ancho
+
+        return $pdf->stream('ticket.pdf');
     }
 }

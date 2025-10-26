@@ -1,8 +1,6 @@
-
-
 html,
 body {
-    font-family: "Montserrat";
+  font-family: "Montserrat";
 }
 
 h1,
@@ -19,8 +17,6 @@ span {
 
 /* styles/colors.css */
 .bg-green-gradient {
-    background: linear-gradient(to right, #ecfdf5, #3bcd82);
-    border-color: #00ff88;
+  background: linear-gradient(to right, #ecfdf5, #3bcd82);
+  border-color: #484848;
 }
-
-

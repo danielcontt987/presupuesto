@@ -50,10 +50,12 @@ class ProductService
         return $product;
     }
 
-    public function list(int $businessId)
+    public function list(int $businessId, bool $isService)
     {
         return Product::with(['category', 'inventoryDetail'])
             ->where('business_id', $businessId)
+            ->where('is_service', $isService)
+            ->take(25)
             ->get();
     }
 

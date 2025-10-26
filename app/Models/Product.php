@@ -26,6 +26,10 @@ class Product extends Model
         'weight',
         'type',
         'category_id',
+        'stock',
+        'min',
+        'max',
+        'is_service'
     ];
 
     public function category()

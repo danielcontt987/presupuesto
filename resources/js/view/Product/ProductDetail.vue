@@ -73,7 +73,7 @@
                                                     </v-icon>
                                                     <div>
                                                         <p class="ml-4 font-weight-bold mr-3">{{ item.label
-                                                        }}</p>
+                                                            }}</p>
                                                         <v-row class="mt-2 ml-4" dense>
                                                             <p>
                                                                 {{ item.value }}
@@ -106,13 +106,13 @@
                                             <span class="text-green-darken-1">Precio Normal:</span>
                                             <span class="font-weight-bold text-green-darken-4">{{
                                                 formatPrice(product && product.price_shop)
-                                                }}</span>
+                                            }}</span>
                                         </v-row>
                                         <v-row justify="space-between">
                                             <span class="text-green-darken-1">Precio Especial:</span>
                                             <span class="font-weight-bold text-green-darken-4">{{
                                                 formatPrice(product && product.price_s_shop)
-                                                }}</span>
+                                            }}</span>
                                         </v-row>
                                     </v-card>
                                 </v-col>
@@ -127,13 +127,13 @@
                                             <span class="text-blue-darken-1">Precio Normal:</span>
                                             <span class="font-weight-bold text-blue-darken-4">{{
                                                 formatPrice(product && product.price_shop)
-                                                }}</span>
+                                            }}</span>
                                         </v-row>
                                         <v-row justify="space-between">
                                             <span class="text-blue-darken-1">Precio Especial:</span>
                                             <span class="font-weight-bold text-blue-darken-4">{{
                                                 formatPrice(product && product.price_s_shop)
-                                                }}</span>
+                                            }}</span>
                                         </v-row>
                                     </v-card>
                                 </v-col>
@@ -223,7 +223,7 @@
                                             </v-row>
                                             <span class="font-weight-medium mr-5">{{ formatDate(product &&
                                                 product.created_at)
-                                            }}</span>
+                                                }}</span>
                                         </v-row>
                                     </v-card-text>
                                 </v-card>
@@ -235,7 +235,7 @@
                                             </v-row>
                                             <span class="font-weight-medium mr-5">{{ formatDate(product &&
                                                 product.updated_at)
-                                            }}</span>
+                                                }}</span>
                                         </v-row>
                                     </v-card-text>
                                 </v-card>
@@ -296,7 +296,7 @@ onMounted(() => {
 const references = computed(() => {
     return [
         { label: 'Folio', value: product.value && product.value.folio ? product.value.folio : 'NA', icon: 'mdi-tag' },
-        { label: 'Folio Personalidad', value: product.value && product.folio_personality ? product.value.folio_personality : 'NA', icon: 'mdi-tag-outline' },
+        { label: 'Folio Personalizado', value: product.value && product.folio_personality ? product.value.folio_personality : 'NA', icon: 'mdi-tag-outline' },
         { label: 'Código de Barras', value: product.value && product.value.barcode ? product.value.barcode : 'NA', icon: 'mdi-barcode' },
         { label: 'Tipo', value: product.value ? product.value.type : "NA", icon: 'mdi-package-variant-closed' }
     ];

@@ -124,11 +124,8 @@ import { useSettingStore } from "@/pinia/setting";
 import { onMounted, ref } from "vue";
 
 const openModal = ref(false);
-const name = ref("");
-const cellphone1 = ref("");
-const cellphone2 = ref("");
-const whatsapp = ref("");
-const email_company = ref("");
+const type_doc = ref("");
+const iva = ref("");
 const isLoading = ref(false);
 const editSetting = ref(null)
 const type_docs = [
@@ -155,24 +152,17 @@ onMounted(() => {
 
 const updateInfo = () => {
     openModal.value = true;
-    name.value = settingStore.business.name;
-    cellphone1.value = settingStore.business.telephone1;
-    cellphone2.value = settingStore.business.telephone2;
-    whatsapp.value = settingStore.business.whatsapp;
-    email_company.value = settingStore.business.email_company;
+    editSetting.value.type_doc = settingStore.business.type_doc;
+    editSetting.value.iva = settingStore.business.iva;
 };
 
 const update = () => {
     let params = {
-        "name": name.value,
-        "cellphone1": cellphone1.value,
-        "cellphone2": cellphone2.value,
-        "whatsapp": whatsapp.value,
-        "email_company": email_company.value,
+        "type_doc": editSetting.value.type_doc,
+        "iva": editSetting.value.iva,
     }
 
-    settingStore.updatePart1(params).then((response) => {
-
+    settingStore.updateDocumentType(params).then((response) => {
         openModal.value = false;
         alertNormal.show = true;
         (alertNormal.color = "success"),
@@ -180,6 +170,13 @@ const update = () => {
                 "Se actualizó correctamente la información"),
             (alertNormal.type = 0),
             (alertNormal.icon = "mdi-check-circle-outline");
+    }).catch((error) => {
+        alertNormal.show = true;
+        (alertNormal.color = "error"),
+            (alertNormal.msg =
+                "Error al actualizar la información"),
+            (alertNormal.type = 1),
+            (alertNormal.icon = "mdi-alert-circle-outline");
     });
 };
 

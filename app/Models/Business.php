@@ -45,5 +45,11 @@ class Business extends Model
         'folio_business',
         'long',
         'type_doc',
+        'turn_id'
     ];
+
+    public function turn()
+    {
+        return $this->hasOne(Turn::class, 'id', 'turn_id');
+    }
 }

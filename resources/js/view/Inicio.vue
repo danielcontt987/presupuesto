@@ -126,7 +126,6 @@ onMounted(() => {
     userStore.consultUser().then((response) => {
         permissions.value = response.data.permissions
     }).catch((error) => {
-        console.log(error);
     }).finally(() => {
         isLoading.value = false;
     })
@@ -164,12 +163,6 @@ const permissions_arr = ref([
         icon: 'mdi-food',
         visibility: false,
     },
-    // {
-    //     name: 'Estadísticas',
-    //     route: '/cotizaciones',
-    //     icon: 'mdi-chart-areaspline',
-    //     visibility: false,
-    // },
     {
         name: 'Registrar modulos',
         route: '/crear-modulos',
@@ -209,6 +202,12 @@ const permissions_arr = ref([
     {
         name: 'Administración de tarjetas',
         route: '/tarjetas',
+        icon: 'mdi-card',
+        visibility: false,
+    },
+    {
+        name: 'Cotizaciones',
+        route: '/cotizaciones',
         icon: 'mdi-card',
         visibility: false,
     },

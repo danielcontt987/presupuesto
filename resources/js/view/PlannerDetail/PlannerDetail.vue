@@ -219,7 +219,6 @@ const onDropCard = (e, targetColId) => {
     let sourceColId = null
 
     columns.value.forEach(col => {
-        // return console.log(col);
         const idx = col.details.findIndex(c => c.id === cardId)
 
         if (idx !== -1) {

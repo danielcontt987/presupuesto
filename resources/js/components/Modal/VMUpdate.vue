@@ -47,7 +47,6 @@ defineProps({
         type: Object,
     }
 });
-// console.log(this.item)
 
 const alertNormal = useAlertNormalStore();
 const alertError = useErrorNormalStore();

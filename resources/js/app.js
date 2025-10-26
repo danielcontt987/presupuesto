@@ -19,8 +19,6 @@ const customLightTheme = {
     primaryBg: "#192a67",
     colorChip: "#192a67",
     colorText: "#192a67",
-
-
     secondary: "#3E47A3",
     blueSky: '#ecf2ff',
     background: "#EFF3F8",
@@ -48,39 +46,10 @@ const customLightTheme = {
     chipCard: "#ecf2ff",
     warning: "#FBC02D",
     greyDark: "#afafaf",
+    greySpan: "#484848",
     rose: "#fcd6e6",
     greenLight3: "#c2f8d6",
     sky: "#DBEAFE"
-
-    /*
-    primary_dark: '#051942',
-    fail: '#F50057',
-    secondary: '#00337C',
-    secondary_dark: '#001f4a',
-   
-    grey: "#A2A2A2",
-    black: '#000000',
-    success: '#27AE60',
-    accent: "#00CFB5",
-    error: "#C22F2F",
-    success_card: '#27AE60',
-    blueLight: "#f1f3fd",
-    purple_primary:"#9c5df9",
-    purple_light2: "#e2dff8",
-    purple_dark_accent: "#7366ef", 
-    purple_acent: "#fcebf7",
-    blue_light: "#fcebf7",
-    sky_blue: "#fcebf7",
-    purple_dark:"#8436f7",
-    
-    error_light: "#ea5455",
-    blue_light_sky: "#d0f0f7",
-    aqua_normal: "#00cfe8",
-    orange_light2:"#f9e8dd",
-    orange_l2:"#ff9e43",
-    wather_melon: "#fcc3c3",
-    red_dark_2: "#ff3838",
-    */
 
   },
 };
