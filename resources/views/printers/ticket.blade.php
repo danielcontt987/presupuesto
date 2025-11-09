@@ -73,6 +73,7 @@
         .totales .line {
             display: flex;
             justify-content: space-between;
+            text-align: right;
         }
 
         .footer {
@@ -86,24 +87,24 @@
 <body>
 
     <div class="center logo">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents($logo)) }}" alt="logo">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents($img)) }}" alt="logo">
     </div>
 
-    <div class="center bold">{{ $empresa['nombre'] }}</div>
+    <div class="center bold">{{ $empresa['name'] }}</div>
     <div class="center small">
-        RUC {{ $empresa['ruc'] }}<br>
-        {{ $empresa['direccion'] }}<br>
-        Telf: {{ $empresa['telefono'] }}
+        RFC {{ $empresa['fiscal_rfc'] }}<br>
+        {{ $empresa['address'] }}<br>
+        Telf: {{ $empresa['phone'] }}
     </div>
 
-    <div class="center bold" style="margin-top:5px;">Boleta de Venta Electrónica</div>
-    <div class="center">{{ $boleta['serie'] }}</div>
+    <div class="center bold" style="margin-top:5px;">{{ $empresa['document_type'] == 'document' ? 'Presupuesto' : 'Ticket de pago' }}</div>
+    <div class="center">{{ $sale['serie'] }}</div>
 
     <hr>
 
     <div class="small">
-        <div>F. Emisión: {{ $boleta['fecha'] }}</div>
-        <div>Cliente: {{ $boleta['cliente'] }}</div>
+        <div>F. Emisión: {{ $sale['saledate'] }}</div>
+        <div>Cliente: {{ $sale['cliente'] }}</div>
     </div>
 
     <hr>
@@ -118,34 +119,30 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($items as $item)
+            @foreach($saleDetails as $item)
             <tr>
-                <td>{{ $item['descripcion'] }}</td>
-                <td class="qty">{{ number_format($item['cantidad'], 0) }}</td>
-                <td class="unit">{{ number_format($item['precio'], 2) }}</td>
-                <td class="imp">{{ number_format($item['importe'], 2) }}</td>
+                <td>{{ $item['product']['name'] }}</td>
+                <td class="qty">{{ number_format($item['quantity'], 0) }}</td>
+                <td class="unit">{{ number_format($item['total'], 2) }}</td>
+                <td class="imp">{{ number_format($item['total'] * $item['quantity'], 2) }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
     <div class="totales">
-        <div class="line"><span>OP GRAVADAS:</span><span>S/. {{ number_format($totales['op_gravadas'], 2) }}</span></div>
-        <div class="line"><span>IGV 18%:</span><span>S/. {{ number_format($totales['igv'], 2) }}</span></div>
-        <div class="line bold"><span>TOTAL:</span><span>S/. {{ number_format($totales['total'], 2) }}</span></div>
+        <div class="line bold text-right"><span>TOTAL:</span><span>$ {{ number_format($sale['total'], 2) }}</span></div>
     </div>
 
     <div style="margin-top:6px; font-size:10px;">
-        SON: {{ $totales['total_letras'] }}
+        SON: {{ $total_letras }}
     </div>
 
-    <div class="center" style="margin-top:8px;">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qr)) }}" alt="QR" width="70" height="70">
-    </div>
+
 
     <div class="footer">
-        <div>T. Pago: {{ $pago }}</div>
-        <div>Vendedor: {{ $vendedor }}</div>
+        <div>T. Pago: {{ "efectivo" }}</div>
+        <div>Vendedor: {{ $sale['user']['name'] }}</div>
         <div class="bold" style="margin-top:4px;">GRACIAS POR SU COMPRA</div>
     </div>
 

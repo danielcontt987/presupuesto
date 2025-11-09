@@ -159,7 +159,7 @@
                         <v-col cols="12" md="6">
                             <v-card class="bg-cardColor rounded-lg shadow" flat>
                                 <v-card-title class="text-center justify-center">
-                                    <v-alert type="primary" icon="mdi-check" variant="outlined" class="rounded-lg">
+                                    <v-alert type="success" icon="mdi-check" variant="outlined" class="rounded-lg">
                                         <h2>Total: {{ currency(parseFloat(total)) }}</h2>
                                     </v-alert>
                                 </v-card-title>
@@ -192,7 +192,7 @@
                                     </v-row>
                                 </v-card-text>
                                 <v-card-actions class="justify-center">
-                                    <v-btn :disabled="!validPay" block
+                                    <v-btn :disabled="!validPay" block @click="payAccount" :loading="isLoading"
                                         class="bg-primary text-white rounded-lg block py-6">PAGAR</v-btn>
                                 </v-card-actions>
                             </v-card>
@@ -266,6 +266,8 @@ const card = ref(0);
 const dialogData = ref(false);
 const openDialogPay = ref(false);
 const valid = ref(false);
+const isLoading = ref(false);
+
 
 
 const headers = ref(
@@ -298,13 +300,47 @@ const consultProduct = (search) => {
 const createSale = () => {
     if (pointsaleStore.products.length == 0) {
         alertStore.show = true;
-        alertStore.color = "error";
-        alertStore.msg = "No hay productos en la venta";
-        alertStore.type = 1;
+        (alertStore.color = "error");
+        (alertStore.msg = "No hay productos en la venta");
+        (alertStore.type = 1);
         return;
     }
     openDialogPay.value = true;
 }
+
+const payAccount = () => {
+    isLoading.value = true;
+    let params = {
+        products: JSON.stringify(pointsaleStore.products),
+        cashcut_id: cashCutStore.infoCashCut.id,
+        user_id: cashCutStore.infoCashCut.user.id,
+        salebox_id: cashCutStore.infoCashCut.salebox.id,
+        total: total.value,
+        iva: iva.value,
+        subtotal: subtotal.value,
+        observation: pointsaleStore.observation,
+        cash: cash.value,
+        transfer: transfer.value,
+        card: card.value,
+    }
+    pointsaleStore.storeSale(params).then((response) => {
+        isLoading.value = false;
+        window.open('/print-ticket/' + response.data.sale.id, '_blank');
+        alertStore.show = true;
+        (alertStore.color = "success"),
+            (alertStore.msg = "Se ha creado la venta correctamente"),
+            (alertStore.type = 0);
+        pointsaleStore.products = [];
+        openDialogPay.value = false;
+    }).catch((error) => {
+        isLoading.value = false;
+        alertStore.show = true;
+        (alertStore.color = "success"),
+            (alertStore.msg = "Ha ocurrido un error al crear la venta"),
+            (alertStore.type = 1);
+    })
+}
+
 
 
 const totalProducts = computed(() => {

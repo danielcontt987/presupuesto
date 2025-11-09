@@ -96,51 +96,84 @@ class PointSaleController extends Controller
         return response()->json(["status" => "200", "sales" => $sales, "total" => $sales->count(), "last" => $sales->last(), "totalAmount" => $sales->sum('total')]);
     }
 
+    // public function print($id)
+    // {
+    //     // dd("$");
+    //     // Ruta de la imagen
+    //     $imagePath = public_path('img/logoPDF.jpeg');
+
+    //     // Convertir la imagen a Base64
+    //     $imageData = base64_encode(file_get_contents($imagePath));
+    //     // Crear el URI base64 para incluir en el HTML
+    //     $base64Image = 'data:image/jpeg;base64,' . $imageData;
+    //     $sale = ModelsSale::find($id);
+    //     $date = Carbon::parse($sale->saledate)->format('d/m/Y');
+    //     $user = Auth::user()->fullName();
+    //     $saleDetails = SaleDetail::with(['product'])->where('sale_id', $id)->get();
+    //     $business = Business::where('id', Auth::user()->getBusiness())->first(['id', 'name', 'fiscal_rfc', 'type_doc']);
+    //     $data = [
+    //         'sale' => $sale,
+    //         'saleDetails' => $saleDetails,
+    //         'img' => $base64Image,
+    //         'date' => $date,
+    //         'user' => $user,
+    //         'folio' => $sale->folio,
+    //         'empresa' => $business,
+    //     ];
+
+    //     dd(numberToLetter($sale->total));
+
+    //     $data['sale']['total_letras'] = numberToLetter($sale->total);
+
+    //     if ($business->document_type == 'document') {
+    //         $pdf = PDF::loadView('printers.document', $data);
+    //         return $pdf->stream('prosupuesto.pdf');
+    //     } else {
+
+    //         $pdf = PDF::loadView('printers.ticket', $data)
+    //             ->setPaper([0, 0, 226.77, 800]); // tamaño papel térmico 80mm ancho (aprox)
+
+    //         return $pdf->stream('ticket.pdf');
+    //         // $pdf = PDF::loadView('printers.ticket', $data);
+    //         return $pdf->stream('prosupuesto.pdf');
+    //     } // Usamos stream en lugar de download
+    // }
+
     public function print($id)
     {
-        // dd("$");
-        // Ruta de la imagen
         $imagePath = public_path('img/logoPDF.jpeg');
-
-        // Convertir la imagen a Base64
         $imageData = base64_encode(file_get_contents($imagePath));
-
-        // Crear el URI base64 para incluir en el HTML
         $base64Image = 'data:image/jpeg;base64,' . $imageData;
 
         $sale = ModelsSale::find($id);
         $date = Carbon::parse($sale->saledate)->format('d/m/Y');
         $user = Auth::user()->fullName();
         $saleDetails = SaleDetail::with(['product'])->where('sale_id', $id)->get();
-        $business = Business::find(Auth::user()->getBusiness());
+        $business = Business::where('id', Auth::user()->getBusiness())->first(['id', 'name', 'fiscal_rfc', 'type_doc']);
+
         $data = [
-            'title' => 'Presupuesto',
-            'sale' => $sale,
+            'sale'        => $sale,
             'saleDetails' => $saleDetails,
-            'img' => $base64Image,
-            'date' => $date,
-            'user' => $user,
-            'folio' => $sale->folio,
+            'img'         => $base64Image,
+            'date'        => $date,
+            'user'        => $user,
+            'folio'       => $sale->folio,
+            'empresa'     => $business,
+            'total_letras' => numberToLetter($sale->total),
         ];
+
 
         if ($business->document_type == 'document') {
             $pdf = PDF::loadView('printers.document', $data);
             return $pdf->stream('prosupuesto.pdf');
         } else {
-            $items = [
-                ['name' => 'Pizza', 'quantity' => 2, 'price' => 150],
-                ['name' => 'Refresco', 'quantity' => 3, 'price' => 25],
-            ];
-            $total = collect($items)->sum(fn($i) => $i['price'] * $i['quantity']);
-
-            $pdf = PDF::loadView('printers.ticket', compact('items', 'total'))
-                ->setPaper([0, 0, 226.77, 800]); // tamaño papel térmico 80mm ancho (aprox)
+            $pdf = PDF::loadView('printers.ticket', $data)
+                ->setPaper([0, 0, 226.77, 800]); // tamaño térmico
 
             return $pdf->stream('ticket.pdf');
-            // $pdf = PDF::loadView('printers.ticket', $data);
-            return $pdf->stream('prosupuesto.pdf');
-        } // Usamos stream en lugar de download
+        }
     }
+
 
     public function get($id)
     {
