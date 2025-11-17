@@ -23,6 +23,8 @@ export const useProductStore = defineStore('product', {
         },
 
         listProducts(params) {
+            console.log(params);
+
             return new Promise((resolve, reject) => {
                 axios.post("product/list", params)
                     .then((response) => {

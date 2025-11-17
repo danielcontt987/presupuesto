@@ -9,7 +9,7 @@
                 </v-avatar>
             </template>
         </v-list-item>
-        <v-list-item class="text-center" v-if="restaurantStore.commands && restaurantStore.commands.length == 0">
+        <v-list-item class="text-center" v-if="restaurantStore.items && restaurantStore.items.length == 0">
             <v-col cols="12" class="text-center mt-12">
                 <v-icon color="background" size="200">mdi-food-apple-outline</v-icon>
                 <p class="text-primary text-center font-weight-bold">
@@ -63,7 +63,7 @@
 
         <template v-slot:append>
             <div class="pa-2">
-                <v-btn class="bg-primary text-white" block flat>
+                <v-btn class="bg-primary text-white" block flat :loading="loading" @click="addAccount()">
                     Agregar a la cuenta
                 </v-btn>
             </div>
@@ -73,7 +73,7 @@
     <template v-if="openDrawerUpdate == false">
         <v-btn class="bg-primary text-white" style="position: absolute; bottom: 16px; left: 16px; z-index: 20;" icon
             size="large" @click="openDrawer = !openDrawer">
-            <v-badge color="error" :content="restaurantStore.commands.length" offset-x="-16" offset-y="-17">
+            <v-badge color="error" :content="restaurantStore.items.length" offset-x="-16" offset-y="-17">
                 <v-icon>mdi-plus</v-icon>
             </v-badge>
         </v-btn>
@@ -97,15 +97,6 @@
                 </v-btn>
             </template>
         </v-list-item>
-
-        <v-list-item class="text-center" v-if="restaurantStore.commands && restaurantStore.commands.length == 0">
-            <v-col cols="12" class="text-center mt-12">
-                <v-icon color="background" size="200">mdi-food-apple-outline</v-icon>
-                <p class="text-primary text-center font-weight-bold">
-                    Sin orden agregada
-                </p>
-            </v-col>
-        </v-list-item>
         <v-list-item>
             <v-row no-gutters class="mt-6" v-if="restaurantStore.commands.length > 0">
                 <v-col cols="12">
@@ -116,6 +107,15 @@
                     </v-btn>
                 </v-col>
             </v-row>
+        </v-list-item>
+
+        <v-list-item class="text-center" v-if="restaurantStore.items && restaurantStore.items.length == 0">
+            <v-col cols="12" class="text-center mt-12">
+                <v-icon color="background" size="200">mdi-food-apple-outline</v-icon>
+                <p class="text-primary text-center font-weight-bold">
+                    Sin orden agregada
+                </p>
+            </v-col>
         </v-list-item>
         <v-list-item class="py-2">
             <v-row no-gutters>
@@ -152,13 +152,13 @@
 
         <template v-slot:append>
             <div class="pa-2">
-                <v-btn class="bg-primary text-white" block flat @click="addAccount()">
+                <v-btn class="bg-primary text-white" block flat :loading="loading" @click="addAccount()">
                     Agregar a la cuenta
                 </v-btn>
             </div>
             <div class="pa-2" v-if="restaurantStore.commands && restaurantStore.commands.length > 0">
                 <v-btn class="bg-greenLight text-white" block flat @click="payAccount()">
-                    Pagar y cuenta
+                    Pagar cuenta
                 </v-btn>
             </div>
         </template>
@@ -308,16 +308,19 @@
             </template>
             <template v-slot:actions>
                 <v-card-actions class="mt-3 py-2">
-                    <v-col cols="12" md="6" order="1" order-md="1">
-                        <v-btn class="rounded-lg" size="large" @click="closeModal()" text depressed block color="error">
-                            Cerrar
-                        </v-btn>
-                    </v-col>
-                    <v-col cols="12" md="6" order="2" order-md="2">
-                        <v-btn class="rounded-lg bg-primary" size="large" @click="addCommand" depressed block>
-                            Cerrar
-                        </v-btn>
-                    </v-col>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-btn class="rounded-lg" size="large" @click="closeModal()" text depressed block
+                                color="error">
+                                Cerrar
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-btn class="rounded-lg bg-primary" size="large" @click="addCommand" depressed block>
+                                Agregar comentario
+                            </v-btn>
+                        </v-col>
+                    </v-row>
                 </v-card-actions>
             </template>
         </card-base-modal>
@@ -353,6 +356,7 @@ const isLoading = ref(false);
 const isLoadingProduct = ref(true);
 const category = ref(null);
 const openDrawer = ref(true);
+const loading = ref(false);
 
 
 const headers = [
@@ -371,7 +375,7 @@ onMounted(() => {
     restaurantStore.listItems({ table_id: restaurantStore.selectedTable.id });
 
     category.value = 0;
-    productStore.listProducts().then(() => {
+    productStore.listProducts({ is_service: 0 }).then(() => {
         isLoadingProduct.value = false;
     }).catch(() => {
         isLoadingProduct.value = false;
@@ -460,6 +464,8 @@ const addAccount = () => {
         total: total,
     };
 
+    loading.value = true;
+
     restaurantStore.addToAccount(params).then(() => {
         alertStore.show = true;
         alertStore.color = "success";
@@ -477,6 +483,8 @@ const addAccount = () => {
         alertStore.color = "error";
         alertStore.msg = "Error al agregar la comanda a la cuenta";
         alertStore.type = 1;
+    }).finally(() => {
+        loading.value = false;
     });
 }
 
@@ -513,8 +521,11 @@ const navigateToHome = () => {
 };
 
 const onCategoryChange = (value) => {
+    console.log(value);
     if (value === 0) {
-        productStore.listProducts();
+        productStore.listProducts({
+            is_service: 0,
+        });
     } else {
         productStore.listProductsByCategory(value);
     }

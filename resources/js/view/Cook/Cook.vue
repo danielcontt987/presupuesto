@@ -40,9 +40,6 @@
                             {{ column.title === 'pending' ? 'Pendiente' :
                                 column.title === 'in_process' ? 'En preparación' : 'Listo' }}
                         </span>
-                        <!-- <v-chip size="small" color="primary" text-color="white">
-                            {{ getOrdersByStatus(column.title).value.length }}
-                        </v-chip> -->
                     </div>
                 </v-card>
 
@@ -66,13 +63,15 @@
                             <!-- Items -->
                             <div v-for="(item, i) in element.items" :key="i" class="d-flex justify-space-between py-1">
                                 <span class="text-body-2">{{ item.qty }}x {{ item.product }}</span>
+                                <span class="text-body-2 text-grey-darken-2 font-italic"> {{ item.notes
+                                }}</span>
                                 <span class="text-body-2 font-weight-medium">{{ currency(item.price) }}</span>
                             </div>
 
                             <!-- Footer -->
                             <div class="d-flex justify-space-between align-center mt-2">
                                 <span class="text-caption text-grey-darken-2">
-                                    <v-chip variant="tonal" class="rounded-lg" color="cyan-accent-4">Mesa {{
+                                    <v-chip variant="tonal" class="rounded-lg" color="cyan-accent-4"> {{
                                         element.table
                                     }}</v-chip>
                                 </span>

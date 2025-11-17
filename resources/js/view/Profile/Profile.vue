@@ -4,18 +4,18 @@
             <v-col cols="12" md="10">
                 <vc-back-button @backAction="navigateToHome"></vc-back-button>
             </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="3">
                 <v-card color="cardColor" class="rounded-lg" flat>
                     <v-card-title>
                         <v-row>
-                            <v-col cols="12" md="9">
+                            <v-col cols="12" md="7">
                                 <v-chip
                                     class="bg-chipCard text-colorText rounded-lg pa-5 font-weight-bold text-uppercase"
                                     label>
                                     Mi perfil
                                 </v-chip>
                             </v-col>
-                            <v-col cols="12" md="3" class="text-right">
+                            <v-col cols="12" md="5" class="text-right">
                                 <v-avatar color="chipCard" size="40" class="cursor-pointer">
                                     <v-icon size="20">mdi-pencil</v-icon>
                                 </v-avatar>
@@ -60,7 +60,7 @@
                     </v-card-actions>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="8">
+            <v-col cols="12" md="9">
                 <v-row>
                     <v-col cols="12" md="4" lg="4">
                         <v-card flat>

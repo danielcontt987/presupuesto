@@ -83,7 +83,7 @@
 
 <script setup>
 
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import TableCard from '@/components/Restaurant/Tables.vue';
 import DialogBox from '@/components/Modal/DialogBox.vue';
 import StatusTable from '@/components/Restaurant/StatusTable.vue';

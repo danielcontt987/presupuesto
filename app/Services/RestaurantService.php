@@ -33,23 +33,27 @@ class RestaurantService
 
     public function listItemCook()
     {
-        $commands = Command::with('details.product')->get();
+        $commands = Command::with('details.product', 'table')->get();
+
         $newArray = $commands->map(function ($command) {
             return [
                 'id' => $command->id,
-                'table' => $command->table_id,
+                'table' => $command->table?->name, // si quieres el nombre
                 'status' => $command->status,
                 'total' => $command->details->sum(fn($d) => $d->quantity * $d->price),
-                'items' => $command->details->map(function ($detail) {
+                'items' => $command->details->map(function ($detail) use ($command) {
                     return [
-                        'product' => $detail->product->name,
-                        'qty'     => $detail->quantity,
-                        'price'   => floatval($detail->price),
+                        'product'  => $detail->product?->name,
+                        'table'    => $command->table?->name,
+                        'notes'    => $detail->notes,
+                        'qty'      => $detail->quantity,
+                        'price'    => floatval($detail->price),
                         'subtotal' => $detail->quantity * $detail->price,
                     ];
                 }),
             ];
         });
+
 
         $statuses = [
             ['title' => 'pending'],

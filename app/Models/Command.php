@@ -20,4 +20,9 @@ class Command extends Model
     {
         return $this->hasMany(CommandDetail::class, 'command_id');
     }
+
+    public function table()
+    {
+        return $this->belongsTo(Table::class, 'table_id');
+    }
 }
