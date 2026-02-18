@@ -521,7 +521,6 @@ const navigateToHome = () => {
 };
 
 const onCategoryChange = (value) => {
-    console.log(value);
     if (value === 0) {
         productStore.listProducts({
             is_service: 0,

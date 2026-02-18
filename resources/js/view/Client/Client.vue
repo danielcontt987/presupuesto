@@ -1,9 +1,6 @@
 <template>
     <v-container fluid>
         <v-row>
-            <v-col cols="12" md="10">
-                <vc-back-button @backAction="navigateToHome"></vc-back-button>
-            </v-col>
             <v-col cols="12">
                 <FilterClients />
             </v-col>

@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "accounting": "^0.4.1",
+        "chart.js": "^4.5.1",
         "face-api.js": "^0.20.0",
         "html5-qrcode": "^2.3.8",
         "idb": "^8.0.0",

@@ -1,10 +1,5 @@
 <template>
     <v-container fluid>
-        <v-row>
-            <v-col cols="12" md="10">
-                <vc-back-button @backAction="navigateToHome"></vc-back-button>
-            </v-col>
-        </v-row>
         <v-row v-if="areaStore.isLoading">
             <v-col cols="12">
                 <v-card

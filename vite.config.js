@@ -4,6 +4,12 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
 export default defineConfig({
+    // server: {
+    //     host: '192.168.1.72', // IMPORTANTE
+    //     port: 5173,
+    //     strictPort: true,
+    //     cors: true, // 🔥 SOLUCIÓN CORS
+    // },
     plugins: [
         laravel({
             input: [
@@ -11,6 +17,9 @@ export default defineConfig({
                 'resources/js/app.js',
             ],
             refresh: true,
+            server: {
+                host: '192.168.1.72',
+            },
 
             /** 👇 Esta es la parte importante */
             // devServer: {
@@ -28,14 +37,6 @@ export default defineConfig({
             },
         }),
     ],
-    // server: {
-    //     host: '0.0.0.0',
-    //     port: 5173,
-    //     https: false,
-    //     hmr: {
-    //         host: '192.168.1.72',
-    //     },
-    // },
     resolve: {
         alias: {
             'vue': 'vue/dist/vue.esm-bundler.js',

@@ -1,9 +1,6 @@
 <template>
     <v-container fluid>
         <v-row>
-            <v-col cols="12" md="10">
-                <vc-back-button @backAction="goTo"></vc-back-button>
-            </v-col>
             <v-col cols="12">
                 <CardModule />
             </v-col>

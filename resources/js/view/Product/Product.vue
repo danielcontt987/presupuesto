@@ -1,6 +1,5 @@
 <template>
     <v-container fluid>
-        <back-button @backAction="goToBack()" />
         <v-row>
             <v-col cols="12">
                 <v-card flat>

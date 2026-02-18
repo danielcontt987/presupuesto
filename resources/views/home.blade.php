@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="theme-color" content="#6777ef" />
-    <link rel="apple-touch-icon" href="{{ asset('logo.webp') }}">
+    <link rel="apple-touch-icon" href="{{ asset('/img/logo.webp') }}">
     <link rel="preload" as="image" href="/img/logo.webp" />
 
     {{-- <link rel="manifest" href="{{ asset('/manifest.json') }}"> --}}
-    <title>PosSys</title>
+    <title>LUXSOFT</title>
 
     {{-- <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">       

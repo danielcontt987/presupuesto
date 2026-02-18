@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Language" content="es" />
-    <title>Presupueto</title>
+    <title>LUXSOFT</title>
 
     {{-- <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

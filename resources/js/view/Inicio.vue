@@ -1,264 +1,151 @@
 <template>
     <v-container fluid>
+
+        <!-- BIENVENIDA -->
         <v-row>
-            <v-col cols="12">
-                <v-text-field v-model="search" variant="outlined" label="Buscar" prepend-inner-icon="mdi-magnify"
-                    class="mt-2 mb-2" clearable />
+            <v-col>
+                <h2 class="font-weight-bold">👋 Bienvenido, Daniel</h2>
+                <p class="text-grey">Resumen general del sistema</p>
             </v-col>
-            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
-                </v-card>
+        </v-row>
+
+        <!-- KPI CARDS -->
+        <v-row>
+            <v-col cols="12" md="4" v-for="card in stats" :key="card.title">
+                <info-card :icon="card.icon" :title="card.title" :text="card.value" :color="card.color" />
             </v-col>
-            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
-                </v-card>
-            </v-col>
-            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
-                </v-card>
-            </v-col>
-            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
-                </v-card>
-            </v-col>
-            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
-                </v-card>
-            </v-col>
-            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
-                </v-card>
-            </v-col>
-            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
-                </v-card>
-            </v-col>
-            <v-col cols="6" sm="4" md="4" lg="3" v-if="isLoading">
-                <v-card elevation="0">
-                    <v-skeleton-loader type="card" />
+        </v-row>
+
+        <!-- GRAFICAS -->
+        <v-row>
+            <v-col cols="12" md="7">
+                <v-card elevation="0" style="margin-bottom: 0px !important" class="rounded-lg">
+                    <v-card-title>
+                        <v-row class="mx-0">
+                            <v-col cols="12">
+                                <v-chip color="background" class="text-primary rounded-lg pa-5 font-weight-bold" label
+                                    width="100%">
+                                    Ventas últimos 7 días
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+                    </v-card-title>
+                    <v-card-text>
+                        <canvas id="salesChart"></canvas>
+                    </v-card-text>
                 </v-card>
             </v-col>
 
-            <v-col v-else cols="6" sm="4" md="4" lg="3" v-for="(item, key) in dataFiltered" :key="key">
-                <div class="d-flex justify-center align-center flex-column py-5"
-                    :class="themeName === 'customDarkTheme' ? 'rounded-card-darkTheme' : 'rounded-card'"
-                    @click="goTo(item.route)">
-                    <i class="mb-2 mdi" style="font-size: 4rem"
-                        :class="['mdi', item.icon, themeName === 'customDarkTheme' ? 'icon-text-darkTheme' : 'icon-text']"></i>
-                    <p class="px-4 text-center d-inline-block text-truncate"
-                        :class="themeName === 'customDarkTheme' ? 'icon-text-darkTheme' : 'icon-text'">
-                        {{ item.name }}
-                    </p>
-                </div>
+            <v-col cols="12" md="5">
+                <!-- <v-card rounded="xl" class="pa-4">
+                    <h3>🔥 Productos más vendidos</h3>
+                   
+                </v-card> -->
+                <v-card elevation="0" style="margin-bottom: 0px !important" class="rounded-lg">
+                    <v-card-title>
+                        <v-row class="mx-0">
+                            <v-col cols="12">
+                                <v-chip color="background" class="text-primary rounded-lg pa-5 font-weight-bold" label
+                                    width="100%">
+                                    Productos más vendidos
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+                    </v-card-title>
+                    <v-card-text>
+                        <canvas id="topProductsChart"></canvas>
+                    </v-card-text>
+                </v-card>
             </v-col>
         </v-row>
+
+        <!-- TABLA ULTIMAS COTIZACIONES -->
+        <v-row>
+            <v-col>
+                <v-card elevation="0" style="margin-bottom: 0px !important" class="rounded-lg">
+                    <v-card-title>
+                        <v-row class="mx-0">
+                            <v-col cols="12">
+                                <v-chip color="background" class="text-primary rounded-lg pa-5 font-weight-bold" label
+                                    width="100%">
+                                    Últimas cotizaciones
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-table>
+                            <thead>
+                                <tr>
+                                    <th>Folio</th>
+                                    <th>Cliente</th>
+                                    <th>Total</th>
+                                    <th>Fecha</th>
+                                    <th>Estatus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="q in quotes" :key="q.id">
+                                    <td>{{ q.folio }}</td>
+                                    <td>{{ q.client }}</td>
+                                    <td>${{ q.total }}</td>
+                                    <td>{{ q.date }}</td>
+                                    <td>
+                                        <v-chip :color="q.status === 'Activo' ? 'green' : 'red'" size="small">
+                                            {{ q.status }}
+                                        </v-chip>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </v-table>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+
     </v-container>
 </template>
 
-<style scoped>
-.icon-text {
-    color: #192a67 !important;
-}
-
-.icon-text-darkTheme {
-    color: #fff !important;
-}
-
-.loader-container {
-    position: relative;
-    top: 0;
-    left: 50%;
-    bottom: 0;
-    right: 50%;
-    padding-top: 20%;
-}
-
-.rounded-card {
-    border-radius: 1rem !important;
-    background-color: transparent;
-    transition: 100ms;
-    box-shadow: inset 0px 0px 0px 2px #192a67;
-}
-
-.rounded-card-darkTheme {
-    border-radius: 1rem !important;
-    background-color: transparent;
-    transition: 100ms;
-    box-shadow: inset 0px 0px 0px 2px #0e1726;
-}
-
-.rounded-card:hover {
-    background-color: #192a67;
-    cursor: pointer;
-    transition: 400ms;
-}
-
-.rounded-card-darkTheme:hover {
-    background-color: #4361EE;
-    cursor: pointer;
-    transition: 400ms;
-}
-
-.rounded-card:hover .icon-text {
-    color: #fff !important;
-}
-</style>
-
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '../pinia/user';
-import { useCustomTheme } from '../composable/useCustomMode';
-const { themeName } = useCustomTheme()
-const isLoading = ref(false);
-const router = useRouter();
-const userStore = useUserStore();
+import { onMounted } from 'vue'
+import Chart from 'chart.js/auto'
+import InfoCard from '@/components/Statistic/InfoCard.vue'
+
+const stats = [
+    { title: 'Ventas Hoy', value: '$1,250', icon: 'mdi-cash', color: 'green' },
+    //   { title: 'Cotizaciones', value: '23', icon: 'mdi-file-document', color: 'blue' },
+    { title: 'Clientes', value: '120', icon: 'mdi-account-group', color: 'purple' },
+    { title: 'Productos', value: '520', icon: 'mdi-package-variant', color: 'orange' }
+]
+
+const quotes = [
+    { id: 1, folio: '00021', client: 'Juan Pérez', total: 500, date: '2026-02-10', status: 'Activo' },
+    { id: 2, folio: '00022', client: 'Sin cliente', total: 1200, date: '2026-02-10', status: 'Activo' }
+]
 
 onMounted(() => {
-    isLoading.value = true;
-    userStore.consultUser().then((response) => {
-        permissions.value = response.data.permissions
-    }).catch((error) => {
-    }).finally(() => {
-        isLoading.value = false;
+    // Ventas chart
+    new Chart(document.getElementById('salesChart'), {
+        type: 'line',
+        data: {
+            labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+            datasets: [{
+                label: 'Ventas',
+                data: [120, 300, 250, 500, 200, 400, 350],
+            }]
+        }
+    })
+
+    // Productos top
+    new Chart(document.getElementById('topProductsChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Laptop', 'Mouse', 'Teclado'],
+            datasets: [{
+                label: 'Ventas',
+                data: [120, 90, 50],
+            }]
+        }
     })
 })
-
-const search = ref('');
-const permissions_arr = ref([
-    {
-        name: 'Ajustes',
-        route: '/configuracion',
-        icon: 'mdi-cog-outline',
-        visibility: false,
-    },
-    {
-        name: 'Clientes',
-        route: '/clientes',
-        icon: 'mdi-account-group',
-        visibility: false,
-    },
-    {
-        name: 'Áreas',
-        route: '/areas',
-        icon: 'mdi-package',
-        visibility: false,
-    },
-    {
-        name: 'Punto de venta',
-        route: '/punto-de-venta',
-        icon: 'mdi-point-of-sale',
-        visibility: false,
-    },
-    {
-        name: 'Restaurante',
-        route: '/restaurante',
-        icon: 'mdi-food',
-        visibility: false,
-    },
-    {
-        name: 'Registrar modulos',
-        route: '/crear-modulos',
-        icon: 'mdi-chart-areaspline',
-        visibility: false,
-    },
-    {
-        name: 'Reportes',
-        route: '/reportes',
-        icon: 'mdi-chart-areaspline',
-        visibility: false,
-    },
-    {
-        name: 'Productos',
-        route: '/productos',
-        icon: 'mdi-tag',
-        visibility: false,
-    },
-    {
-        name: 'Estadísticas',
-        route: '/estadisticas',
-        icon: 'mdi-chart-areaspline',
-        visibility: false,
-    },
-    {
-        name: 'Planificador',
-        route: '/planificador',
-        icon: 'mdi-chart-areaspline',
-        visibility: false,
-    },
-    {
-        name: 'Cocina',
-        route: '/cocina',
-        icon: 'mdi-chart-areaspline',
-        visibility: false,
-    },
-    {
-        name: 'Administración de tarjetas',
-        route: '/tarjetas',
-        icon: 'mdi-card',
-        visibility: false,
-    },
-    {
-        name: 'Cotizaciones',
-        route: '/cotizaciones',
-        icon: 'mdi-card',
-        visibility: false,
-    },
-]);
-
-const permissions = ref([]);
-
-const normalizeString = (str) => {
-    return str
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-};
-
-const dataFiltered = computed(() => {
-    const normalizedSearch = normalizeString(search.value);
-
-    return permissions_arr.value
-        .filter((item) => {
-            return item.visibility && normalizeString(item.name).includes(normalizedSearch);
-        });
-});
-
-const goTo = (route) => {
-    router.push(route);
-};
-
-const updateVisibility = () => {
-    if (!Array.isArray(permissions.value)) {
-        console.warn('Permissions data is not an array:', permissions.value);
-        return;
-    }
-
-    permissions.value.forEach((element) => {
-        const index = permissions_arr.value.findIndex(
-            (item) => item.name === element.name
-        );
-        if (index !== -1) {
-            permissions_arr.value[index].visibility = true;
-        }
-    });
-};
-
-// Watch for changes in permissions and update visibility
-watch(
-    () => permissions.value,
-    (newVal) => {
-        if (Array.isArray(newVal)) {
-            updateVisibility();
-        }
-    },
-    { immediate: true }
-);
 </script>

@@ -6,17 +6,24 @@
                     cashCutStore.infoCashCut.user.lastname }}</p>
                 <p><b class="text-primary">Caja:</b> {{ cashCutStore.infoCashCut.salebox.name }} </p>
             </v-col>
-            <v-col cols="6" class="text-right">
+            <v-col cols="6" class="text-right" v-if="cashCutStore.infoCashCut != null">
+                <p class="text-primary"><b>Última venta:</b> </p>
+                <p class="text-primary"><b>Venta del día:</b></p>
+                <p class="text-primary"><b>Venta en espera:</b></p>
+                <p class="text-primary"><b>Monto vendido:</b></p>
+            </v-col>
+             <v-col cols="6" class="text-right" v-else>
                 <p class="text-primary"><b>Última venta:</b></p>
                 <p class="text-primary"><b>Venta del día:</b></p>
                 <p class="text-primary"><b>Venta en espera:</b></p>
                 <p class="text-primary"><b>Monto vendido:</b></p>
             </v-col>
-            <v-col cols="4">
-                <v-select variant="outlined" label="Clientes" />
+            <v-col cols="12" md="4">
+                <v-select variant="outlined" label="Clientes" hide-details />
             </v-col>
-            <v-col cols="8">
+            <v-col cols="12" md="8">
                 <v-autocomplete variant="outlined" return-object :items="productStore.products" item-title="name"
+                    hide-details
                     v-model="product" label="Productos" @update:modelValue="addProduct" v-model:search="search"
                     @keyup.enter="consultProduct(search)" />
             </v-col>

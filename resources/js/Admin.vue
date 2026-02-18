@@ -1,15 +1,16 @@
 <template>
   <v-app>
-    <app-bar />
+    <app-bar-normal />
+    <navegation-drawer />
     <v-main class="bg-backgroundColor">
-      <!-- <v-btn class="primary" @click="logout()">Logout</v-btn> -->
       <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script setup>
-import AppBar from "./components/menu/AppBar.vue";
+import AppBarNormal from "./components/menu/AppBarNormal.vue";
+import NavegationDrawer from "./components/menu/NavegationDrawer.vue";
 </script>
 
 <style>
