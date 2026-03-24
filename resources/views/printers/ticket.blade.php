@@ -134,9 +134,7 @@
         <div class="line bold text-right"><span>TOTAL:</span><span>$ {{ number_format($sale['total'], 2) }}</span></div>
     </div>
 
-    <div style="margin-top:6px; font-size:10px;">
-        SON: {{ $total_letras }}
-    </div>
+   
 
 
 

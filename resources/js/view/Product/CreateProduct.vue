@@ -114,28 +114,12 @@ const product = ref({
 const ProductTypes = ref([
     {
         text: "Pieza",
-        value: "piece"
+        value: "Pieza"
     },
     {
         text: "Kilogramo",
-        value: "kilogram"
+        value: "Kilogramo"
     },
-    {
-        text: "Caja",
-        value: "box"
-    },
-    {
-        text: "Mixto",
-        value: "mixto"
-    },
-    {
-        text: "Kit",
-        value: "kit"
-    },
-    {
-        text: "Litro",
-        value: "liter"
-    }
 ])
 
 //Methods
@@ -147,6 +131,8 @@ const createProduct = () => {
     let params = {
         product: product.value
     }
+    console.log(params);
+    
     productStore.storeProduct(params).then((response) => {
         alertStore.show = true;
         alertStore.color = "success";
@@ -155,7 +141,7 @@ const createProduct = () => {
     }).catch((error) => {
         alertStore.show = true;
         alertStore.color = "error";
-        alertStore.msg = "Se ha producido un error al crear el producto";
+        alertStore.msg = "Se ha producido un error al crear el producto ";
 
     })
 }

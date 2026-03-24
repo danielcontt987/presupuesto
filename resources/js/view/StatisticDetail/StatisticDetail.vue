@@ -1,11 +1,6 @@
 <template>
     <v-container fluid>
         <v-row>
-            <v-col cols="12" md="10">
-                <vc-back-button @backAction="navigateToHome"></vc-back-button>
-            </v-col>
-        </v-row>
-        <v-row>
             <v-col cols="12">
                 <v-card class="rounded-lg" flat>
                     <v-card-title>

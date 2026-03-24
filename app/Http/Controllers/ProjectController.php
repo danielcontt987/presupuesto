@@ -15,7 +15,7 @@ class ProjectController extends Controller
     public function list()
     {
         $businessId = Auth::user()->getBusiness();
-        $projects = Project::where('business_id', $businessId)->get();
+        $projects = Project::where('business_id', $businessId)->orderBy('id', 'ASC')->get();
         return response()->json(['projects' => $projects, 'status' => 'success'], 200);
     }
 

@@ -159,7 +159,6 @@ class PointSaleController extends Controller
             'user'        => $user,
             'folio'       => $sale->folio,
             'empresa'     => $business,
-            'total_letras' => numberToLetter($sale->total),
         ];
 
 

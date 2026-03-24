@@ -1,10 +1,5 @@
 <template>
     <v-container fluid class="pa-6 mb-6">
-        <v-row>
-            <v-col cols="12" md="10">
-                <vc-back-button @backAction="navigateToHome()"></vc-back-button>
-            </v-col>
-        </v-row>
         <!-- Header -->
         <v-row>
             <v-col cols="12">
@@ -160,7 +155,6 @@
 <script setup>
 
 import { ref, onMounted } from "vue"
-import VcBackButton from "@/components/global/BackButton.vue"
 import { useRouter } from "vue-router"
 import { usePlannerStore } from "@/pinia/planner.js"
 const plannerStore = usePlannerStore();
